@@ -31,7 +31,7 @@
       <div class="lang" aria-label="اللغة"><a href="#" aria-current="true" lang="ar">ع</a><a href="#" lang="tr">TR</a><a href="#" lang="en">EN</a></div>
       <a class="icon-btn" href="shop.html" aria-label="البحث في المتجر"><span data-motif="i-search"></span></a>
       <button class="icon-btn" type="button" aria-label="المفضلة"><span data-motif="i-heart"></span></button>
-      <button class="icon-btn" type="button" aria-label="السلة" id="cart-btn"><span data-motif="i-bag"></span><span class="count num" id="cart-count" hidden>0</span></button>
+      <a class="icon-btn" href="cart.html" aria-label="السلة" id="cart-btn"${page === "cart" ? ' aria-current="page"' : ""}><span data-motif="i-bag"></span><span class="count num" id="cart-count" hidden>0</span></a>
     </div>
   </div>
 </header>
@@ -185,8 +185,8 @@
   /* ---------- Toast ---------- */
   const slot = document.getElementById("toast-slot");
   let toastTimer;
-  function showToast(text, link) {
-    slot.innerHTML = `<div class="toast"><span data-motif="starlet" data-mode="cross"></span><span>${text}</span>${link ? ` <a class="thread" href="#">${link}</a>` : ""}</div>`;
+  function showToast(text, link, href = "cart.html") {
+    slot.innerHTML = `<div class="toast"><span data-motif="starlet" data-mode="cross"></span><span>${text}</span>${link ? ` <a class="thread" href="${href}">${link}</a>` : ""}</div>`;
     Dar.mount(slot);
     slot.classList.add("is-on");
     clearTimeout(toastTimer);
@@ -196,23 +196,29 @@
   /* ---------- Cart: kept in this browser until the backend exists ---------- */
   const count = document.getElementById("cart-count");
   const cartBtn = document.getElementById("cart-btn");
+  // Items are { pid, variant, qty }. Stored per browser; the backend takes over later.
   const store = {
-    get() { try { return JSON.parse(localStorage.getItem("dar-cart") || "[]"); } catch (e) { return []; } },
-    set(v) { try { localStorage.setItem("dar-cart", JSON.stringify(v)); } catch (e) {} }
+    get() {
+      try {
+        return JSON.parse(localStorage.getItem("dar-cart") || "[]")
+          .filter(i => i.pid && (window.DAR_PRODUCTS || []).some(p => p.id === i.pid));
+      } catch (e) { return []; }
+    },
+    set(v) { try { localStorage.setItem("dar-cart", JSON.stringify(v)); } catch (e) {} renderCount(); }
   };
   function renderCount() {
     const n = store.get().reduce((s, i) => s + i.qty, 0);
     count.hidden = !n; count.textContent = n;
     cartBtn.setAttribute("aria-label", n ? `السلة، ${n} قطع` : "السلة");
   }
-  function addToCart(id, name, qty = 1, btn) {
+  function addToCart(pid, variant, name, qty = 1, btn) {
     const items = store.get();
-    const hit = items.find(i => i.id === id);
-    hit ? hit.qty += qty : items.push({ id, qty });
+    const hit = items.find(i => i.pid === pid && i.variant === variant);
+    hit ? hit.qty = Math.min(9, hit.qty + qty) : items.push({ pid, variant, qty });
     btn?.classList.add("is-loading");
     setTimeout(() => {
       btn?.classList.remove("is-loading");
-      store.set(items); renderCount();
+      store.set(items);
       if (!reduce) cartBtn.animate([{ transform: "scale(1)" }, { transform: "scale(1.18)" }, { transform: "scale(1)" }], { duration: 320, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
       showToast(`أضيف ${name} إلى سلتك.`, "عرض السلة");
     }, 450);
@@ -223,7 +229,7 @@
     const add = e.target.closest("[data-add]");
     if (add && add.getAttribute("aria-disabled") !== "true") {
       e.preventDefault();
-      addToCart(add.dataset.id || add.dataset.add, add.dataset.add, +(add.dataset.qty || 1), add);
+      addToCart(add.dataset.id, add.dataset.variant || "", add.dataset.add, +(add.dataset.qty || 1), add);
     }
     const fav = e.target.closest(".product__fav");
     if (fav) {
@@ -250,7 +256,12 @@
     </article>`;
   }
 
-  window.Site = { reduce, observe, veil, splitWords, showToast, addToCart, card, IMG, onScroll: fn => scrollHooks.push(fn), refresh: onScroll, WA };
+  /* ---------- Prices: the catalogue has none yet, so the preview uses labelled demo prices ---------- */
+  const DEMO = { wear: 2400, bags: 850, kufiya: 450, wall: 650, jewel: 350, home: 550 };
+  const price = p => p.price || DEMO[p.cat];
+  const money = n => `${n.toLocaleString("en-US")} ₺`;
+
+  window.Site = { reduce, observe, veil, splitWords, showToast, addToCart, card, IMG, onScroll: fn => scrollHooks.push(fn), refresh: onScroll, WA, cart: store, price, money };
 
   // Pages that do not run an intro start revealing right away
   if (!document.body.hasAttribute("data-wait-intro")) observe();

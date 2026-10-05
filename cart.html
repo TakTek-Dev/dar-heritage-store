@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>السلة، دار</title>
+<meta name="robots" content="noindex">
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=4">
+<link rel="stylesheet" href="assets/css/base.css?v=7">
+<link rel="stylesheet" href="assets/css/site.css?v=8">
+<link rel="stylesheet" href="assets/css/shop.css?v=4">
+<link rel="stylesheet" href="assets/css/cart.css?v=3">
+</head>
+<body data-page="cart">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="مسار التصفح"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><a href="shop.html">المتجر</a><span aria-hidden="true">/</span><span aria-current="page">السلة</span></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>الأسعار في هذه المعاينة تجريبية حتى تضاف أسعار دار الحقيقية من لوحة التحكم.</p>
+
+    <div class="page-head">
+      <div><h1 class="rise">سلتك</h1><p id="cart-sub"></p></div>
+      <a class="thread" href="shop.html">تابع التسوق</a>
+    </div>
+
+    <div class="cart" id="cart" hidden>
+      <section aria-label="القطع في السلة">
+        <ul class="lines" id="lines"></ul>
+      </section>
+
+      <aside class="summary" aria-labelledby="sum-h">
+        <h2 id="sum-h">ملخص الطلب</h2>
+        <dl>
+          <dt>المجموع الفرعي</dt><dd class="num" id="subtotal"></dd>
+          <dt>الشحن</dt><dd>يحسب في صفحة الدفع</dd>
+          <dt class="total">الإجمالي التقديري</dt><dd class="total num" id="total"></dd>
+        </dl>
+
+        <div class="gift">
+          <label class="check"><input type="checkbox" id="gift"><span>تغليف هدية تقليدي</span></label>
+          <textarea id="gift-note" placeholder="رسالة تكتبها دار على بطاقة الهدية" aria-label="رسالة الهدية" hidden maxlength="200"></textarea>
+        </div>
+
+        <a class="btn btn--lg btn--henna" href="checkout.html">إتمام الطلب <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+        <p class="or">أو</p>
+        <a class="btn btn--lg btn--wa" id="wa-order" href="#" target="_blank" rel="noopener"><span data-motif="i-chat"></span>اطلب عبر واتساب</a>
+
+        <div class="impact"><span data-motif="amulet" data-mode="cross"></span><p><b>طلبك يدعم مشاريع في غزة</b>خاصة لتمكين النساء والأطفال.</p></div>
+        <p class="trust"><span><span data-motif="starlet"></span>دفع آمن</span><span><span data-motif="starlet"></span>قطع من كتالوج دار</span><span><a class="thread" href="index.html#corp">طلب لمؤسسة؟</a></span></p>
+      </aside>
+    </div>
+
+    <div class="cart-empty" id="cart-empty" hidden>
+      <span data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
+      <h2>سلتك فارغة</h2>
+      <p>كل قطعة في دار تحمل نقشة وحكاية. ابدأ من هنا.</p>
+      <a class="btn btn--lg" href="shop.html">تصفح المتجر <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+    </div>
+  </div>
+
+  <section class="wrap related" id="suggest-sec" aria-labelledby="suggest-h">
+    <div class="sec-head"><div><span class="eyebrow up"><span data-motif="starlet"></span>قد يعجبك</span><h2 id="suggest-h" class="rise">قطع أخرى من دار</h2></div><a class="thread" href="shop.html">كل القطع</a></div>
+    <div class="products" id="suggest"></div>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="assets/js/stitch.js?v=5"></script>
+<script src="assets/js/products.js?v=1"></script>
+<script src="assets/js/site.js?v=2"></script>
+<script src="assets/js/cart-page.js?v=1"></script>
+</body>
+</html>

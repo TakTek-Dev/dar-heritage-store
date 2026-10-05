@@ -72,7 +72,7 @@
 
   /* ---------- Variants ---------- */
   const add = $("add");
-  add.dataset.id = p.id; add.dataset.add = p.name;
+  add.dataset.id = p.id; add.dataset.add = p.name; add.dataset.variant = "";
   if (p.variants) {
     $("p-variants").hidden = false;
     const label = $("p-variant-name");
@@ -81,7 +81,7 @@
     const pick = i => {
       const v = p.variants[i];
       label.textContent = v.name;
-      add.dataset.id = `${p.id}-${v.color}`; add.dataset.add = `${p.name}، ${v.name}`;
+      add.dataset.variant = v.color; add.dataset.add = `${p.name}، ${v.name}`;
       $("variants").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.i === i));
       show(v.img, `${p.name}، ${v.name}`);
     };
