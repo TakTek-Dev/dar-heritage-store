@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>قطعة من دار</title>
+<meta name="description" content="قطعة من كتالوج دار، مركز التراث الفلسطيني في إسطنبول.">
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=4">
+<link rel="stylesheet" href="assets/css/base.css?v=7">
+<link rel="stylesheet" href="assets/css/site.css?v=8">
+<link rel="stylesheet" href="assets/css/shop.css?v=4">
+</head>
+<body data-page="shop">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap" id="pdp-root">
+    <nav class="crumbs" aria-label="مسار التصفح" id="crumbs"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><a href="shop.html">المتجر</a></nav>
+
+    <section class="pdp" id="pdp" aria-labelledby="p-name" hidden>
+      <div class="gallery">
+        <div class="gallery__thumbs" id="thumbs" aria-label="صور القطعة"></div>
+        <figure class="gallery__main" id="main-img" data-veil style="margin:0"><img id="main-photo" src="" alt=""></figure>
+      </div>
+
+      <div class="info">
+        <a class="eyebrow" id="p-cat" href="shop.html" style="text-decoration:none"><span data-motif="starlet"></span><span></span></a>
+        <h1 id="p-name"></h1>
+        <div class="info__code" id="p-code"></div>
+        <p class="info__price"><span>السعر قريبا</span><small>يضاف السعر من لوحة التحكم. <a id="p-ask-price" href="#" target="_blank" rel="noopener">اسأل عنه عبر واتساب</a></small></p>
+
+        <div id="p-variants" hidden>
+          <p class="variant-label">اللون: <b id="p-variant-name"></b></p>
+          <div class="variants" id="variants" role="group" aria-label="اختر اللون"></div>
+        </div>
+
+        <div class="buy">
+          <div class="qty"><button type="button" aria-label="إنقاص" data-step="-1"><span data-motif="i-minus"></span></button><output id="qty" class="num" aria-live="polite">1</output><button type="button" aria-label="زيادة" data-step="1"><span data-motif="i-plus"></span></button></div>
+          <button class="btn btn--lg btn--henna" type="button" id="add" data-add="">أضف إلى السلة</button>
+          <button class="btn btn--icon btn--quiet product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button>
+        </div>
+        <a class="ask thread" id="p-ask" href="#" target="_blank" rel="noopener"><span data-motif="i-chat"></span>اسأل دار عن هذه القطعة</a>
+
+        <div class="impact"><span data-motif="amulet" data-mode="cross"></span><p><b>عائد هذه القطعة يدعم مشاريع في غزة</b>خاصة لتمكين النساء والأطفال.</p></div>
+
+        <div class="acc">
+          <details open><summary>الوصف<span data-motif="i-plus"></span></summary><div class="acc__body"><p id="p-desc"></p></div></details>
+          <details><summary>التفاصيل<span data-motif="i-plus"></span></summary><div class="acc__body"><dl id="p-details"></dl></div></details>
+          <details><summary>الشحن والإرجاع<span data-motif="i-plus"></span></summary><div class="acc__body"><p>تحدد دار سياسة الشحن والإرجاع، وتظهر هنا بعد إضافتها من لوحة التحكم. للاستفسار الآن راسل دار على واتساب.</p></div></details>
+        </div>
+      </div>
+    </section>
+
+    <div class="not-found" id="not-found" hidden>
+      <span data-motif="starlet" data-mode="cross"></span>
+      <h1 style="font-size:var(--fs-h2)">لم نجد هذه القطعة</h1>
+      <p style="color:var(--muted)">ربما تغير الرابط أو نفدت القطعة.</p>
+      <a class="btn" href="shop.html">عد إلى المتجر</a>
+    </div>
+  </div>
+
+  <div class="band" data-band="chain" data-cell="3" aria-hidden="true"></div>
+  <section class="wrap related" id="related-sec" aria-labelledby="related-h" hidden>
+    <div class="sec-head"><div><span class="eyebrow up"><span data-motif="starlet"></span>من نفس المجموعة</span><h2 id="related-h" class="rise">قطع قد تعجبك</h2></div><a class="thread" id="related-all" href="shop.html">كل المجموعة</a></div>
+    <div class="products" id="related"></div>
+  </section>
+</main>
+
+<div class="buybar" id="buybar" aria-hidden="true">
+  <img id="bb-img" src="" alt="">
+  <div><b id="bb-name"></b><small>السعر قريبا</small></div>
+  <button class="btn btn--henna" type="button" id="bb-add" tabindex="-1">أضف إلى السلة</button>
+</div>
+<div data-site="footer"></div>
+
+<script src="assets/js/stitch.js?v=5"></script>
+<script src="assets/js/products.js?v=1"></script>
+<script src="assets/js/site.js?v=1"></script>
+<script src="assets/js/product-page.js?v=1"></script>
+</body>
+</html>

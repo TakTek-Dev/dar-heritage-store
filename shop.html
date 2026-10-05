@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>المتجر، دار</title>
+<meta name="description" content="تسوق أثواب وحقائب وكوفيات وتطريز وإكسسوارات فلسطينية من كتالوج دار 2026.">
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=4">
+<link rel="stylesheet" href="assets/css/base.css?v=7">
+<link rel="stylesheet" href="assets/css/site.css?v=8">
+<link rel="stylesheet" href="assets/css/shop.css?v=4">
+</head>
+<body data-page="shop">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="مسار التصفح"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><span aria-current="page">المتجر</span></nav>
+
+    <div class="shop-head">
+      <div>
+        <span class="eyebrow up"><span data-motif="starlet"></span>كتالوج دار 2026</span>
+        <h1 class="rise" id="shop-title">كل القطع</h1>
+        <p class="up" id="shop-sub"></p>
+      </div>
+      <span class="shop-head__star" data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
+    </div>
+
+    <div class="loom up" id="loom" role="group" aria-label="المجموعات"></div>
+
+    <div class="shop">
+      <aside class="filters" id="filters" aria-labelledby="filters-h">
+        <h2 id="filters-h">تصفية</h2>
+        <button class="icon-btn filters__close" type="button" aria-label="إغلاق التصفية" data-close-filters><span data-motif="i-close"></span></button>
+        <fieldset id="f-craft"><legend>الصنعة</legend></fieldset>
+        <fieldset><legend>اللون</legend><div class="swatches-f" id="f-color"></div></fieldset>
+        <button class="btn btn--quiet filters__reset" type="button" id="reset">مسح التصفية</button>
+        <button class="btn filter-apply" type="button" data-close-filters>اعرض النتائج</button>
+      </aside>
+
+      <section aria-labelledby="shop-title">
+        <div class="toolbar">
+          <div class="field"><label for="q">ابحث في القطع</label><input id="q" type="search" placeholder="جاكيت، كوفية، سوار" autocomplete="off"></div>
+          <div class="toolbar__end">
+            <div class="field" style="min-width:0;flex:none"><label for="sort">الترتيب</label>
+              <select id="sort"><option value="">الافتراضي</option><option value="name">الاسم</option><option value="code">الكود</option></select>
+            </div>
+            <button class="btn btn--quiet filter-btn" type="button" id="filter-btn" aria-controls="filters" aria-expanded="false">تصفية <span class="num" id="filter-n"></span></button>
+          </div>
+        </div>
+        <p class="toolbar__count" id="count" role="status" aria-live="polite"></p>
+        <div class="products" id="grid" style="margin-block-start:var(--s3)"></div>
+        <div class="empty" id="empty" hidden>
+          <span data-motif="starlet" data-mode="cross"></span>
+          <b>لا قطع تطابق هذا البحث</b>
+          <p>جرّب كلمة أخرى أو امسح التصفية.</p>
+          <button class="btn" type="button" data-reset>مسح التصفية</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div class="sheet-backdrop" id="backdrop" data-close-filters></div>
+<div data-site="footer"></div>
+
+<script src="assets/js/stitch.js?v=5"></script>
+<script src="assets/js/products.js?v=1"></script>
+<script src="assets/js/site.js?v=1"></script>
+<script src="assets/js/shop-page.js?v=1"></script>
+</body>
+</html>
