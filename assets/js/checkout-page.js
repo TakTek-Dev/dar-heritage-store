@@ -9,7 +9,7 @@
   let extras = {};
   try { extras = JSON.parse(localStorage.getItem("dar-cart-extras") || "{}"); } catch (e) {}
 
-  const SHIP_TR = 120;    // demo value, DAR sets the real rate in the dashboard
+  const SHIP_TR = +(DAR_SETTINGS.shipTr || 120);    // demo default until DAR sets the rate in the dashboard
   const form = $("co-form");
   const view = i => { const p = byId[i.pid]; const v = (p.variants || []).find(x => x.color === i.variant); return { p, v, unit: price(p), img: v ? v.img : p.img }; };
   const subtotal = items.reduce((s, i) => s + view(i).unit * i.qty, 0);

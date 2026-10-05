@@ -25,9 +25,18 @@
     p.craft ? `<span class="tag${p.craft === "hand" ? " tag--henna" : ""}"><span data-motif="amulet"></span>${DAR_CRAFT[p.craft]}</span>` : ""
   ].join("");
   $("p-desc").textContent = p.desc;
+  if (p.story || p.motif || p.origin) {
+    $("p-desc").insertAdjacentHTML("afterend", `<p style="margin-block-start:var(--s2)"><b style="color:var(--zaytoun)">حكاية النقشة${p.motif ? `، ${p.motif}` : ""}</b>${p.origin ? ` من ${p.origin}` : ""}<br>${(p.story || "").replace(/[<>]/g, "")}</p>`);
+  }
+  if (+p.price > 0) {
+    document.querySelector(".info__price").innerHTML = `<span class="num">${Site.money(p.price)}</span>`;
+    $("bb-name").nextElementSibling.textContent = Site.money(p.price);
+  }
 
   const ask = encodeURIComponent(`مرحبا دار، أود السؤال عن: ${p.name}${p.code ? ` (كود ${p.code})` : ""}`);
-  $("p-ask").href = $("p-ask-price").href = `${Site.WA}?text=${ask}`;
+  $("p-ask").href = `${Site.WA}?text=${ask}`;
+  const askPrice = $("p-ask-price");
+  if (askPrice) askPrice.href = $("p-ask").href;
 
   const colors = (p.colors || []).map(c => `<i style="--c:${DAR_COLORS[c].hex}" title="${DAR_COLORS[c].name}"></i>`).join("");
   $("p-details").innerHTML = [

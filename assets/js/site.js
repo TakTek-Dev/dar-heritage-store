@@ -241,6 +241,11 @@
     }
   });
 
+  /* ---------- Prices: the catalogue has none yet, so the preview uses labelled demo prices ---------- */
+  const DEMO = { wear: 2400, bags: 850, kufiya: 450, wall: 650, jewel: 350, home: 550 };
+  const price = p => +p.price || DEMO[p.cat];
+  const money = n => `${Math.round(n).toLocaleString("en-US")} ₺`;
+
   /* ---------- Product card markup shared by home, shop and related lists ---------- */
   const IMG = id => `assets/img/dar/${id}.webp`;
   function card(p, i = 0) {
@@ -252,14 +257,9 @@
         <button class="icon-btn product__fav" type="button" aria-label="أضف ${p.name} للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button>
         <button class="btn product__add" type="button" data-id="${p.id}" data-add="${p.name}">أضف إلى السلة</button>
       </div>
-      <div class="product__meta"><div><h3 class="product__name"><a href="product.html?id=${p.id}">${p.name}</a></h3>${meta}</div><p class="product__price--soon">${p.price ? p.price + " ₺" : "السعر قريبا"}</p></div>
+      <div class="product__meta"><div><h3 class="product__name"><a href="product.html?id=${p.id}">${p.name}</a></h3>${meta}</div>${p.price ? `<p class="product__price num">${money(p.price)}</p>` : '<p class="product__price--soon">السعر قريبا</p>'}</div>
     </article>`;
   }
-
-  /* ---------- Prices: the catalogue has none yet, so the preview uses labelled demo prices ---------- */
-  const DEMO = { wear: 2400, bags: 850, kufiya: 450, wall: 650, jewel: 350, home: 550 };
-  const price = p => p.price || DEMO[p.cat];
-  const money = n => `${n.toLocaleString("en-US")} ₺`;
 
   window.Site = { reduce, observe, veil, splitWords, showToast, addToCart, card, IMG, onScroll: fn => scrollHooks.push(fn), refresh: onScroll, WA, cart: store, price, money };
 

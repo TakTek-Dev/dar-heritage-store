@@ -106,3 +106,15 @@ window.DAR_COLORS = {
   red: { name: "أحمر", hex: "#B23A2A" }, green: { name: "أخضر", hex: "#3F6B45" }, blue: { name: "أزرق", hex: "#2F5C8A" },
   black: { name: "أسود", hex: "#1C1C1C" }, gold: { name: "ذهبي", hex: "#C9A24B" }
 };
+
+/* Edits saved from the dashboard preview (admin/) live in this browser until the backend exists.
+   They override the catalogue fields above; drafts disappear from the storefront. */
+(function () {
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem("dar-admin") || "{}"); } catch (e) {}
+  const edits = saved.products || {};
+  window.DAR_ALL_PRODUCTS = window.DAR_PRODUCTS.map(p => Object.assign({}, p, edits[p.id] || {}));
+  window.DAR_PRODUCTS = window.DAR_ALL_PRODUCTS.filter(p => p.status !== "draft");
+  window.DAR_SETTINGS = saved.settings || {};
+  window.DAR_CONTENT = saved.content || {};
+})();

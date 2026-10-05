@@ -3,10 +3,29 @@
   const { reduce } = Site;
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+  // Dashboard content overrides the defaults written in the page
+  const C = window.DAR_CONTENT || {};
+  if (C.hero1 || C.hero2) {
+    const h = document.getElementById("hero-h");
+    h.innerHTML = `${(C.hero1 || "").replace(/[<>]/g, "")}<br><em>${(C.hero2 || "").replace(/[<>]/g, "")}</em>`;
+    Site.splitWords(h);
+  }
+  if (C.heroSub) document.querySelector(".hero__sub").textContent = C.heroSub;
+  if (C.quiz && C.quiz.q) {
+    const qh = document.getElementById("quiz-h");
+    qh.textContent = C.quiz.q; Site.splitWords(qh);
+    document.querySelector(".quiz__hint").textContent = C.quiz.hint ? `تلميح: ${C.quiz.hint}` : "";
+    document.querySelectorAll(".quiz__opt").forEach((b, i) => {
+      b.dataset.answer = i === C.quiz.right ? "1" : "0";
+      b.firstElementChild.textContent = C.quiz.opts[i] || "";
+    });
+  }
+
   // Featured products come from the catalogue data
   const grid = document.querySelector("[data-featured]");
+  if (C.featured && C.featured.length) grid.dataset.featured = C.featured.join(",");
   const byId = Object.fromEntries(DAR_PRODUCTS.map(p => [p.id, p]));
-  grid.innerHTML = grid.dataset.featured.split(",").map((id, i) => Site.card(byId[id], i)).join("");
+  grid.innerHTML = grid.dataset.featured.split(",").filter(id => byId[id]).map((id, i) => Site.card(byId[id], i)).join("");
   Dar.mount(grid);
 
   // Woven ground behind the hero
@@ -89,9 +108,11 @@
     right.querySelector(".key").outerHTML = '<span class="mark" data-motif="starlet" data-mode="cross" data-order="radial" data-stitch></span>';
     Dar.mount(right);
     const more = '<a class="thread" href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener">سؤال جديد كل أسبوع</a>';
+    const answer = right.firstElementChild.textContent;
+    const custom = C.quiz && C.quiz.q;
     result.innerHTML = pick === right
-      ? `صحيح. نابلس مدينة الكنافة والصابون النابلسي. ${more}`
-      : `الجواب نابلس، مدينة الكنافة والصابون النابلسي. ${more}`;
+      ? `صحيح. ${custom ? answer : "نابلس مدينة الكنافة والصابون النابلسي"}. ${more}`
+      : `الجواب ${custom ? answer : "نابلس، مدينة الكنافة والصابون النابلسي"}. ${more}`;
   });
 
   /* ---------- Newsletter ---------- */
