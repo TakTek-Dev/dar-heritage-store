@@ -39,7 +39,7 @@
   width: min(620px, 92%); background: var(--paper); padding: var(--s6) var(--s6) var(--s5) var(--s5);
 }
 .hero__patch .eyebrow { margin-block-end: var(--s2); }
-.hero__patch h1 { font-size: var(--fs-hero); font-weight: 900; line-height: 1; }
+.hero__patch h1 { font-size: var(--fs-hero); font-weight: 900; line-height: 1.3; }
 .hero__patch h1 em { font-style: normal; color: var(--henna); }
 .hero__patch p { font: 400 var(--fs-lead)/1.8 var(--font-text); color: var(--muted); margin-block: var(--s3) var(--s4); max-width: 28em; }
 .hero__patch { position: absolute; }
@@ -78,7 +78,7 @@
 .cat:hover img { transform: scale(1.05); }
 .cat::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(18, 22, 19, .62), rgba(18, 22, 19, 0) 48%); }
 .cat__label { position: absolute; inset-inline: var(--s3); inset-block-end: var(--s3); z-index: 1; display: flex; justify-content: space-between; align-items: end; gap: var(--s2); }
-.cat__label b { font: 700 var(--fs-h2)/1.1 var(--font-display); }
+.cat__label b { font: 700 var(--fs-h2)/1.35 var(--font-display); }
 .cat__label span { display: inline-flex; align-items: center; gap: var(--s1); font-size: var(--fs-small); }
 .cat__label [data-motif] { width: 16px; transition: transform var(--t-base) var(--ease-thread); }
 .cat:hover .cat__label [data-motif] { transform: translateX(-6px); }

@@ -10,7 +10,7 @@ body {
 }
 img, video, svg { display: block; max-width: 100%; }
 h1, h2, h3, h4, p { margin: 0; text-wrap: pretty; }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.2; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.4; text-wrap: balance; }
 a { color: inherit; }
 button, input, select { font: inherit; color: inherit; }
 ::selection { background: var(--henna); color: var(--paper); }
