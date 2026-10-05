@@ -256,6 +256,20 @@
       "..X.........",
       "............"
     ],
+    "i-chat": [
+      "............",
+      ".XXXXXXXXXX.",
+      ".X........X.",
+      ".X.XX.XX..X.",
+      ".X........X.",
+      ".X.XXXXX..X.",
+      ".X........X.",
+      ".XXXXXXXXXX.",
+      "...XX.......",
+      "...X........",
+      "............",
+      "............"
+    ],
     "i-globe": [
       "............",
       "....XXXX....",
@@ -307,12 +321,13 @@
   }
 
   // Data URL for a repeating band. Colors must be literal here.
-  function tile(name, colors = {}, cellPx = 4) {
+  function tile(name, colors = {}, cellPx = 4, pad = 0) {
     const map = Object.assign({ R: "#B25426", G: "#364639", X: "#364639" }, colors);
     const c = cells(name);
     const rects = c.list.map(p => `<rect x="${p.x * cellPx}" y="${p.y * cellPx}" width="${cellPx}" height="${cellPx}" fill="${map[p.ch]}"/>`).join("");
-    const s = `<svg xmlns="http://www.w3.org/2000/svg" width="${c.w * cellPx}" height="${c.h * cellPx}" shape-rendering="crispEdges">${rects}</svg>`;
-    return { url: `url("data:image/svg+xml,${encodeURIComponent(s)}")`, w: c.w * cellPx, h: c.h * cellPx };
+    const w = c.w * cellPx + pad, h = c.h * cellPx + pad;
+    const s = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" shape-rendering="crispEdges"><g transform="translate(${pad / 2} ${pad / 2})">${rects}</g></svg>`;
+    return { url: `url("data:image/svg+xml,${encodeURIComponent(s)}")`, w, h };
   }
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;

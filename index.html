@@ -3,39 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>دار، مركز التراث الفلسطيني</title>
-<meta name="description" content="قطع مطرزة يدويا بنقوش الثوب الفلسطيني، من مركز التراث الفلسطيني دار في إسطنبول.">
+<title>دار، مركز التراث الفلسطيني في إسطنبول</title>
+<meta name="description" content="قطع مطرزة وأزياء وهدايا تراثية فلسطينية من مركز دار في إسطنبول. عائد كل قطعة يدعم مشاريع في غزة.">
 <link rel="preload" href="assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/img/ai/hero-hands.webp" as="image">
-<link rel="stylesheet" href="assets/css/tokens.css?v=3">
+<link rel="stylesheet" href="assets/css/tokens.css?v=4">
 <link rel="stylesheet" href="assets/css/base.css?v=5">
-<link rel="stylesheet" href="assets/css/home.css?v=4">
+<link rel="stylesheet" href="assets/css/home.css?v=7">
+<script>
+  // Intro plays once per visit and never for reduced motion
+  try {
+    if (sessionStorage.getItem("dar-intro") || matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("no-intro");
+  } catch (e) { document.documentElement.classList.add("no-intro"); }
+</script>
+<style>.no-intro .intro { display: none; }</style>
 </head>
 <body>
 
 <a class="btn skip" href="#main">تخطى إلى المحتوى</a>
 
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__mark">
+    <span class="intro__star" id="intro-star" data-motif="star" data-mode="cross" data-order="radial"></span>
+    <img class="intro__word" id="intro-word" src="assets/brand/dar-logo-mark.svg" alt="">
+  </div>
+  <p class="intro__line" id="intro-line">حكاية وطن تروى بالحرفة</p>
+</div>
+
+<div class="thread-progress" id="thread" aria-hidden="true"></div>
 <div class="band hem-top" data-band="chain" data-cell="2" aria-hidden="true"></div>
 
-<header class="site-head" id="top">
+<header class="site-head">
   <div class="wrap">
     <nav class="main-nav" aria-label="القائمة الرئيسية">
       <a href="#shop" aria-current="page">المتجر</a>
       <a href="#cats">المجموعات</a>
-      <a href="#reels">من المشغل</a>
-      <a href="#story">حكايتنا</a>
+      <a href="#corp">هدايا المؤسسات</a>
+      <a href="#story">من نحن</a>
       <a href="#visit">زورونا</a>
     </nav>
     <button class="icon-btn menu-btn" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="drawer"><span data-motif="i-menu"></span></button>
-    <a class="brand" href="#top" aria-label="دار، الصفحة الرئيسية">
-      <span data-motif="star" data-order="radial" data-stitch></span>
-      <span><b>دار</b><small>مركز التراث الفلسطيني</small></span>
-    </a>
+    <a class="brand" href="#main" aria-label="دار، مركز التراث الفلسطيني، الرئيسية"><img src="assets/brand/dar-logo-mark.svg" alt="دار" width="219" height="292"></a>
     <div class="head-tools">
-      <div class="lang" aria-label="اللغة">
-        <a href="#" aria-current="true" lang="ar">ع</a><a href="#" lang="tr">TR</a><a href="#" lang="en">EN</a>
-      </div>
+      <div class="lang" aria-label="اللغة"><a href="#" aria-current="true" lang="ar">ع</a><a href="#" lang="tr">TR</a><a href="#" lang="en">EN</a></div>
       <button class="icon-btn" type="button" aria-label="البحث"><span data-motif="i-search"></span></button>
       <button class="icon-btn" type="button" aria-label="المفضلة"><span data-motif="i-heart"></span></button>
       <button class="icon-btn" type="button" aria-label="السلة" id="cart-btn"><span data-motif="i-bag"></span><span class="count num" id="cart-count" hidden>0</span></button>
@@ -45,11 +55,11 @@
 
 <div class="drawer" id="drawer" aria-hidden="true">
   <div style="display:flex;justify-content:space-between;align-items:center">
-    <span class="brand" style="justify-self:start"><span data-motif="star"></span><b>دار</b></span>
+    <img src="assets/brand/dar-logo-mark.svg" alt="دار">
     <button class="icon-btn" type="button" aria-label="إغلاق القائمة" data-close-drawer><span data-motif="i-close"></span></button>
   </div>
   <nav aria-label="القائمة">
-    <a href="#shop">المتجر</a><a href="#cats">المجموعات</a><a href="#reels">من المشغل</a><a href="#story">حكايتنا</a><a href="#visit">زورونا</a>
+    <a href="#shop">المتجر</a><a href="#cats">المجموعات</a><a href="#corp">هدايا المؤسسات</a><a href="#story">من نحن</a><a href="#visit">زورونا</a>
   </nav>
   <div class="lang" style="display:flex"><a href="#" aria-current="true">العربية</a><a href="#">Türkçe</a><a href="#">English</a></div>
 </div>
@@ -57,21 +67,27 @@
 <main id="main">
 
   <!-- Hero -->
-  <section class="hero wrap" aria-labelledby="hero-h">
-    <div class="hero__frame">
-      <!-- Swap for DAR product film: <video autoplay muted loop playsinline poster="..."><source src="..." type="video/mp4"></video> -->
-      <img src="assets/img/ai/hero-hands.webp" alt="يدان تطرزان نجمة بالغرزة الفلسطينية على قماش أسود" fetchpriority="high">
-      <span class="ai-note">صورة مؤقتة بالذكاء الاصطناعي</span>
-      <button class="hero__play" type="button" data-film="حكاية دار في دقيقة"><span><span data-motif="i-play"></span></span>شاهد الحكاية</button>
-      <div class="hero__patch">
-        <span class="hero__star" data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
-        <span class="eyebrow"><span data-motif="starlet"></span>بلمسات تراثية من نقوش الثوب الفلسطيني</span>
-        <h1 id="hero-h">كل غرزة<br><em>تحكي بلدا</em></h1>
-        <p>قطع مطرزة بأيدي نساء فلسطينيات، تحمل كل واحدة منها نقشة قرية واسمها. من دار في إسطنبول إلى بيتك.</p>
-        <div class="row">
-          <a class="btn btn--lg btn--henna" href="#shop">تسوّق القطع <span class="go" data-motif="i-arrow"></span></a>
-          <a class="btn btn--lg btn--quiet" href="#story">اعرف حكايتنا</a>
+  <section class="hero woven" aria-labelledby="hero-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow up"><span data-motif="starlet"></span>مركز التراث الفلسطيني، إسطنبول</span>
+        <h1 id="hero-h" class="rise" style="margin-block-start:var(--s2)">حكاية وطن<br><em>تروى بالحرفة</em></h1>
+        <p class="hero__sub up" style="--i:6">وتقدم بقيمة، وتعاش في الحاضر. قطع مطرزة وأزياء وهدايا تراثية، يذهب عائدها لدعم مشاريع في غزة، خاصة للنساء والأطفال.</p>
+        <div class="row up" style="--i:8">
+          <a class="btn btn--lg btn--henna" href="#shop">تسوّق القطع <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+          <a class="btn btn--lg btn--quiet" href="#corp">هدايا المؤسسات</a>
         </div>
+        <div class="hero__meta up" style="--i:10">
+          <span><b>نقوش أصيلة</b>من قرى ومدن فلسطين</span>
+          <span><b>أثر حقيقي</b>العائد لمشاريع في غزة</span>
+          <span><b>للجميع</b>أفراد وعائلات ومؤسسات</span>
+        </div>
+      </div>
+      <div class="windows" id="windows">
+        <span class="windows__star" data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
+        <figure class="window arch" data-veil data-speed="0.04"><img src="assets/img/dar/thob-white.webp" alt="ثوب أبيض بتطريز أحمر في فناء حجري" fetchpriority="high"><figcaption>ثوب مطرز</figcaption></figure>
+        <figure class="window arch" data-veil data-speed="-0.06"><img src="assets/img/dar/jacket-red.webp" alt="جاكيت أسود بتطريز أحمر"><figcaption>جاكيت أسود بتطريز أحمر</figcaption></figure>
+        <figure class="window arch" data-veil data-speed="0.08"><img src="assets/img/dar/thob-green.webp" alt="ثوب أسود بتطريز أخضر"><figcaption>ثوب بتطريز أخضر</figcaption></figure>
       </div>
     </div>
   </section>
@@ -79,67 +95,91 @@
   <!-- Ribbon -->
   <div class="ribbon" aria-hidden="true">
     <div class="ribbon__track">
-      <span class="ribbon__item">صنع يدويا<span data-motif="starlet" data-mono="1"></span>من نساء فلسطين<span data-motif="starlet" data-mono="1"></span>نقوش الثوب الأصيلة<span data-motif="starlet" data-mono="1"></span>شحن إلى كل تركيا والعالم<span data-motif="starlet" data-mono="1"></span>دفع آمن<span data-motif="starlet" data-mono="1"></span></span>
+      <span class="ribbon__item">القلب النابض للتراث الفلسطيني<span data-motif="starlet" data-mono="1"></span>عائد كل قطعة يدعم مشاريع في غزة<span data-motif="starlet" data-mono="1"></span>نقوش من قرى ومدن فلسطين<span data-motif="starlet" data-mono="1"></span>هدايا للأفراد والعائلات والمؤسسات<span data-motif="starlet" data-mono="1"></span></span>
     </div>
   </div>
 
   <!-- Categories -->
   <section class="sec wrap" id="cats" aria-labelledby="cats-h">
     <div class="sec-head">
-      <div><span class="eyebrow"><span data-motif="starlet"></span>المجموعات</span><h2 id="cats-h">من الثوب إلى البيت</h2></div>
-      <a class="thread" href="#">كل المجموعات</a>
+      <div><span class="eyebrow up"><span data-motif="starlet"></span>المجموعات</span><h2 id="cats-h" class="rise">من الثوب إلى الجدار</h2></div>
+      <a class="thread up" href="https://drive.google.com/file/d/1CPTnajm8ko4JPwHOATp-Y_DdwfKiee4I/view" target="_blank" rel="noopener">تصفح الكتالوج الكامل</a>
     </div>
     <div class="cats">
-      <a class="cat cat--thob" href="#"><img src="assets/img/ai/thob.webp" alt="ثوب فلسطيني أسود بقبة مطرزة بالأحمر" loading="lazy"><span class="cat__label"><b>أثواب</b><span>تسوّق <span data-motif="i-arrow" data-mono="1"></span></span></span></a>
-      <a class="cat cat--shawl" href="#"><img src="assets/img/ai/shawl.webp" alt="شال مطوي بحاشية نجوم مطرزة" loading="lazy"><span class="cat__label"><b>شالات</b><span>تسوّق <span data-motif="i-arrow" data-mono="1"></span></span></span></a>
-      <a class="cat cat--bags" href="#"><img src="assets/img/ai/tote.webp" alt="حقيبة سوداء عليها شجرة سرو مطرزة" loading="lazy"><span class="cat__label"><b>حقائب</b><span>تسوّق <span data-motif="i-arrow" data-mono="1"></span></span></span></a>
-      <a class="cat cat--home" href="#"><img src="assets/img/ai/runner.webp" alt="مفرش طاولة مطرز على مائدة خشبية" loading="lazy"><span class="cat__label"><b>للبيت</b><span>تسوّق <span data-motif="i-arrow" data-mono="1"></span></span></span></a>
+      <a class="cat cat--a" href="#" data-veil><img src="assets/img/dar/thob-orange.webp" alt="ثوب فلسطيني مطرز" loading="lazy" style="--pos:50% 25%"><span class="cat__label"><span><b>أثواب وأزياء</b><small>أثواب وجاكيتات وشالات كتف مطرزة</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--b" href="#" data-veil><img src="assets/img/dar/bag-woman.webp" alt="امرأة تحمل حقيبة مطرزة" loading="lazy" style="--pos:50% 45%"><span class="cat__label"><span><b>حقائب ومحافظ</b><small>مطرزة ومخملية وجلدية</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--c" href="#" data-veil><img src="assets/img/dar/kufiya-woman.webp" alt="امرأة ترتدي كوفية فلسطينية" loading="lazy" style="--pos:50% 30%"><span class="cat__label"><span><b>كوفيات وشالات</b><small>كوفيات تقليدية وشالات مطرزة</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--d" href="#" data-veil><img src="assets/img/dar/hoop-thob.webp" alt="لوحة تطريز في طارة على الحائط" loading="lazy" style="--pos:50% 40%"><span class="cat__label"><span><b>تطريز للجدار</b><small>طارات وأطر ولوحات</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--e" href="#" data-veil><img src="assets/img/dar/necklace-woman.webp" alt="قلادة بشكل خريطة فلسطين" loading="lazy" style="--pos:50% 55%"><span class="cat__label"><span><b>إكسسوارات</b><small>قلائد وأساور وخواتم وأقراط</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
     </div>
   </section>
 
   <!-- Products -->
   <section class="sec wrap" id="shop" aria-labelledby="shop-h" style="padding-block-start:0">
     <div class="sec-head">
-      <div><span class="eyebrow"><span data-motif="starlet"></span>وصل حديثا</span><h2 id="shop-h">قطع من المشغل</h2><p>الأسماء والأسعار هنا للتصميم فقط، وتأتي من لوحة التحكم لاحقا.</p></div>
-      <div class="tabs" role="tablist" aria-label="تصفية القطع">
+      <div><span class="eyebrow up"><span data-motif="starlet"></span>من الكتالوج</span><h2 id="shop-h" class="rise">قطع من دار</h2><p class="up">الأسماء والصور من كتالوج دار 2026. الأسعار تضاف من لوحة التحكم.</p></div>
+      <div class="tabs up" role="tablist" aria-label="تصفية القطع">
         <button role="tab" aria-selected="true" type="button">الكل</button>
-        <button role="tab" aria-selected="false" type="button">شالات</button>
+        <button role="tab" aria-selected="false" type="button">أزياء</button>
         <button role="tab" aria-selected="false" type="button">حقائب</button>
+        <button role="tab" aria-selected="false" type="button">إكسسوارات</button>
         <button role="tab" aria-selected="false" type="button">للبيت</button>
       </div>
     </div>
     <div class="products">
-      <article class="product">
-        <div class="product__media"><img src="assets/img/ai/shawl.webp" alt="شال نجمة بيت لحم مطوي" loading="lazy" style="--pos:55% 50%"><span class="tag"><span data-motif="amulet"></span>صنع يدويا</span><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="شال نجمة بيت لحم">أضف إلى السلة</button></div>
-        <div class="product__meta"><div><h3 class="product__name"><a href="#" style="text-decoration:none">شال نجمة بيت لحم</a></h3><p class="product__origin">نقشة من بيت لحم</p></div><p class="product__price num">850 ₺</p></div>
+      <article class="product up" style="--i:0">
+        <div class="product__media" data-veil><img src="assets/img/dar/jacket-blue.webp" alt="جاكيت أسود بتطريز أزرق" loading="lazy" style="--pos:50% 30%"><span class="tag"><span data-motif="amulet"></span>مطرز</span><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="جاكيت أسود بتطريز أزرق">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">جاكيت أسود بتطريز أزرق</h3><p class="product__origin">أزياء</p></div><p class="product__price--soon">السعر قريبا</p></div>
       </article>
-      <article class="product">
-        <div class="product__media"><img src="assets/img/ai/tote.webp" alt="حقيبة قماش سوداء بشجرة سرو" loading="lazy"><span class="tag tag--henna">قطعة أخيرة</span><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="حقيبة السرو">أضف إلى السلة</button></div>
-        <div class="product__meta"><div><h3 class="product__name"><a href="#" style="text-decoration:none">حقيبة السرو</a></h3><p class="product__origin">نقشة من غزة</p></div><p class="product__price num">620 ₺<s>740 ₺</s></p></div>
+      <article class="product up" style="--i:1">
+        <div class="product__media product__media--dark" data-veil><img src="assets/img/dar/wallet-velvet.webp" alt="محفظة مخمل صغيرة مطرزة يدويا" loading="lazy"><span class="tag tag--henna">تطريز يدوي</span><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="محفظة مخمل مطرزة يدويا">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">محفظة مخمل مطرزة يدويا</h3><p class="product__code num">كود 14027</p></div><p class="product__price--soon">السعر قريبا</p></div>
       </article>
-      <article class="product">
-        <div class="product__media"><img src="assets/img/ai/cushion.webp" alt="مخدة بنقشة معين ونجوم" loading="lazy" style="--pos:62% 50%"><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="مخدة القبة">أضف إلى السلة</button></div>
-        <div class="product__meta"><div><h3 class="product__name"><a href="#" style="text-decoration:none">مخدة القبة</a></h3><p class="product__origin">نقشة من رام الله</p></div><p class="product__price num">450 ₺</p></div>
+      <article class="product up" style="--i:2">
+        <div class="product__media" data-veil><img src="assets/img/dar/earrings-map.webp" alt="أقراط ذهبية بشكل خريطة فلسطين" loading="lazy" style="--pos:50% 45%"><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="أقراط خريطة فلسطين">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">أقراط خريطة فلسطين</h3><p class="product__code num">كود 13032</p></div><p class="product__price--soon">السعر قريبا</p></div>
       </article>
-      <article class="product">
-        <div class="product__media"><img src="assets/img/ai/pouch.webp" alt="محفظة سوداء مطرزة بجانب بكرة خيط أحمر" loading="lazy" style="--pos:30% 50%"><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="محفظة الخليل">أضف إلى السلة</button></div>
-        <div class="product__meta"><div><h3 class="product__name"><a href="#" style="text-decoration:none">محفظة الخليل</a></h3><p class="product__origin">نقشة من الخليل</p></div><p class="product__price num">380 ₺</p></div>
+      <article class="product up" style="--i:3">
+        <div class="product__media product__media--dark" data-veil><img src="assets/img/dar/bags-shoulder.webp" alt="حقائب كتف بتطريز فلسطيني بالأحمر والأخضر والأزرق" loading="lazy"><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="حقيبة كتف مطرزة">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">حقيبة كتف مطرزة، ميراث</h3><p class="product__origin">أحمر وأخضر وأزرق</p></div><p class="product__price--soon">السعر قريبا</p></div>
+      </article>
+      <article class="product up" style="--i:0">
+        <div class="product__media product__media--dark" data-veil><img src="assets/img/dar/kufiya.webp" alt="كوفية فلسطينية تقليدية بالأبيض والأسود" loading="lazy"><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="كوفية فلسطينية تقليدية">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">كوفية فلسطينية تقليدية</h3><p class="product__origin">كوفيات</p></div><p class="product__price--soon">السعر قريبا</p></div>
+      </article>
+      <article class="product up" style="--i:1">
+        <div class="product__media" data-veil><img src="assets/img/dar/cups-olive.webp" alt="طقم فنجانين بزخارف الزيتون والكوفية" loading="lazy"><span class="tag"><span data-motif="amulet"></span>صنع يدوي</span><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="طقم فنجانين الزيتون والكوفية">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">طقم فنجانين الزيتون والكوفية</h3><p class="product__origin">للبيت</p></div><p class="product__price--soon">السعر قريبا</p></div>
+      </article>
+      <article class="product up" style="--i:2">
+        <div class="product__media" data-veil><img src="assets/img/dar/hoop-hand.webp" alt="طارة تطريز بزخرفة كتابية زرقاء" loading="lazy"><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="طارة مطرزة يدويا">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">طارة مطرزة يدويا</h3><p class="product__code num">كود 20012</p></div><p class="product__price--soon">السعر قريبا</p></div>
+      </article>
+      <article class="product up" style="--i:3">
+        <div class="product__media" data-veil><img src="assets/img/dar/jacket-green.webp" alt="جاكيت أسود بتطريز أخضر" loading="lazy" style="--pos:50% 30%"><button class="icon-btn product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button><button class="btn product__add" type="button" data-add="جاكيت أسود مطرز">أضف إلى السلة</button></div>
+        <div class="product__meta"><div><h3 class="product__name">جاكيت أسود مطرز</h3><p class="product__origin">أزياء</p></div><p class="product__price--soon">السعر قريبا</p></div>
       </article>
     </div>
   </section>
 
   <!-- Reels -->
-  <section class="sec reels-sec" id="reels" aria-labelledby="reels-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="eyebrow" style="color:var(--henna-glow)"><span data-motif="starlet"></span>من المشغل</span><h2 id="reels-h">شاهد القطعة قبل أن تصلك</h2><p>مقاطع قصيرة لكل قطعة: الغرزة عن قرب، والقماش وهو يتحرك، واليد التي صنعته.</p></div>
-        <a class="thread" href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener" style="color:#fff">تابعنا على إنستغرام</a>
-      </div>
-      <div class="reels">
-        <button class="reel" type="button" data-film="الغرزة عن قرب"><img src="assets/img/ai/macro.webp" alt="" loading="lazy" style="--pos:50% 50%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>الغرزة عن قرب</b><small>نجمة بيت لحم، خيط قطني</small></span></button>
-        <button class="reel" type="button" data-film="ثوب القبة"><img src="assets/img/ai/thob.webp" alt="" loading="lazy" style="--pos:50% 40%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>ثوب القبة</b><small>تفصيل القبة والبنيقة</small></span></button>
-        <button class="reel" type="button" data-film="يد تطرز"><img src="assets/img/ai/hero-hands.webp" alt="" loading="lazy" style="--pos:40% 50%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>يد تطرز</b><small>ساعات من العمل في كل نجمة</small></span></button>
-        <button class="reel" type="button" data-film="محفظة الخليل"><img src="assets/img/ai/pouch.webp" alt="" loading="lazy" style="--pos:22% 50%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>محفظة الخليل</b><small>من الخيط إلى القطعة</small></span></button>
+  <section class="reels-sec" id="reels" aria-labelledby="reels-h">
+    <div class="reels-pin" id="reels-pin">
+      <div class="reels-stage">
+        <div class="reels-intro">
+          <div class="sec-head">
+            <div><span class="eyebrow" style="color:var(--henna-glow)"><span data-motif="starlet"></span>على إنستغرام دار</span><h2 id="reels-h" class="rise">حكايات قصيرة من المركز</h2><p>نقوش الثياب ومعانيها، والمعارض، والقطع الجديدة. اضغط لتشاهد المقطع على إنستغرام.</p></div>
+            <a class="thread" href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener" style="color:#fff">تابع دار</a>
+          </div>
+        </div>
+        <div class="reels-track" id="reels-track">
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DcTs4qwsw-d/" target="_blank" rel="noopener"><img src="assets/img/dar/jacket-green.webp" alt="" loading="lazy" style="--pos:50% 30%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>ماذا تحكي نقوش ثياب الفلسطينيات؟</b><small>21 أغسطس 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DcyQEX1M7gn/" target="_blank" rel="noopener"><img src="assets/img/dar/thob-white.webp" alt="" loading="lazy" style="--pos:50% 30%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>هل تعرف نقشة السرو؟</b><small>2 سبتمبر 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/Dcq8WY3s4kC/" target="_blank" rel="noopener"><img src="assets/img/dar/bag-arch.webp" alt="" loading="lazy" style="--pos:50% 40%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>دار في معرض إسطنبول للكتاب العربي</b><small>30 أغسطس 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/Dc_fcEYMuNh/" target="_blank" rel="noopener"><img src="assets/img/dar/cups-olive.webp" alt="" loading="lazy" style="--pos:60% 50%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>الزيتون جزء من الحياة</b><small>7 سبتمبر 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DceAhC0ssWl/" target="_blank" rel="noopener"><img src="assets/img/dar/kufiya-jerusalem.webp" alt="" loading="lazy" style="--pos:45% 50%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>فلسطين في كلمة واحدة؟</b><small>25 أغسطس 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DeCcGWxMob8/" target="_blank" rel="noopener"><img src="assets/img/dar/necklace-woman.webp" alt="" loading="lazy" style="--pos:50% 40%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>وصل حديثا إلى دار</b><small>3 أكتوبر 2026</small></span></a>
+        </div>
       </div>
     </div>
     <div class="band" data-band="saw" data-cell="4" data-night="1" aria-hidden="true"></div>
@@ -149,21 +189,59 @@
   <section class="sec wrap" id="story" aria-labelledby="story-h">
     <div class="story">
       <div class="story__pin">
-        <div class="story__media"><img src="assets/img/ai/macro.webp" alt="غرز متصالبة حمراء وخضراء على قماش أسود عن قرب" loading="lazy"></div>
+        <div class="story__media arch" data-veil><img src="assets/img/dar/hoop-hand.webp" alt="طارة تطريز يدوي معلقة على جدار حجري" loading="lazy"></div>
         <div class="story__star" id="scroll-star" data-motif="star" data-mode="cross" data-order="radial" aria-hidden="true"></div>
       </div>
       <div class="story__text" id="story-text">
-        <span class="eyebrow"><span data-motif="starlet"></span>من نحن</span>
-        <h2 id="story-h">بيت للتراث الفلسطيني في قلب إسطنبول</h2>
-        <p>دار مركز للتراث الفلسطيني في حي بهتشلي إيفلر. نجمع فيه ما تطرزه نساء فلسطين، ونعرضه، ونحكي قصة كل نقشة.</p>
-        <p>الثوب الفلسطيني خريطة. من نقشته تعرف القرية التي جاءت منها صاحبته. نحن نحفظ هذه الخريطة، قطعة بعد قطعة، ونوصلها إلى من يقدرها.</p>
-        <div class="facts">
-          <div><span data-motif="amulet" data-mode="cross"></span><b>تطريز يدوي</b><span>كل قطعة بيد واحدة</span></div>
-          <div><span data-motif="cypress" data-mode="cross" style="width:20px"></span><b>نقوش أصيلة</b><span>من قرى ومدن فلسطين</span></div>
-          <div><span data-motif="starlet" data-mode="cross"></span><b>حكاية مع القطعة</b><span>اسم النقشة وبلدها</span></div>
-        </div>
-        <p style="font-size:var(--fs-small);color:var(--muted)">النص مقترح للمراجعة مع دار.</p>
-        <a class="btn btn--lg" href="#">اقرأ الحكاية كاملة <span class="go" data-motif="i-arrow"></span></a>
+        <span class="eyebrow up"><span data-motif="starlet"></span>من نحن</span>
+        <h2 id="story-h" class="rise">الدار هي البيت</h2>
+        <p class="up">في اللهجة الفلسطينية، الدار هي البيت. ومن هنا جاء الاسم: مساحة في إسطنبول تحفظ الثقافة والتقاليد الفلسطينية، وتبني جسورا بين الثقافات، وتدعم التمكين الاقتصادي للمرأة الفلسطينية.</p>
+        <p class="up">نعرض فيها قطعا يدوية وأزياء تقليدية وتطريزا ورموزا ثقافية، كثير منها من صنع نساء في مناطق النزاع، وخاصة غزة.</p>
+        <ol class="mission">
+          <li class="up"><span class="n num">01</span><p><b>دعم الحرفيين والحرفيات الفلسطينيين</b><span>عمل يدوي يصل إلى من يقدره</span></p></li>
+          <li class="up" style="--i:1"><span class="n num">02</span><p><b>تراث بمعايير جودة معاصرة</b><span>قطع تقليدية تصلح لحياة اليوم</span></p></li>
+          <li class="up" style="--i:2"><span class="n num">03</span><p><b>إحياء الذاكرة الثقافية بالإنتاج</b><span>كل قطعة تحمل نقشة وحكاية</span></p></li>
+          <li class="up" style="--i:3"><span class="n num">04</span><p><b>تراث يعيشه الأفراد والمؤسسات</b><span>للبيت وللهدية وللمناسبة الرسمية</span></p></li>
+        </ol>
+        <a class="btn btn--lg up" href="#">اقرأ حكاية دار <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weekly question -->
+  <section class="quiz" aria-labelledby="quiz-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><span data-motif="starlet" data-mono="1"></span>سؤال الأسبوع من دار</span>
+        <h2 id="quiz-h" class="rise">أي مدينة تلقب بعاصمة فلسطين الاقتصادية؟</h2>
+        <p class="quiz__hint">تلميح: تشتهر بالكنافة وصناعة الصابون.</p>
+        <p class="quiz__result" id="quiz-result" role="status" aria-live="polite"></p>
+      </div>
+      <div class="quiz__opts" id="quiz">
+        <button class="quiz__opt" type="button" data-answer="0"><span>غزة</span><span class="key latin">A</span></button>
+        <button class="quiz__opt" type="button" data-answer="1"><span>نابلس</span><span class="key latin">B</span></button>
+        <button class="quiz__opt" type="button" data-answer="0"><span>عكا</span><span class="key latin">C</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Corporate gifts -->
+  <section class="sec wrap" id="corp" aria-labelledby="corp-h">
+    <div class="corp">
+      <div class="corp__media" data-veil><img src="assets/img/dar/plaque-corporate.webp" alt="درع خشبي محفور في علبة مخملية" loading="lazy"></div>
+      <div class="corp__body">
+        <span class="eyebrow up"><span data-motif="starlet"></span>هدايا المؤسسات</span>
+        <h2 id="corp-h" class="rise">هوية تقدم باسمك</h2>
+        <p class="up">منتجات تصمم خصيصا للمؤسسات والجمعيات والفعاليات والمؤتمرات، تحمل بعدا تراثيا ورسالة ثقافية مميزة.</p>
+        <ul class="corp__list up">
+          <li><span data-motif="starlet"></span>مجسمات ورموز تراثية</li>
+          <li><span data-motif="starlet"></span>أطر تقليدية بتصميم خاص</li>
+          <li><span data-motif="starlet"></span>تخصيص التصميم</li>
+          <li><span data-motif="starlet"></span>طباعة الشعار</li>
+          <li><span data-motif="starlet"></span>تغليف رسمي</li>
+          <li><span data-motif="starlet"></span>كميات حسب الطلب</li>
+        </ul>
+        <div class="row up"><a class="btn btn--lg btn--henna" href="https://wa.me/905538286235" target="_blank" rel="noopener">اطلب عرضا عبر واتساب <span class="go" data-motif="i-arrow" data-mono="1"></span></a></div>
       </div>
     </div>
   </section>
@@ -171,32 +249,24 @@
   <!-- Visit -->
   <section class="wrap" id="visit" aria-labelledby="visit-h">
     <div class="visit">
-      <div class="visit__media"><img src="assets/img/ai/runner.webp" alt="مائدة عليها مفرش مطرز وأغصان زيتون" loading="lazy"></div>
+      <div class="visit__media" data-veil><img src="assets/img/dar/cover-jerusalem.webp" alt="شعار دار على جدار حجري أمام القدس" loading="lazy"></div>
       <div class="visit__body">
-        <span class="eyebrow"><span data-motif="starlet"></span>زورونا</span>
-        <h2 id="visit-h">تعال المس القماش بيدك</h2>
-        <address>Altın Sk. No:11/A<br>Bahçelievler، إسطنبول</address>
-        <p style="color:var(--muted)">مواعيد الزيارة تضاف من لوحة التحكم. ونشارك أيضا في المعارض داخل تركيا وخارجها.</p>
-        <div class="row">
-          <a class="btn" href="https://maps.google.com/?q=Altın+Sk.+No:11/A+Bahçelievler+İstanbul" target="_blank" rel="noopener">افتح الخريطة <span class="go" data-motif="i-arrow"></span></a>
-          <a class="btn btn--paper" href="#" style="box-shadow:inset 0 0 0 1px var(--paper-3)">مواعيد المعارض</a>
+        <span class="eyebrow up"><span data-motif="starlet"></span>زورونا</span>
+        <h2 id="visit-h" class="rise">تعال المس القماش بيدك</h2>
+        <address class="up">Altın Sk. No:11/A<br>Bahçelievler، إسطنبول</address>
+        <p class="up">وتجدوننا أيضا في المعارض داخل تركيا، وآخرها معرض إسطنبول للكتاب العربي.</p>
+        <div class="row up">
+          <a class="btn" href="https://maps.google.com/?q=Altın+Sk.+No:11/A+Bahçelievler+İstanbul" target="_blank" rel="noopener">افتح الخريطة <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+          <a class="btn btn--quiet" href="https://wa.me/905538286235" target="_blank" rel="noopener">راسلنا</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Promises -->
-  <div class="wrap promises">
-    <div><span data-motif="amulet"></span><p><b>قطع أصلية</b><span>مطرزة يدويا وليست طباعة</span></p></div>
-    <div><span data-motif="i-bag"></span><p><b>شحن لكل مكان</b><span>داخل تركيا وإلى العالم</span></p></div>
-    <div><span data-motif="i-heart"></span><p><b>دفع آمن</b><span>عبر بوابة دفع موثوقة</span></p></div>
-    <div><span data-motif="i-globe"></span><p><b>بثلاث لغات</b><span>العربية والتركية والإنجليزية</span></p></div>
-  </div>
-
   <!-- Join -->
   <section class="wrap join" aria-labelledby="join-h">
-    <div><h2 id="join-h">كن أول من يرى القطع الجديدة</h2><p>رسالة واحدة عند وصول دفعة جديدة من المشغل. بلا إزعاج.</p></div>
-    <form onsubmit="event.preventDefault(); showToast('سجلنا بريدك، نراك في الدفعة القادمة')">
+    <div><h2 id="join-h" class="rise">كن أول من يرى القطع الجديدة</h2><p class="up">رسالة عند وصول قطع جديدة إلى دار. بلا إزعاج.</p></div>
+    <form id="join-form">
       <div class="field"><label for="join-mail">البريد الإلكتروني</label><input id="join-mail" type="email" autocomplete="email" dir="ltr" placeholder="name@email.com" required></div>
       <button class="btn btn--lg" type="submit">اشترك</button>
     </form>
@@ -206,21 +276,18 @@
 <footer class="site-foot">
   <div class="band" data-band="saw" data-cell="4" data-night="1" aria-hidden="true" style="transform:scaleY(-1)"></div>
   <div class="wrap foot-grid">
-    <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني"><p>القلب النابض للتراث الفلسطيني في إسطنبول. نحفظ نقوش الثوب ونوصلها إلى كل بيت.</p></div>
-    <div><h3>المتجر</h3><ul><li><a href="#">أثواب</a></li><li><a href="#">شالات</a></li><li><a href="#">حقائب</a></li><li><a href="#">للبيت</a></li></ul></div>
-    <div><h3>دار</h3><ul><li><a href="#">حكايتنا</a></li><li><a href="#">المعارض</a></li><li><a href="#">ضيوفنا</a></li><li><a href="#">تواصل معنا</a></li></ul></div>
-    <div><h3>المساعدة</h3><ul><li><a href="#">الشحن والتوصيل</a></li><li><a href="#">الإرجاع</a></li><li><a href="#">طرق الدفع</a></li><li><a href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener">إنستغرام</a></li></ul></div>
+    <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني" width="140"><p>القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.</p></div>
+    <div><h3>المتجر</h3><ul><li><a href="#">أثواب وأزياء</a></li><li><a href="#">حقائب ومحافظ</a></li><li><a href="#">كوفيات وشالات</a></li><li><a href="#">تطريز للجدار</a></li><li><a href="#">إكسسوارات</a></li></ul></div>
+    <div><h3>دار</h3><ul><li><a href="#story">من نحن</a></li><li><a href="#corp">هدايا المؤسسات</a></li><li><a href="https://drive.google.com/file/d/1CPTnajm8ko4JPwHOATp-Y_DdwfKiee4I/view" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="#visit">زورونا</a></li></ul></div>
+    <div><h3>تواصل</h3><ul><li><a href="https://wa.me/905538286235" target="_blank" rel="noopener">واتساب</a></li><li><a href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener">إنستغرام</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">فيسبوك</a></li></ul></div>
   </div>
-  <div class="wrap foot-base"><span>© 2026 دار، مركز التراث الفلسطيني</span><span>الصور الحالية مؤقتة ومولدة بالذكاء الاصطناعي</span></div>
+  <div class="wrap foot-base"><span>© 2026 دار، مركز التراث الفلسطيني</span><span>الصور من كتالوج دار 2026</span></div>
 </footer>
 
+<a class="wa" id="wa" href="https://wa.me/905538286235" target="_blank" rel="noopener" aria-label="راسل دار على واتساب"><span data-motif="i-chat"></span><span class="wa__label">راسل دار</span></a>
 <div class="toast-slot" id="toast-slot" role="status" aria-live="polite"></div>
-<dialog class="film" id="film" aria-label="فيديو">
-  <div class="ph"><strong id="film-title">فيديو</strong>مكان فيديو دار العمودي 9:16</div>
-  <button class="icon-btn close" type="button" aria-label="إغلاق الفيديو" data-close-film><span data-motif="i-close"></span></button>
-</dialog>
 
-<script src="assets/js/stitch.js?v=3"></script>
-<script src="assets/js/home.js?v=2"></script>
+<script src="assets/js/stitch.js?v=4"></script>
+<script src="assets/js/home.js?v=4"></script>
 </body>
 </html>
