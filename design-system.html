@@ -6,13 +6,13 @@
 <title>نظام دار البصري</title>
 <link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/tokens.css?v=1">
-<link rel="stylesheet" href="assets/css/base.css?v=1">
+<link rel="stylesheet" href="assets/css/tokens.css?v=3">
+<link rel="stylesheet" href="assets/css/base.css?v=4">
 <style>
   /* Page-only layout for the system document */
   .ds-top {
-    position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--linen) 92%, transparent);
-    backdrop-filter: blur(8px); border-block-end: 1px solid var(--linen-3);
+    position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px); border-block-end: 1px solid var(--paper-3);
   }
   .ds-top .wrap { display: flex; align-items: center; gap: var(--s3); min-height: 64px; }
   .ds-top .mark { width: 28px; }
@@ -21,7 +21,7 @@
   .ds-top nav a { text-decoration: none; color: var(--muted); white-space: nowrap; padding-block: var(--s1); }
   .ds-top nav a:hover { color: var(--zaytoun); }
 
-  .spine { position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 10; --band-w: 28px; width: 28px; border-inline-end: 1px solid var(--linen-3); }
+  .spine { position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 10; --band-w: 28px; width: 28px; border-inline-end: 1px solid var(--paper-3); }
   main, .ds-top, footer { padding-inline-start: 28px; }
 
   .cover { padding-block: var(--s12) var(--s16); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s8); align-items: center; }
@@ -32,10 +32,10 @@
   .cover .star { width: min(100%, 460px); justify-self: center; position: relative; }
   .cover .star > [data-motif] { display: block; width: 100%; }
   .cover .star figcaption { font-size: var(--fs-micro); color: var(--muted); text-align: center; margin-block-start: var(--s2); }
-  .zoom { position: absolute; inset-block-start: -2%; inset-inline-start: -4%; width: 24%; aspect-ratio: 1; background: var(--linen); border: 1px solid var(--linen-3); padding: 10px; }
+  .zoom { position: absolute; inset-block-start: -2%; inset-inline-start: -4%; width: 24%; aspect-ratio: 1; background: var(--paper); border: 1px solid var(--paper-3); padding: 10px; }
   .zoom span { font-size: 11px; color: var(--muted); position: absolute; inset-block-end: -22px; inset-inline: 0; text-align: center; }
 
-  section.ds { padding-block: var(--s12); border-block-start: 1px solid var(--linen-3); }
+  section.ds { padding-block: var(--s12); border-block-start: 1px solid var(--paper-3); }
   .ds-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s6); margin-block-end: var(--s8); align-items: end; }
   .ds-head > * { min-width: 0; }
   .ds-head h2 { font-size: var(--fs-h1); }
@@ -54,9 +54,9 @@
   .grid-demo > * { min-width: 0; }
   .sheet {
     aspect-ratio: 1; background:
-      linear-gradient(var(--linen-3) 1px, transparent 1px) 0 0 / 8px 8px,
-      linear-gradient(90deg, var(--linen-3) 1px, transparent 1px) 0 0 / 8px 8px, var(--linen);
-    display: grid; place-items: center; border: 1px solid var(--linen-3);
+      linear-gradient(var(--paper-3) 1px, transparent 1px) 0 0 / 8px 8px,
+      linear-gradient(90deg, var(--paper-3) 1px, transparent 1px) 0 0 / 8px 8px, var(--paper);
+    display: grid; place-items: center; border: 1px solid var(--paper-3);
   }
   .sheet [data-motif] { width: 60%; }
   .scale { display: grid; gap: 10px; }
@@ -70,16 +70,16 @@
   .sw h3 { font-size: var(--fs-h3); }
   .sw dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px var(--s2); font-size: var(--fs-micro); }
   .sw dt { opacity: .75; } .sw dd { margin: 0; }
-  .sw--linen { grid-column: span 4; background: var(--linen); border: 1px solid var(--linen-3); }
-  .sw--zaytoun { grid-column: span 4; background: var(--zaytoun); color: var(--linen); }
-  .sw--henna { grid-column: span 4; background: var(--henna); color: var(--linen); }
+  .sw--paper { grid-column: span 4; background: var(--paper); border: 1px solid var(--paper-3); }
+  .sw--zaytoun { grid-column: span 4; background: var(--zaytoun); color: var(--paper); }
+  .sw--henna { grid-column: span 4; background: var(--henna); color: var(--paper); }
   .sw--sm { grid-column: span 3; min-height: 140px; }
   .ratio { display: flex; height: 40px; margin-block-start: var(--s3); }
   .ratio i { display: block; }
   .ratio-note { font-size: var(--fs-micro); color: var(--muted); margin-block-start: var(--s1); }
 
   /* type */
-  .type-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4); border-block-end: 1px solid var(--linen-3); align-items: baseline; }
+  .type-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4); border-block-end: 1px solid var(--paper-3); align-items: baseline; }
   .type-row > * { min-width: 0; }
   .type-row .meta { font-size: var(--fs-micro); color: var(--muted); line-height: 1.6; }
   .type-row .meta b { display: block; color: var(--zaytoun); font-size: var(--fs-small); }
@@ -91,13 +91,13 @@
   .t-body { font: 400 var(--fs-body)/1.75 var(--font-ui); max-width: 38em; }
   .t-ui { font: 500 1rem/1.4 var(--font-ui); }
   .trilingual { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-block-start: var(--s6); }
-  .trilingual div { background: var(--linen-2); padding: var(--s4); }
+  .trilingual div { background: var(--paper-2); padding: var(--s4); }
   .trilingual small { display: block; font-size: var(--fs-micro); color: var(--muted); margin-block-end: var(--s2); }
   .trilingual p { font: 700 clamp(1.5rem, 1rem + 1.5vw, 2.25rem)/1.25 var(--font-display); }
 
   /* motifs */
   .motifs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s2); }
-  .motif-card { background: var(--linen-2); padding: var(--s4) var(--s3) var(--s3); display: grid; gap: var(--s3); align-content: space-between; }
+  .motif-card { background: var(--paper-2); padding: var(--s4) var(--s3) var(--s3); display: grid; gap: var(--s3); align-content: space-between; }
   .motif-card .art { aspect-ratio: 1; display: grid; place-items: center; }
   .motif-card .art [data-motif] { width: 58%; }
   .motif-card h3 { font-size: 1.25rem; }
@@ -109,12 +109,12 @@
 
   /* icons */
   .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--s2); }
-  .icons figure { margin: 0; background: var(--linen-2); padding: var(--s3) var(--s2); display: grid; justify-items: center; gap: var(--s2); }
+  .icons figure { margin: 0; background: var(--paper-2); padding: var(--s3) var(--s2); display: grid; justify-items: center; gap: var(--s2); }
   .icons [data-motif] { width: 32px; }
   .icons figcaption { font-size: var(--fs-micro); color: var(--muted); }
 
   /* components */
-  .comp { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s5); border-block-end: 1px solid var(--linen-3); }
+  .comp { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s5); border-block-end: 1px solid var(--paper-3); }
   .comp > * { min-width: 0; }
   .comp h3 { font: 700 1.25rem/1.3 var(--font-display); }
   .comp .note { font-size: var(--fs-small); color: var(--muted); margin-block-start: var(--s1); line-height: 1.6; }
@@ -128,7 +128,7 @@
   .motion .stage { background: var(--zaytoun-deep); aspect-ratio: 4 / 3; display: grid; place-items: center; }
   .motion .stage [data-motif] { width: 46%; }
   .tokens-table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
-  .tokens-table td { padding: 10px 0; border-block-end: 1px solid var(--linen-3); vertical-align: top; }
+  .tokens-table td { padding: 10px 0; border-block-end: 1px solid var(--paper-3); vertical-align: top; }
   .tokens-table td:first-child { color: var(--muted); width: 40%; }
 
   /* rules */
@@ -139,7 +139,7 @@
   .rules h3 { font-size: var(--fs-h3); margin-block-end: var(--s3); }
   .rules .no li { color: var(--muted); }
 
-  footer { background: var(--zaytoun-deep); color: var(--linen); padding-block: var(--s10); }
+  footer { background: var(--zaytoun-deep); color: var(--paper); padding-block: var(--s10); }
   footer .wrap { display: flex; flex-wrap: wrap; gap: var(--s4); justify-content: space-between; align-items: center; }
   footer img { width: 140px; filter: brightness(0) invert(.94) sepia(.2); }
   footer p { color: var(--muted-night); font-size: var(--fs-small); }
@@ -148,7 +148,7 @@
     .cover, .ds-head, .grid-demo, .motion, .rules { grid-template-columns: minmax(0, 1fr); }
     .principles, .cards, .trilingual { grid-template-columns: minmax(0, 1fr); }
     .motifs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .sw--linen, .sw--zaytoun, .sw--henna { grid-column: span 12; min-height: 180px; }
+    .sw--paper, .sw--zaytoun, .sw--henna { grid-column: span 12; min-height: 180px; }
     .sw--sm { grid-column: span 6; }
     .type-row, .comp { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
     .cover { padding-block: var(--s8); }
@@ -258,7 +258,7 @@
       <p>لونان من الشعار ولا ثالث لهما: أخضر الزيتون وأحمر الحناء، على كتان الثوب. كل درجة أخرى مشتقة منهم، ولا يدخل الموقع لون جديد.</p>
     </div>
     <div class="swatches">
-      <div class="sw sw--linen">
+      <div class="sw sw--paper">
         <h3>كتان</h3>
         <dl><dt>HEX</dt><dd class="latin">#F4EEE4</dd><dt>الدور</dt><dd>خلفية الصفحة</dd></dl>
       </div>
@@ -268,15 +268,15 @@
       </div>
       <div class="sw sw--henna">
         <h3>حناء</h3>
-        <dl><dt>HEX</dt><dd class="latin">#B25426</dd><dt>الدور</dt><dd>الغرز والعناوين الكبيرة</dd><dt>على الكتان</dt><dd class="num">4.3 : 1 للكبير فقط</dd></dl>
+        <dl><dt>HEX</dt><dd class="latin">#B25426</dd><dt>الدور</dt><dd>الغرز والعناوين الكبيرة، والأزرار بنص أبيض</dd><dt>على الكتان</dt><dd class="num">4.3 : 1 للكبير فقط</dd></dl>
       </div>
-      <div class="sw sw--sm" style="background:var(--zaytoun-deep);color:var(--linen)"><b>ليل</b><dl><dt>HEX</dt><dd class="latin">#1E2A21</dd><dt>الدور</dt><dd>أقسام الليل والفوتر</dd></dl></div>
-      <div class="sw sw--sm" style="background:var(--henna-ink);color:var(--linen)"><b>حناء داكن</b><dl><dt>HEX</dt><dd class="latin">#9A4520</dd><dt>الدور</dt><dd>نص صغير بالحناء 5.6 : 1</dd></dl></div>
-      <div class="sw sw--sm" style="background:var(--linen-2)"><b>كتان 2</b><dl><dt>HEX</dt><dd class="latin">#EAE1D2</dd><dt>الدور</dt><dd>أسطح وصور فارغة</dd></dl></div>
-      <div class="sw sw--sm" style="background:var(--wool)"><b>صوف</b><dl><dt>HEX</dt><dd class="latin">#C9BBA3</dd><dt>الدور</dt><dd>خيوط زخرفية، ليس للنص</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--zaytoun-deep);color:var(--paper)"><b>ليل</b><dl><dt>HEX</dt><dd class="latin">#1E2A21</dd><dt>الدور</dt><dd>أقسام الليل والفوتر</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--henna-ink);color:var(--paper)"><b>حناء داكن</b><dl><dt>HEX</dt><dd class="latin">#9A4520</dd><dt>الدور</dt><dd>مرور على أزرار الحناء</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--paper-2)"><b>كتان 2</b><dl><dt>HEX</dt><dd class="latin">#EAE1D2</dd><dt>الدور</dt><dd>أسطح وصور فارغة</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--line)"><b>صوف</b><dl><dt>HEX</dt><dd class="latin">#C9BBA3</dd><dt>الدور</dt><dd>خيوط زخرفية، ليس للنص</dd></dl></div>
     </div>
     <div class="ratio" aria-hidden="true">
-      <i style="flex:70;background:var(--linen-2)"></i><i style="flex:20;background:var(--zaytoun)"></i><i style="flex:7;background:var(--zaytoun-deep)"></i><i style="flex:3;background:var(--henna)"></i>
+      <i style="flex:70;background:var(--paper-2)"></i><i style="flex:20;background:var(--zaytoun)"></i><i style="flex:7;background:var(--zaytoun-deep)"></i><i style="flex:3;background:var(--henna)"></i>
     </div>
     <p class="ratio-note">النسبة في أي شاشة: كتان 70 وزيتون 20 وليل 7 وحناء 3. الحناء غرزة، لا يصبح خلفية لقسم كامل.</p>
   </section>
@@ -477,7 +477,7 @@
   </div>
 </footer>
 
-<script src="assets/js/stitch.js?v=1"></script>
+<script src="assets/js/stitch.js?v=3"></script>
 <script>
   // Placeholder tiles use the starlet so empty images still feel woven
   const ph = Dar.tile("starlet", { R: "#DDD1BD", G: "#DDD1BD" }, 2);

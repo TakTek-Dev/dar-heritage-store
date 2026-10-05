@@ -13,19 +13,19 @@
 @font-face { font-family: "Thmanyah Serif Text"; src: url("../fonts/thmanyah-serif-text-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 
 :root {
-  /* Color: two brand inks taken from the logo, one fabric, one night */
-  --linen:        #F4EEE4;  /* page, the thob fabric */
-  --linen-2:      #EAE1D2;  /* sunken surface */
-  --linen-3:      #DDD1BD;  /* hairlines on linen */
+  /* Color: two brand inks from the logo on thob linen, one night tone */
+  --paper:        #F4EEE4;  /* page, the thob linen */
+  --paper-2:      #EAE1D2;  /* sunken surface */
+  --paper-3:      #DDD1BD;  /* hairlines */
   --zaytoun:      #364639;  /* logo green: text, primary actions */
   --zaytoun-2:    #4A5C4D;  /* hover on green */
   --zaytoun-deep: #1E2A21;  /* night sections */
-  --henna:        #B25426;  /* logo rust: stitches, large accents only */
-  --henna-ink:    #9A4520;  /* henna for small text on linen (5.6:1) */
+  --henna:        #B25426;  /* logo rust: stitches and large accents, 4.3:1 on linen */
+  --henna-ink:    #9A4520;  /* henna for small text on linen, 5.6:1 */
   --henna-glow:   #E08A5C;  /* henna text on night (5.6:1) */
-  --muted:        #5F6656;  /* secondary text on linen (5.2:1) */
+  --muted:        #5F6656;  /* secondary text, 5.2:1 on linen */
   --muted-night:  #A9B0A2;  /* secondary text on night */
-  --wool:         #C9BBA3;  /* decorative thread lines, never text */
+  --line:         #C9BBA3;  /* decorative thread lines, never text */
   --danger:       #9B2C1F;
   --ok:           #36603F;
 

@@ -1,6 +1,6 @@
 /* DAR stitch engine
    Motifs are cross-stitch charts: one character = one stitch.
-   R = henna, G = zaytoun, X = currentColor, anything else = bare linen. */
+   R = henna, G = zaytoun, X = currentColor, anything else = bare cloth. */
 (function () {
   const motifs = {
     // Traced stitch by stitch from the DAR logo (44 x 45 grid).
@@ -323,7 +323,7 @@
       el.dataset.mounted = "1";
       el.innerHTML = svg(el.dataset.motif, {
         mode: el.dataset.mode, order: el.dataset.order, label: el.getAttribute("data-label"),
-        ink: el.dataset.mono ? { R: "currentColor", G: "currentColor" } : el.dataset.night ? { G: "var(--linen)" } : undefined
+        ink: el.dataset.mono ? { R: "currentColor", G: "currentColor" } : el.dataset.night ? { G: "var(--paper)" } : undefined
       });
       if (el.hasAttribute("data-stitch") && !reduce) el.classList.add("stitch-wait");
     });
