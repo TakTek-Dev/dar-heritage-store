@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نظام دار البصري</title>
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=1">
+<link rel="stylesheet" href="assets/css/base.css?v=1">
+<style>
+  /* Page-only layout for the system document */
+  .ds-top {
+    position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--linen) 92%, transparent);
+    backdrop-filter: blur(8px); border-block-end: 1px solid var(--linen-3);
+  }
+  .ds-top .wrap { display: flex; align-items: center; gap: var(--s3); min-height: 64px; }
+  .ds-top .mark { width: 28px; }
+  .ds-top b { font: 700 1.0625rem/1 var(--font-display); }
+  .ds-top nav { margin-inline-start: auto; display: flex; gap: var(--s3); overflow-x: auto; scrollbar-width: none; font-size: var(--fs-small); }
+  .ds-top nav a { text-decoration: none; color: var(--muted); white-space: nowrap; padding-block: var(--s1); }
+  .ds-top nav a:hover { color: var(--zaytoun); }
+
+  .spine { position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 10; --band-w: 28px; width: 28px; border-inline-end: 1px solid var(--linen-3); }
+  main, .ds-top, footer { padding-inline-start: 28px; }
+
+  .cover { padding-block: var(--s12) var(--s16); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s8); align-items: center; }
+  .cover > * { min-width: 0; }
+  .cover h1 { font-size: var(--fs-hero); font-weight: 900; line-height: 1.05; letter-spacing: 0; }
+  .cover h1 em { font-style: normal; color: var(--henna); }
+  .cover p { font: 400 var(--fs-lead)/1.8 var(--font-text); max-width: 34em; margin-block-start: var(--s4); color: var(--muted); }
+  .cover .star { width: min(100%, 460px); justify-self: center; position: relative; }
+  .cover .star > [data-motif] { display: block; width: 100%; }
+  .cover .star figcaption { font-size: var(--fs-micro); color: var(--muted); text-align: center; margin-block-start: var(--s2); }
+  .zoom { position: absolute; inset-block-start: -2%; inset-inline-start: -4%; width: 24%; aspect-ratio: 1; background: var(--linen); border: 1px solid var(--linen-3); padding: 10px; }
+  .zoom span { font-size: 11px; color: var(--muted); position: absolute; inset-block-end: -22px; inset-inline: 0; text-align: center; }
+
+  section.ds { padding-block: var(--s12); border-block-start: 1px solid var(--linen-3); }
+  .ds-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s6); margin-block-end: var(--s8); align-items: end; }
+  .ds-head > * { min-width: 0; }
+  .ds-head h2 { font-size: var(--fs-h1); }
+  .ds-head p { font: 400 var(--fs-lead)/1.8 var(--font-text); color: var(--muted); max-width: 40em; }
+  .idx { font: 500 var(--fs-small)/1 var(--font-ui); color: var(--henna-ink); display: block; margin-block-end: var(--s2); }
+
+  /* principles */
+  .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); }
+  .principles article { padding-block-start: var(--s3); border-block-start: 2px solid var(--zaytoun); }
+  .principles h3 { font-size: var(--fs-h3); margin-block: var(--s2) var(--s1); }
+  .principles p { color: var(--muted); }
+  .principles [data-motif] { width: 40px; }
+
+  /* grid demo */
+  .grid-demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s6); align-items: center; }
+  .grid-demo > * { min-width: 0; }
+  .sheet {
+    aspect-ratio: 1; background:
+      linear-gradient(var(--linen-3) 1px, transparent 1px) 0 0 / 8px 8px,
+      linear-gradient(90deg, var(--linen-3) 1px, transparent 1px) 0 0 / 8px 8px, var(--linen);
+    display: grid; place-items: center; border: 1px solid var(--linen-3);
+  }
+  .sheet [data-motif] { width: 60%; }
+  .scale { display: grid; gap: 10px; }
+  .scale div { display: grid; grid-template-columns: 56px 64px minmax(0, 1fr); align-items: center; gap: var(--s2); font-size: var(--fs-small); }
+  .scale i { display: block; height: 16px; background: var(--henna); }
+  .scale code { font: 500 var(--fs-micro)/1 var(--font-ui); color: var(--muted); }
+
+  /* color */
+  .swatches { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s2); }
+  .sw { min-height: 220px; padding: var(--s3); display: flex; flex-direction: column; justify-content: space-between; gap: var(--s2); }
+  .sw h3 { font-size: var(--fs-h3); }
+  .sw dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px var(--s2); font-size: var(--fs-micro); }
+  .sw dt { opacity: .75; } .sw dd { margin: 0; }
+  .sw--linen { grid-column: span 4; background: var(--linen); border: 1px solid var(--linen-3); }
+  .sw--zaytoun { grid-column: span 4; background: var(--zaytoun); color: var(--linen); }
+  .sw--henna { grid-column: span 4; background: var(--henna); color: var(--linen); }
+  .sw--sm { grid-column: span 3; min-height: 140px; }
+  .ratio { display: flex; height: 40px; margin-block-start: var(--s3); }
+  .ratio i { display: block; }
+  .ratio-note { font-size: var(--fs-micro); color: var(--muted); margin-block-start: var(--s1); }
+
+  /* type */
+  .type-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4); border-block-end: 1px solid var(--linen-3); align-items: baseline; }
+  .type-row > * { min-width: 0; }
+  .type-row .meta { font-size: var(--fs-micro); color: var(--muted); line-height: 1.6; }
+  .type-row .meta b { display: block; color: var(--zaytoun); font-size: var(--fs-small); }
+  .t-hero { font: 900 var(--fs-hero)/1.05 var(--font-display); }
+  .t-h1 { font: 700 var(--fs-h1)/1.15 var(--font-display); }
+  .t-h2 { font: 700 var(--fs-h2)/1.2 var(--font-display); }
+  .t-h3 { font: 700 var(--fs-h3)/1.3 var(--font-display); }
+  .t-lead { font: 400 var(--fs-lead)/1.85 var(--font-text); max-width: 38em; }
+  .t-body { font: 400 var(--fs-body)/1.75 var(--font-ui); max-width: 38em; }
+  .t-ui { font: 500 1rem/1.4 var(--font-ui); }
+  .trilingual { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-block-start: var(--s6); }
+  .trilingual div { background: var(--linen-2); padding: var(--s4); }
+  .trilingual small { display: block; font-size: var(--fs-micro); color: var(--muted); margin-block-end: var(--s2); }
+  .trilingual p { font: 700 clamp(1.5rem, 1rem + 1.5vw, 2.25rem)/1.25 var(--font-display); }
+
+  /* motifs */
+  .motifs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s2); }
+  .motif-card { background: var(--linen-2); padding: var(--s4) var(--s3) var(--s3); display: grid; gap: var(--s3); align-content: space-between; }
+  .motif-card .art { aspect-ratio: 1; display: grid; place-items: center; }
+  .motif-card .art [data-motif] { width: 58%; }
+  .motif-card h3 { font-size: 1.25rem; }
+  .motif-card p { font-size: var(--fs-small); color: var(--muted); line-height: 1.6; }
+  .bands { display: grid; gap: var(--s4); margin-block-start: var(--s8); }
+  .bands figure { margin: 0; display: grid; gap: var(--s1); }
+  .bands figcaption { font-size: var(--fs-small); color: var(--muted); }
+  .bands .night { background-color: var(--zaytoun-deep); padding-block: var(--s2); }
+
+  /* icons */
+  .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--s2); }
+  .icons figure { margin: 0; background: var(--linen-2); padding: var(--s3) var(--s2); display: grid; justify-items: center; gap: var(--s2); }
+  .icons [data-motif] { width: 32px; }
+  .icons figcaption { font-size: var(--fs-micro); color: var(--muted); }
+
+  /* components */
+  .comp { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s5); border-block-end: 1px solid var(--linen-3); }
+  .comp > * { min-width: 0; }
+  .comp h3 { font: 700 1.25rem/1.3 var(--font-display); }
+  .comp .note { font-size: var(--fs-small); color: var(--muted); margin-block-start: var(--s1); line-height: 1.6; }
+  .row { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); }
+  .form-demo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) var(--s4); max-width: 640px; }
+
+  /* motion */
+  .motion { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s6); align-items: center; }
+  .motion > * { min-width: 0; }
+  .motion .stage { background: var(--zaytoun-deep); aspect-ratio: 4 / 3; display: grid; place-items: center; }
+  .motion .stage [data-motif] { width: 46%; }
+  .tokens-table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+  .tokens-table td { padding: 10px 0; border-block-end: 1px solid var(--linen-3); vertical-align: top; }
+  .tokens-table td:first-child { color: var(--muted); width: 40%; }
+
+  /* rules */
+  .rules { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s4); }
+  .rules ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+  .rules li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--s2); align-items: start; }
+  .rules li [data-motif] { width: 14px; margin-block-start: 8px; }
+  .rules h3 { font-size: var(--fs-h3); margin-block-end: var(--s3); }
+  .rules .no li { color: var(--muted); }
+
+  footer { background: var(--zaytoun-deep); color: var(--linen); padding-block: var(--s10); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: var(--s4); justify-content: space-between; align-items: center; }
+  footer img { width: 140px; filter: brightness(0) invert(.94) sepia(.2); }
+  footer p { color: var(--muted-night); font-size: var(--fs-small); }
+
+  @media (max-width: 960px) {
+    .cover, .ds-head, .grid-demo, .motion, .rules { grid-template-columns: minmax(0, 1fr); }
+    .principles, .cards, .trilingual { grid-template-columns: minmax(0, 1fr); }
+    .motifs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sw--linen, .sw--zaytoun, .sw--henna { grid-column: span 12; min-height: 180px; }
+    .sw--sm { grid-column: span 6; }
+    .type-row, .comp { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+    .cover { padding-block: var(--s8); }
+  }
+  @media (max-width: 600px) {
+    .spine { display: none; }
+    main, .ds-top, footer { padding-inline-start: 0; }
+    .ds-top nav { display: none; }
+    .form-demo { grid-template-columns: minmax(0, 1fr); }
+    .zoom { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spine band band--y" data-band="chain" data-cell="4" aria-hidden="true"></div>
+
+<header class="ds-top">
+  <div class="wrap">
+    <span class="mark" data-motif="star" data-label="دار"></span>
+    <b>نظام دار البصري</b>
+    <nav aria-label="أقسام النظام">
+      <a href="#grid">الغرزة</a><a href="#color">اللون</a><a href="#type">الخط</a>
+      <a href="#motifs">الزخارف</a><a href="#icons">الأيقونات</a><a href="#components">المكونات</a>
+      <a href="#motion">الحركة</a><a href="#rules">القواعد</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap cover">
+    <div>
+      <span class="eyebrow"><span data-motif="starlet"></span>مركز التراث الفلسطيني في إسطنبول</span>
+      <h1 style="margin-block-start: var(--s3)">كل شيء هنا<br>يبدأ <em>بغرزة</em></h1>
+      <p>شعار دار مطرّز على شبكة من 44 غرزة. هذا النظام يأخذ الشبكة نفسها ويبني بها الموقع كله: المسافات والزوايا والأيقونات والحركة. فإذا غاب الشعار بقيت الغرزة تقول اسم البيت.</p>
+      <div class="row" style="margin-block-start: var(--s5)">
+        <a class="btn btn--lg" href="#grid">ابدأ من الغرزة <span class="go" data-motif="i-arrow"></span></a>
+        <button class="btn btn--lg btn--quiet" type="button" data-replay="#cover-star">طرّز النجمة مرة أخرى</button>
+      </div>
+    </div>
+    <figure class="star" style="margin:0">
+      <span id="cover-star" data-motif="star" data-mode="cross" data-order="radial" data-stitch data-label="نجمة دار مطرزة غرزة غرزة"></span>
+      <div class="zoom" aria-hidden="true"><span data-motif="starlet" data-mode="cross" style="width:100%"></span></div>
+      <figcaption>نجمة الشعار مرسومة غرزة غرزة من الملف الأصلي</figcaption>
+    </figure>
+  </div>
+
+  <!-- Principles -->
+  <section class="ds wrap" aria-labelledby="p-h">
+    <div class="ds-head">
+      <div><span class="idx">01</span><h2 id="p-h">ثلاثة مبادئ</h2></div>
+      <p>كل قرار في الواجهة يرجع لواحد منها. لو عنصر لا يخدم أيا منها نحذفه.</p>
+    </div>
+    <div class="principles">
+      <article>
+        <span data-motif="starlet" data-mode="cross"></span>
+        <h3>الثوب هو الصفحة</h3>
+        <p>الخلفية قماش كتان، والتطريز يسكن الأماكن نفسها التي يسكنها على الثوب: القبة في الأعلى، والبنيقة على الجانب، والذيال في الأسفل.</p>
+      </article>
+      <article>
+        <span data-motif="cypress" data-mode="cross" style="width:30px"></span>
+        <h3>الغرزة وحدة القياس</h3>
+        <p>كل مسافة مضاعف 8 بكسل، وكل زاوية مدرجة بدرج غرزتين كبتلات النجمة. لا زوايا دائرية في دار.</p>
+      </article>
+      <article>
+        <span data-motif="amulet" data-mode="cross" style="width:34px"></span>
+        <h3>المنتج هو البطل</h3>
+        <p>الزخرفة إطار لا لوحة. حين تظهر صورة أو فيديو لقطعة يدوية يتراجع التطريز ويترك لها المساحة.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Stitch grid -->
+  <section class="ds wrap" id="grid" aria-labelledby="g-h">
+    <div class="ds-head">
+      <div><span class="idx">02</span><h2 id="g-h">الغرزة</h2></div>
+      <p>غرزة واحدة تساوي 8 بكسل. النجمة 44 غرزة عرضا، والأيقونات 12 غرزة، والأشرطة تتكرر كل 6 أو 7 غرزات. لهذا تبدو الأجزاء كلها من نول واحد.</p>
+    </div>
+    <div class="grid-demo">
+      <div class="sheet"><span data-motif="star" data-label="النجمة على شبكة الغرز"></span></div>
+      <div>
+        <div class="scale">
+          <div><b>s1</b><code>8px</code><i style="width:8px"></i></div>
+          <div><b>s2</b><code>16px</code><i style="width:16px"></i></div>
+          <div><b>s3</b><code>24px</code><i style="width:24px"></i></div>
+          <div><b>s4</b><code>32px</code><i style="width:32px"></i></div>
+          <div><b>s6</b><code>48px</code><i style="width:48px"></i></div>
+          <div><b>s8</b><code>64px</code><i style="width:64px"></i></div>
+          <div><b>s12</b><code>96px</code><i style="width:96px"></i></div>
+          <div><b>s16</b><code>128px</code><i style="width:128px"></i></div>
+        </div>
+        <div class="comp" style="border:0;padding-block-end:0">
+          <div><h3>الزاوية المدرجة</h3><p class="note">درجتان من 4 بكسل، مأخوذتان من حافة البتلة في الشعار.</p></div>
+          <div class="row">
+            <div class="stepped" style="width:120px;height:120px;background:var(--zaytoun)"></div>
+            <div class="stepped" style="width:120px;height:120px;background:var(--henna);--step:8px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color -->
+  <section class="ds wrap" id="color" aria-labelledby="c-h">
+    <div class="ds-head">
+      <div><span class="idx">03</span><h2 id="c-h">اللون</h2></div>
+      <p>لونان من الشعار ولا ثالث لهما: أخضر الزيتون وأحمر الحناء، على كتان الثوب. كل درجة أخرى مشتقة منهم، ولا يدخل الموقع لون جديد.</p>
+    </div>
+    <div class="swatches">
+      <div class="sw sw--linen">
+        <h3>كتان</h3>
+        <dl><dt>HEX</dt><dd class="latin">#F4EEE4</dd><dt>الدور</dt><dd>خلفية الصفحة</dd></dl>
+      </div>
+      <div class="sw sw--zaytoun">
+        <h3>زيتون</h3>
+        <dl><dt>HEX</dt><dd class="latin">#364639</dd><dt>الدور</dt><dd>النص والأزرار الأساسية</dd><dt>على الكتان</dt><dd class="num">8.7 : 1</dd></dl>
+      </div>
+      <div class="sw sw--henna">
+        <h3>حناء</h3>
+        <dl><dt>HEX</dt><dd class="latin">#B25426</dd><dt>الدور</dt><dd>الغرز والعناوين الكبيرة</dd><dt>على الكتان</dt><dd class="num">4.3 : 1 للكبير فقط</dd></dl>
+      </div>
+      <div class="sw sw--sm" style="background:var(--zaytoun-deep);color:var(--linen)"><b>ليل</b><dl><dt>HEX</dt><dd class="latin">#1E2A21</dd><dt>الدور</dt><dd>أقسام الليل والفوتر</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--henna-ink);color:var(--linen)"><b>حناء داكن</b><dl><dt>HEX</dt><dd class="latin">#9A4520</dd><dt>الدور</dt><dd>نص صغير بالحناء 5.6 : 1</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--linen-2)"><b>كتان 2</b><dl><dt>HEX</dt><dd class="latin">#EAE1D2</dd><dt>الدور</dt><dd>أسطح وصور فارغة</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--wool)"><b>صوف</b><dl><dt>HEX</dt><dd class="latin">#C9BBA3</dd><dt>الدور</dt><dd>خيوط زخرفية، ليس للنص</dd></dl></div>
+    </div>
+    <div class="ratio" aria-hidden="true">
+      <i style="flex:70;background:var(--linen-2)"></i><i style="flex:20;background:var(--zaytoun)"></i><i style="flex:7;background:var(--zaytoun-deep)"></i><i style="flex:3;background:var(--henna)"></i>
+    </div>
+    <p class="ratio-note">النسبة في أي شاشة: كتان 70 وزيتون 20 وليل 7 وحناء 3. الحناء غرزة، لا يصبح خلفية لقسم كامل.</p>
+  </section>
+
+  <!-- Type -->
+  <section class="ds wrap" id="type" aria-labelledby="t-h">
+    <div class="ds-head">
+      <div><span class="idx">04</span><h2 id="t-h">الخط</h2></div>
+      <p>عائلة ثمانية كاملة، مجانية للاستخدام التجاري، وتدعم العربية والتركية والإنجليزية بروح واحدة. الصيغة العرضية للعناوين، والنصية للحكايات، واللاتينية للواجهة.</p>
+    </div>
+    <div class="type-row"><div class="meta"><b>Hero</b>ثمانية عرضي ثقيل 900<br>من 56 إلى 144</div><div class="t-hero">ثوب يحكي</div></div>
+    <div class="type-row"><div class="meta"><b>H1</b>ثمانية عرضي عريض 700<br>من 40 إلى 80</div><div class="t-h1">من نقوش الثوب الفلسطيني</div></div>
+    <div class="type-row"><div class="meta"><b>H2</b>ثمانية عرضي عريض 700<br>من 32 إلى 52</div><div class="t-h2">قطع يدوية من بيت إلى بيت</div></div>
+    <div class="type-row"><div class="meta"><b>H3</b>ثمانية عرضي عريض 700<br>من 22 إلى 28</div><div class="t-h3">شال مطرز بنجمة بيت لحم</div></div>
+    <div class="type-row"><div class="meta"><b>Lead</b>ثمانية نصي 400<br>من 18 إلى 22، سطر 1.85</div><p class="t-lead">كل قطعة في دار خرجت من يد امرأة فلسطينية، تحمل غرزة تعلمتها من أمها، وتحمل اسم القرية التي جاءت منها النقشة.</p></div>
+    <div class="type-row"><div class="meta"><b>Body</b>ثمانية سانس 400<br>17 بكسل، سطر 1.75</div><p class="t-body">الشحن داخل تركيا خلال ثلاثة أيام عمل، وإلى باقي الدول خلال أسبوع إلى أسبوعين. يمكنك إرجاع القطعة خلال 14 يوما من الاستلام.</p></div>
+    <div class="type-row"><div class="meta"><b>UI</b>ثمانية سانس 500<br>16 بكسل</div><div class="t-ui row" style="gap:var(--s4)"><span>أضف إلى السلة</span><span class="num">450 ₺</span><span class="num latin">450 ₺</span></div></div>
+    <div class="trilingual">
+      <div><small>العربية</small><p>مركز التراث الفلسطيني</p></div>
+      <div lang="tr" dir="ltr"><small>Türkçe</small><p>Filistin Miras Merkezi</p></div>
+      <div lang="en" dir="ltr"><small>English</small><p>Palestinian Heritage Centre</p></div>
+    </div>
+  </section>
+
+  <!-- Motifs -->
+  <section class="ds wrap" id="motifs" aria-labelledby="m-h">
+    <div class="ds-head">
+      <div><span class="idx">05</span><h2 id="m-h">الزخارف</h2></div>
+      <p>مكتبة صغيرة مرسومة كخرائط تطريز حقيقية، حرف لكل غرزة. نفس الخريطة تخرج مرة مربعات صافية للأحجام الصغيرة، ومرة غرزا متصالبة للأحجام الكبيرة. أسماء النقوش ومعانيها تراجعها دار قبل النشر.</p>
+    </div>
+    <div class="motifs">
+      <article class="motif-card"><div class="art"><span data-motif="star" data-mode="cross" data-order="radial" data-stitch></span></div><div><h3>نجمة دار</h3><p>من الشعار. للحظات الكبيرة فقط: الافتتاح، والتحميل، وتأكيد الطلب.</p></div></article>
+      <article class="motif-card"><div class="art"><span data-motif="cypress" data-mode="cross" data-stitch style="width:42%"></span></div><div><h3>السرو</h3><p>فاصل عمودي بين الأقسام، وعلامة للتصنيفات.</p></div></article>
+      <article class="motif-card"><div class="art"><span data-motif="amulet" data-mode="cross" data-stitch style="width:46%"></span></div><div><h3>الحجاب</h3><p>علامة الضمان والأصالة، بجانب عبارة صنع يدويا.</p></div></article>
+      <article class="motif-card"><div class="art"><span data-motif="starlet" data-mode="cross" data-stitch style="width:40%"></span></div><div><h3>نجيمة</h3><p>نقطة الإيقاع: قبل العناوين الصغيرة، وفي القوائم، وبين الكلمات.</p></div></article>
+    </div>
+    <div class="bands">
+      <figure><div class="band" data-band="chain" data-cell="4"></div><figcaption>سلسلة: بنيقة الموقع، الشريط الجانبي الذي يرافق التمرير</figcaption></figure>
+      <figure><div class="band" data-band="saw" data-cell="4"></div><figcaption>أسنان: ذيال القسم، يغلق الأقسام الكبيرة من أسفل</figcaption></figure>
+      <figure><div class="band" data-band="wheat" data-cell="5"></div><figcaption>سنابل: شريط خفيف فوق الفوتر وحول شارات العروض</figcaption></figure>
+      <figure><div class="band night" data-band="chain" data-cell="4" data-night="1"></div><figcaption>على الليل: الأخضر يصير كتانا، والحناء يبقى كما هو</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- Icons -->
+  <section class="ds wrap" id="icons" aria-labelledby="i-h">
+    <div class="ds-head">
+      <div><span class="idx">06</span><h2 id="i-h">الأيقونات</h2></div>
+      <p>أيقونات مطرزة على شبكة 12 غرزة، بلون النص دائما. مكتبة أيقونات جاهزة كانت ستكسر الصوت الواحد للموقع.</p>
+    </div>
+    <div class="icons">
+      <figure><span data-motif="i-bag"></span><figcaption>السلة</figcaption></figure>
+      <figure><span data-motif="i-search"></span><figcaption>البحث</figcaption></figure>
+      <figure><span data-motif="i-heart"></span><figcaption>المفضلة</figcaption></figure>
+      <figure><span data-motif="i-user"></span><figcaption>الحساب</figcaption></figure>
+      <figure><span data-motif="i-menu"></span><figcaption>القائمة</figcaption></figure>
+      <figure><span data-motif="i-arrow"></span><figcaption>التالي</figcaption></figure>
+      <figure><span data-motif="i-plus"></span><figcaption>زيادة</figcaption></figure>
+      <figure><span data-motif="i-minus"></span><figcaption>إنقاص</figcaption></figure>
+      <figure><span data-motif="i-close"></span><figcaption>إغلاق</figcaption></figure>
+      <figure><span data-motif="i-play"></span><figcaption>تشغيل</figcaption></figure>
+      <figure><span data-motif="i-globe"></span><figcaption>اللغة</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section class="ds wrap" id="components" aria-labelledby="k-h">
+    <div class="ds-head">
+      <div><span class="idx">07</span><h2 id="k-h">المكونات</h2></div>
+      <p>حية وقابلة للضغط. مرّر الماوس، واضغط Tab لترى التركيز المتقطع كغرزة الشلّ.</p>
+    </div>
+
+    <div class="comp">
+      <div><h3>الأزرار</h3><p class="note">زيتون للفعل الأساسي، حناء لفعل واحد فقط في الصفحة كالشراء. الارتفاع 48 أو 56.</p></div>
+      <div class="row">
+        <button class="btn btn--lg" type="button">تسوّق المجموعة <span class="go" data-motif="i-arrow"></span></button>
+        <button class="btn btn--lg btn--henna" type="button">إتمام الطلب</button>
+        <button class="btn btn--quiet" type="button">احفظ لوقت لاحق</button>
+        <button class="btn" type="button" aria-disabled="true">نفدت الكمية</button>
+        <button class="btn is-loading" type="button" aria-label="جار الإضافة">أضف</button>
+        <button class="btn btn--icon" type="button" aria-label="أضف للمفضلة"><span data-motif="i-heart"></span></button>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div><h3>رابط الخيط</h3><p class="note">غرزة شلّ متقطعة تتصل خيطا واحدا عند المرور.</p></div>
+      <p class="t-lead">اقرأ <a class="thread" href="#">حكاية نقشة السرو</a> أو تصفح <a class="thread" href="#">كل الشالات</a>.</p>
+    </div>
+
+    <div class="comp">
+      <div><h3>الأيقونات الفعالة والتبويب</h3><p class="note">مساحة لمس 44 بكسل على الأقل.</p></div>
+      <div style="display:grid;gap:var(--s4)">
+        <div class="row">
+          <button class="icon-btn" type="button" aria-label="البحث"><span data-motif="i-search"></span></button>
+          <button class="icon-btn" type="button" aria-label="المفضلة"><span data-motif="i-heart"></span></button>
+          <button class="icon-btn" type="button" aria-label="السلة، قطعتان"><span data-motif="i-bag"></span><span class="count num">2</span></button>
+          <button class="icon-btn" type="button" aria-label="اللغة"><span data-motif="i-globe"></span></button>
+        </div>
+        <div class="tabs" role="tablist" aria-label="التصنيفات">
+          <button role="tab" aria-selected="true" type="button">الكل</button>
+          <button role="tab" aria-selected="false" type="button">أثواب</button>
+          <button role="tab" aria-selected="false" type="button">شالات</button>
+          <button role="tab" aria-selected="false" type="button">حقائب</button>
+          <button role="tab" aria-selected="false" type="button">إكسسوارات</button>
+          <button role="tab" aria-selected="false" type="button">ديكور البيت</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div><h3>بطاقة المنتج</h3><p class="note">بلا إطار وبلا ظل. الصورة 4:5، وزر الإضافة يظهر عند المرور ويبقى ظاهرا على اللمس. الأسعار والأسماء هنا أمثلة للتصميم فقط.</p></div>
+      <div class="cards">
+        <a class="product" href="#">
+          <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><span class="tag"><span data-motif="amulet"></span>صنع يدويا</span><button class="btn product__add" type="button">أضف إلى السلة</button></div>
+          <div class="product__meta"><div><h3 class="product__name">شال نجمة بيت لحم</h3><p class="product__origin">تطريز يدوي، الخليل</p></div><p class="product__price num">850 ₺</p></div>
+        </a>
+        <a class="product" href="#">
+          <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><span class="tag tag--henna">قطعة أخيرة</span><button class="btn product__add" type="button">أضف إلى السلة</button></div>
+          <div class="product__meta"><div><h3 class="product__name">حقيبة السرو</h3><p class="product__origin">تطريز يدوي، غزة</p></div><p class="product__price num">620 ₺<s>740 ₺</s></p></div>
+        </a>
+        <a class="product" href="#">
+          <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><button class="btn product__add" type="button" aria-disabled="true">نفدت الكمية</button></div>
+          <div class="product__meta"><div><h3 class="product__name">مخدة القبة</h3><p class="product__origin">تطريز يدوي، رام الله</p></div><p class="product__price num">450 ₺</p></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div><h3>الحقول</h3><p class="note">خط سفلي متقطع يصير متصلا عند التركيز. الخطأ يقول ما الذي حدث وكيف نصلحه.</p></div>
+      <form class="form-demo" onsubmit="return false">
+        <div class="field"><label for="f1">الاسم الكامل</label><input id="f1" autocomplete="name" placeholder="كما يظهر على الطرد"></div>
+        <div class="field"><label for="f2">رقم الجوال</label><input id="f2" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="+90 5xx xxx xx xx"><span class="hint">نتصل بك فقط إذا تعذر التوصيل</span></div>
+        <div class="field is-error"><label for="f3">البريد الإلكتروني</label><input id="f3" type="email" value="sara@" aria-invalid="true" aria-describedby="f3h" dir="ltr"><span class="hint" id="f3h">البريد ناقص، أكمل ما بعد علامة @</span></div>
+        <div class="field"><label for="f4">الكمية</label><div class="qty"><button type="button" aria-label="إنقاص"><span data-motif="i-minus"></span></button><output id="f4" class="num">1</output><button type="button" aria-label="زيادة"><span data-motif="i-plus"></span></button></div></div>
+      </form>
+    </div>
+
+    <div class="comp">
+      <div><h3>الإشعار</h3><p class="note">يظهر أسفل الشاشة 4 ثوان، مع فعل واحد.</p></div>
+      <div class="toast" role="status"><span data-motif="starlet" data-mode="cross"></span>أضيف شال نجمة بيت لحم إلى سلتك. <a class="thread" href="#">عرض السلة</a></div>
+    </div>
+  </section>
+
+  <!-- Motion -->
+  <section class="ds wrap" id="motion" aria-labelledby="mo-h">
+    <div class="ds-head">
+      <div><span class="idx">08</span><h2 id="mo-h">الحركة</h2></div>
+      <p>الحركة في دار هي حركة الإبرة: غرزة بعد غرزة، من المركز للخارج أو على طول السطر. لا ارتداد ولا لمعان. ومن يطلب تقليل الحركة يرى كل شيء جاهزا فورا.</p>
+    </div>
+    <div class="motion">
+      <div class="stage"><span id="night-star" data-night="1" data-motif="star" data-mode="cross" data-order="rows" data-stitch data-label="نجمة دار تطرز سطرا سطرا"></span></div>
+      <div>
+        <table class="tokens-table">
+          <tr><td>منحنى الخيط</td><td class="latin">cubic-bezier(.2, .7, .2, 1)</td></tr>
+          <tr><td>منحنى الشد</td><td class="latin">cubic-bezier(.6, 0, .2, 1)</td></tr>
+          <tr><td>سريع، للمرور والضغط</td><td class="num">140ms</td></tr>
+          <tr><td>أساسي، للظهور والقوائم</td><td class="num">260ms</td></tr>
+          <tr><td>بطيء، للصور والروابط</td><td class="num">520ms</td></tr>
+          <tr><td>تأخير الغرزة</td><td class="num">4ms لكل غرزة</td></tr>
+        </table>
+        <div class="row" style="margin-block-start:var(--s4)">
+          <button class="btn" type="button" data-replay="#night-star">طرّز سطرا سطرا</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rules -->
+  <section class="ds wrap" id="rules" aria-labelledby="r-h">
+    <div class="ds-head">
+      <div><span class="idx">09</span><h2 id="r-h">القواعد</h2></div>
+      <p>ما يحمي البصمة حين يكبر الموقع وتضاف صفحات جديدة ولوحة تحكم.</p>
+    </div>
+    <div class="rules">
+      <div><h3>نفعل</h3><ul>
+        <li><span data-motif="starlet"></span>نبني كل مسافة وزاوية وأيقونة على غرزة 8 بكسل</li>
+        <li><span data-motif="starlet"></span>نضع التطريز حيث يوضع على الثوب: أعلى وجانب وأسفل</li>
+        <li><span data-motif="starlet"></span>نصور المنتج على كتان، بضوء نهار، مع يد أو غرزة قريبة</li>
+        <li><span data-motif="starlet"></span>نكتب اسم القرية أو المدينة التي جاءت منها النقشة</li>
+        <li><span data-motif="starlet"></span>نترك الحناء للغرز والعناوين الكبيرة وزر شراء واحد</li>
+      </ul></div>
+      <div class="no"><h3>لا نفعل</h3><ul>
+        <li><span data-motif="i-close"></span>زوايا دائرية، ظلال ناعمة، تدرجات لونية، زجاج</li>
+        <li><span data-motif="i-close"></span>ألوان من خارج اللوحة، حتى للعروض والتخفيضات</li>
+        <li><span data-motif="i-close"></span>نقوش مرسومة بخطوط منحنية، فالتطريز مربعات فقط</li>
+        <li><span data-motif="i-close"></span>تطريز فوق صورة المنتج أو خلف النص الطويل</li>
+        <li><span data-motif="i-close"></span>أيقونات من مكتبات جاهزة أو رموز تعبيرية</li>
+      </ul></div>
+    </div>
+  </section>
+</main>
+
+<div class="band" data-band="saw" data-cell="4" aria-hidden="true" style="transform:scaleY(-1)"></div>
+<footer>
+  <div class="wrap">
+    <img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني">
+    <p>نظام دار البصري، النسخة 0.1، للمراجعة مع العميل</p>
+  </div>
+</footer>
+
+<script src="assets/js/stitch.js?v=1"></script>
+<script>
+  // Placeholder tiles use the starlet so empty images still feel woven
+  const ph = Dar.tile("starlet", { R: "#DDD1BD", G: "#DDD1BD" }, 2);
+  document.querySelectorAll("[data-ph]").forEach(el => el.style.setProperty("--ph-tile", ph.url));
+
+  document.querySelectorAll("[data-replay]").forEach(btn => btn.addEventListener("click", () => {
+    const el = document.querySelector(btn.dataset.replay);
+    el.classList.remove("stitch-go"); void el.offsetWidth; el.classList.add("stitch-go");
+  }));
+
+  document.querySelectorAll(".qty").forEach(q => {
+    const out = q.querySelector("output");
+    const [minus, plus] = q.querySelectorAll("button");
+    minus.onclick = () => out.value = Math.max(1, +out.value - 1);
+    plus.onclick = () => out.value = Math.min(9, +out.value + 1);
+  });
+
+  document.querySelectorAll('[role="tablist"]').forEach(list => list.addEventListener("click", e => {
+    const tab = e.target.closest('[role="tab"]'); if (!tab) return;
+    list.querySelectorAll('[role="tab"]').forEach(t => t.setAttribute("aria-selected", t === tab));
+  }));
+</script>
+</body>
+</html>

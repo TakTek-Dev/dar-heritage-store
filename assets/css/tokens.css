@@ -1,0 +1,80 @@
+/* DAR design tokens
+   Everything sits on the stitch grid: 1 stitch = 8px. */
+
+@font-face { font-family: "Thmanyah Serif Display"; src: url("../fonts/thmanyah-serif-display-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Thmanyah Serif Display"; src: url("../fonts/thmanyah-serif-display-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Thmanyah Serif Display"; src: url("../fonts/thmanyah-serif-display-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Thmanyah Serif Display"; src: url("../fonts/thmanyah-serif-display-900.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+@font-face { font-family: "Thmanyah Sans"; src: url("../fonts/thmanyah-sans-300.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Thmanyah Sans"; src: url("../fonts/thmanyah-sans-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Thmanyah Sans"; src: url("../fonts/thmanyah-sans-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Thmanyah Sans"; src: url("../fonts/thmanyah-sans-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Thmanyah Serif Text"; src: url("../fonts/thmanyah-serif-text-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Thmanyah Serif Text"; src: url("../fonts/thmanyah-serif-text-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+
+:root {
+  /* Color: two brand inks taken from the logo, one fabric, one night */
+  --linen:        #F4EEE4;  /* page, the thob fabric */
+  --linen-2:      #EAE1D2;  /* sunken surface */
+  --linen-3:      #DDD1BD;  /* hairlines on linen */
+  --zaytoun:      #364639;  /* logo green: text, primary actions */
+  --zaytoun-2:    #4A5C4D;  /* hover on green */
+  --zaytoun-deep: #1E2A21;  /* night sections */
+  --henna:        #B25426;  /* logo rust: stitches, large accents only */
+  --henna-ink:    #9A4520;  /* henna for small text on linen (5.6:1) */
+  --henna-glow:   #E08A5C;  /* henna text on night (5.6:1) */
+  --muted:        #5F6656;  /* secondary text on linen (5.2:1) */
+  --muted-night:  #A9B0A2;  /* secondary text on night */
+  --wool:         #C9BBA3;  /* decorative thread lines, never text */
+  --danger:       #9B2C1F;
+  --ok:           #36603F;
+
+  /* Type */
+  --font-display: "Thmanyah Serif Display", "Times New Roman", serif;
+  --font-text:    "Thmanyah Serif Text", "Times New Roman", serif;
+  --font-ui:      "Thmanyah Sans", system-ui, sans-serif;
+
+  --fs-hero:  clamp(3.5rem, 2rem + 7vw, 9rem);
+  --fs-h1:    clamp(2.5rem, 1.6rem + 3.6vw, 5rem);
+  --fs-h2:    clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+  --fs-h3:    clamp(1.375rem, 1.2rem + .6vw, 1.75rem);
+  --fs-lead:  clamp(1.125rem, 1rem + .4vw, 1.375rem);
+  --fs-body:  1.0625rem;
+  --fs-small: .9375rem;
+  --fs-micro: .8125rem;
+
+  /* Stitch grid */
+  --st: 8px;
+  --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px; --s5: 40px;
+  --s6: 48px; --s8: 64px; --s10: 80px; --s12: 96px; --s16: 128px; --s20: 160px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1360px;
+
+  /* Corners are stepped, never rounded. --step is one notch of the stair. */
+  --step: 4px;
+
+  /* Motion */
+  --ease-thread: cubic-bezier(.2, .7, .2, 1);
+  --ease-pull:   cubic-bezier(.6, 0, .2, 1);
+  --t-fast: 140ms;
+  --t-base: 260ms;
+  --t-slow: 520ms;
+  --stitch-delay: 4ms;  /* per stitch when a motif embroiders itself */
+}
+
+/* Stepped corner, two notches, the same stair as the logo petals */
+.stepped {
+  --n: var(--step);
+  clip-path: polygon(
+    calc(var(--n) * 2) 0, calc(100% - var(--n) * 2) 0,
+    calc(100% - var(--n) * 2) var(--n), calc(100% - var(--n)) var(--n),
+    calc(100% - var(--n)) calc(var(--n) * 2), 100% calc(var(--n) * 2),
+    100% calc(100% - var(--n) * 2), calc(100% - var(--n)) calc(100% - var(--n) * 2),
+    calc(100% - var(--n)) calc(100% - var(--n)), calc(100% - var(--n) * 2) calc(100% - var(--n)),
+    calc(100% - var(--n) * 2) 100%, calc(var(--n) * 2) 100%,
+    calc(var(--n) * 2) calc(100% - var(--n)), var(--n) calc(100% - var(--n)),
+    var(--n) calc(100% - var(--n) * 2), 0 calc(100% - var(--n) * 2),
+    0 calc(var(--n) * 2), var(--n) calc(var(--n) * 2),
+    var(--n) var(--n), calc(var(--n) * 2) var(--n)
+  );
+}
