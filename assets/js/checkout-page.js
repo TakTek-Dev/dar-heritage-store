@@ -84,6 +84,29 @@
   form.addEventListener("blur", e => { if (e.target.matches("input") && e.target.value) check(e.target); }, true);
   form.addEventListener("input", e => { if (e.target.closest(".is-error")) check(e.target); });
 
+  // Kept in this browser so the tracking page and the dashboard preview can show the order
+  function saveOrder(pay, ship) {
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem("dar-admin") || "{}"); } catch (e) {}
+    const list = state.orders || [];
+    const next = Math.max(1051, ...list.map(o => +String(o.id).split("-").pop() || 0)) + 1;
+    const id = `DAR-${new Date().getFullYear()}-${next}`;
+    const val = f => $(f).value.trim();
+    list.unshift({
+      id, name: val("f-name"), city: ship === "pickup" ? "إسطنبول" : val("f-city"), phone: val("f-phone"),
+      lines: items.map(i => ({ pid: i.pid, qty: i.qty, variant: i.variant })),
+      channel: "web", pay, ship, status: "new", date: new Date().toISOString(), local: true
+    });
+    state.orders = list;
+    try {
+      localStorage.setItem("dar-admin", JSON.stringify(state));
+      sessionStorage.setItem("dar-last-order", JSON.stringify({ id, phone: val("f-phone") }));
+      localStorage.removeItem("dar-cart-extras");
+    } catch (e) {}
+    cart.set([]);
+    return id;
+  }
+
   form.addEventListener("submit", e => {
     e.preventDefault();
     const inputs = [...form.querySelectorAll("#f-name, #f-phone, #f-email, #f-city, #f-address")].filter(i => !i.closest("[hidden]"));
@@ -102,14 +125,15 @@
     btn.classList.add("is-loading");
     setTimeout(() => {
       const pay = form.pay.value;
-      const no = `DAR-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9000) + 1000)}`;
+      const no = saveOrder(pay, form.ship.value);
       $("checkout").hidden = true;
       document.querySelector(".page-head").hidden = true;
       $("done").hidden = false;
       $("order-no").textContent = no;
+      $("done-track").href = `track.html?no=${encodeURIComponent(no)}`;
       $("done-text").textContent = pay === "card"
-        ? "في الموقع الحقيقي تنتقل الآن إلى صفحة الدفع الآمنة. هذه معاينة، فلم يرسل الطلب ولم يخصم أي مبلغ."
-        : "في الموقع الحقيقي نرسل لك بيانات التحويل على واتساب. هذه معاينة، فلم يرسل الطلب.";
+        ? "في الموقع الحقيقي تنتقل الآن إلى صفحة الدفع الآمنة. هذه معاينة: حفظنا الطلب في هذا المتصفح فقط، ولم يخصم أي مبلغ."
+        : "في الموقع الحقيقي نرسل لك بيانات التحويل على واتساب. هذه معاينة: حفظنا الطلب في هذا المتصفح فقط.";
       const star = $("done-star");
       Dar.mount($("done"));
       if (!reduce) { star.classList.add("stitch-go"); }

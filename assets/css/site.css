@@ -87,8 +87,36 @@
 .up.is-in, .up:focus-within { opacity: 1; transform: none; }
 .up:focus-within { transition-delay: 0s; }
 
-/* Stitch dissolve canvas sits on top of an image until it is unpicked */
-.stitch-veil { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+/* Image reveal: a henna running stitch crosses the picture in reading direction and the picture settles behind it.
+   The thread and the cut share one duration and curve, so the stitch always sits on the edge. */
+.veil { --veil-delay: calc(var(--i, 0) * 90ms); }
+.veil:not(.is-shown) > img { clip-path: inset(0 0 0 100%); transform: scale(1.12); }
+.veil.is-shown > img {
+  clip-path: inset(0); transform: none;
+  transition: clip-path 1000ms var(--ease-pull) var(--veil-delay), transform 1600ms var(--ease-thread) var(--veil-delay) !important;
+}
+.veil__thread {
+  position: absolute; z-index: 3; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, var(--henna) 0 7px, transparent 7px 12px) left top / 3px 100% no-repeat;
+  transform: translateX(100%);
+}
+.veil.is-shown > .veil__thread {
+  transform: translateX(-3px); opacity: 0;
+  transition: transform 1000ms var(--ease-pull) var(--veil-delay), opacity 160ms linear calc(var(--veil-delay) + 880ms);
+}
+[dir="ltr"] .veil:not(.is-shown) > img { clip-path: inset(0 100% 0 0); }
+[dir="ltr"] .veil__thread { background-position: right top; transform: translateX(-100%); }
+[dir="ltr"] .veil.is-shown > .veil__thread { transform: translateX(3px); }
+/* Labels, tags and shades wait for their picture */
+.veil > :not(img, .veil__thread) { opacity: 0; }
+.veil.is-shown > :not(img, .veil__thread) { opacity: 1; transition: opacity 500ms linear calc(var(--veil-delay) + 600ms); }
+.cat.veil::after { opacity: 0; }
+.cat.veil.is-shown::after { opacity: 1; transition: opacity 600ms linear calc(var(--veil-delay) + 350ms); }
+.cats > .cat:nth-child(2), .windows > .window:nth-of-type(2) { --i: 1; }
+.cats > .cat:nth-child(3), .windows > .window:nth-of-type(3) { --i: 2; }
+.cats > .cat:nth-child(4) { --i: 1; }
+.cats > .cat:nth-child(5) { --i: 2; }
+.cats > .cat:nth-child(6) { --i: 3; }
 
 /* ---------- Ribbon ---------- */
 .ribbon { background: var(--zaytoun); color: #fff; overflow: hidden; }
@@ -232,11 +260,11 @@
 .join .field { flex: 1; }
 .site-foot { --focus: var(--henna-glow); background: var(--zaytoun-deep); color: #fff; }
 .site-foot .band { height: 24px; }
-.foot-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: var(--s6); padding-block: var(--s10) var(--s8); }
+.foot-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)); gap: var(--s6); padding-block: var(--s10) var(--s8); }
 .foot-grid > * { min-width: 0; }
 .foot-grid img { width: 140px; filter: brightness(0) invert(1); }
 .foot-grid p { color: var(--muted-night); font-size: var(--fs-small); margin-block-start: var(--s3); max-width: 28em; }
-.foot-grid h3 { font: 700 1rem/1.4 var(--font-ui); margin-block-end: var(--s2); }
+.foot-grid h2 { font: 700 1rem/1.4 var(--font-ui); margin-block-end: var(--s2); }
 .foot-grid ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s1); font-size: var(--fs-small); }
 .foot-grid a { color: var(--muted-night); text-decoration: none; }
 .foot-grid a:hover { color: #fff; }
@@ -272,8 +300,10 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
+  .main-nav { gap: var(--s2); }   /* six links still fit beside the logo down to the menu breakpoint */
   .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot-grid > :first-child { grid-column: 1 / -1; }
   .corp__body { padding: var(--s6); }
 }
 @media (max-width: 900px) {
@@ -317,7 +347,7 @@
   .product__name { font-size: 1.0625rem; }
   .product__meta { flex-direction: column; gap: 4px; }
   .product__price--soon { text-align: start; }
-  .foot-grid { grid-template-columns: minmax(0, 1fr); }
+  .foot-grid { gap: var(--s5) var(--s3); }
   .corp__list { grid-template-columns: minmax(0, 1fr); }
   .corp__body { padding: var(--s5) var(--s3); }
   .hero__meta { gap: var(--s3); }
@@ -333,5 +363,4 @@
   .rise .w > span { transform: none; transition: none; }
   .up { transform: none; opacity: 1; transition: opacity 200ms ease; }
   .scroll-stitch .c { opacity: 1; transform: none; }
-  .stitch-veil { display: none; }
 }

@@ -1,0 +1,106 @@
+/* DAR motifs page: each motif shown as a cross-stitch chart, with its name, story and the band it makes.
+   Depends on tokens.css, base.css, site.css, shop.css (crumbs), pages.css (cta-band) */
+
+/* ---------- Night hero: the star is stitched row by row ---------- */
+.m-hero { background: var(--zaytoun-deep); color: #fff; --focus: var(--henna-glow); }
+.m-hero .m-hero__crumbs.wrap { display: block; padding-block: var(--s3) 0; }
+.m-hero .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s10); align-items: center; padding-block: var(--s10) var(--s12); }
+.m-hero .wrap > * { min-width: 0; }
+.m-hero .eyebrow { color: var(--henna-glow); }
+.m-hero .crumbs { color: var(--muted-night); padding-block: 0; }
+.m-hero .crumbs a:hover { color: #fff; }
+.m-hero h1 { font-size: clamp(2.75rem, 1.6rem + 4vw, 5.75rem); font-weight: 900; line-height: 1.55; margin-block: var(--s2) var(--s3); }
+.m-hero h1 em { font-style: normal; color: var(--henna-glow); }
+.m-hero p { font: 400 var(--fs-lead)/1.9 var(--font-text); color: var(--muted-night); max-width: 32em; }
+.m-hero__star { justify-self: center; width: min(100%, 420px); }
+.m-hero__star [data-motif] { width: 100%; }
+.m-hero .demo-note { background: rgba(255, 255, 255, .06); color: var(--muted-night); margin-block-start: var(--s5); }
+
+/* Index of motifs */
+.m-index { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-block-end: 1px solid var(--paper-3); }
+.m-index a {
+  display: grid; justify-items: center; gap: var(--s1); padding: var(--s3) var(--s1); text-decoration: none; text-align: center;
+  font: 700 1rem/1.4 var(--font-display); transition: background-color var(--t-fast) ease;
+}
+.m-index a:hover { background: var(--paper-2); }
+.m-index [data-motif] { height: 36px; width: auto; display: grid; place-items: center; }
+.m-index [data-motif] svg { height: 36px; width: auto; }
+
+/* ---------- Specimen: chart on one side, the story on the other ---------- */
+.specimen { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s10); align-items: center; padding-block: var(--s12); border-block-end: 1px solid var(--paper-3); }
+.specimen > * { min-width: 0; }
+.specimen:nth-of-type(even) .chart-panel { order: 2; }
+.specimen__n { font: 700 var(--fs-h3)/1 var(--font-display); color: var(--henna); }
+.specimen h2 { font-size: var(--fs-h1); font-weight: 900; line-height: 1.5; margin-block: var(--s2) 4px; }
+.specimen .aka { color: var(--muted); font-size: var(--fs-small); }
+.specimen__story { font: 400 var(--fs-lead)/1.9 var(--font-text); margin-block: var(--s3); max-width: 34em; }
+.specimen dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s1) var(--s3); margin: 0; padding-block-start: var(--s3); border-block-start: 1px solid var(--paper-3); font-size: var(--fs-small); }
+.specimen dt { color: var(--muted); }
+.specimen dd { margin: 0; }
+
+.chart-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); padding: var(--s5); background: var(--paper-2); }
+.chart-panel__tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s2); }
+.seg { display: inline-flex; box-shadow: inset 0 0 0 1px var(--line-strong); }
+.seg button { border: 0; background: none; min-height: 40px; padding: 0 var(--s2); font: 500 var(--fs-small)/1 var(--font-ui); color: var(--muted); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--zaytoun); color: var(--paper); }
+.chart-panel .link-btn { font-size: var(--fs-small); }
+
+/* The chart: the motif over the cloth grid, one cell per stitch */
+.chart {
+  --w: 9; --h: 9;
+  justify-self: center; width: var(--size, 320px); max-width: 100%; aspect-ratio: var(--w) / var(--h); position: relative;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(54, 70, 57, .14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(54, 70, 57, .14) 1px, transparent 1px);
+  background-size: calc(100% / var(--w)) calc(100% / var(--h));
+  box-shadow: 0 0 0 1px rgba(54, 70, 57, .2);
+}
+.chart.is-stitched { background-image: linear-gradient(to right, rgba(54, 70, 57, .07) 1px, transparent 1px), linear-gradient(to bottom, rgba(54, 70, 57, .07) 1px, transparent 1px); }
+.chart [data-motif] { position: absolute; inset: 0; width: 100%; }
+.chart [data-motif] svg { width: 100%; height: 100%; }
+
+/* The band the motif makes when it repeats */
+.repeat { display: grid; gap: var(--s1); }
+.repeat small { font-size: var(--fs-micro); color: var(--muted); }
+.repeat .band { background-color: var(--paper); box-shadow: 0 0 0 1px rgba(54, 70, 57, .12); background-position: center; }
+
+/* ---------- City chest pieces and the two stitches ---------- */
+.chests { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: var(--s10); align-items: center; }
+.chests > * { min-width: 0; }
+.chests figure { margin: 0; aspect-ratio: 3 / 4; overflow: hidden; background: var(--paper-2); }
+.chests figure img { width: 100%; height: 100%; object-fit: cover; }
+.chests h2 { font-size: var(--fs-h1); margin-block: var(--s2) var(--s3); }
+.chests > div > p { font: 400 var(--fs-lead)/1.9 var(--font-text); max-width: 32em; }
+.cities { list-style: none; margin: var(--s4) 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s1); }
+.cities li { padding: 6px 12px; background: var(--paper-2); font: 500 var(--fs-small)/1.4 var(--font-ui); }
+
+.stitches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); margin-block-start: var(--s10); }
+.stitch-card { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--s3); align-items: center; padding: var(--s4); box-shadow: inset 0 0 0 1px var(--paper-3); }
+.stitch-card > * { min-width: 0; }
+.stitch-card svg { width: 120px; height: 120px; background: var(--paper-2); }
+.stitch-card b { display: block; font: 700 1.375rem/1.5 var(--font-display); }
+.stitch-card small { display: block; color: var(--muted); font-size: var(--fs-micro); margin-block-end: var(--s1); }
+.stitch-card p { color: var(--muted); font-size: var(--fs-small); line-height: 1.8; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .m-index { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .specimen { gap: var(--s6); }
+}
+@media (max-width: 900px) {
+  .m-hero .wrap { grid-template-columns: minmax(0, 1fr); gap: var(--s6); padding-block: var(--s6) var(--s8); }
+  .m-hero__star { order: -1; width: min(70vw, 300px); }
+  .specimen { grid-template-columns: minmax(0, 1fr); padding-block: var(--s8); }
+  .specimen:nth-of-type(even) .chart-panel { order: 0; }
+  .chests { grid-template-columns: minmax(0, 1fr); gap: var(--s5); }
+  .chests figure { max-width: 420px; width: 100%; justify-self: center; }
+  .stitches { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .m-index a { padding: var(--s2) 4px; font-size: .9375rem; }
+  .m-index [data-motif], .m-index [data-motif] svg { height: 28px; }
+  .chart-panel { padding: var(--s3); margin-inline: calc(var(--gutter) * -1); }
+  .stitch-card { grid-template-columns: 88px minmax(0, 1fr); padding: var(--s3); gap: var(--s2); }
+  .stitch-card svg { width: 88px; height: 88px; }
+}

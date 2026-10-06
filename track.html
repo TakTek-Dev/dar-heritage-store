@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تتبع طلبك، دار</title>
+<meta name="description" content="تابع طلبك من دار برقم الطلب ورقم الجوال.">
+<meta name="robots" content="noindex">
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=10">
+<link rel="stylesheet" href="assets/css/site.css?v=16">
+<link rel="stylesheet" href="assets/css/shop.css?v=6">
+<link rel="stylesheet" href="assets/css/pages.css?v=4">
+<link rel="stylesheet" href="assets/css/service.css?v=1">
+</head>
+<body data-page="track">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="مسار التصفح"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><a href="help.html">المساعدة</a><span aria-hidden="true">/</span><span aria-current="page">تتبع الطلب</span></nav>
+
+    <section class="track-head" aria-labelledby="track-h">
+      <div>
+        <span class="eyebrow up"><span data-motif="starlet"></span>تتبع الطلب</span>
+        <h1 id="track-h" class="svc-title rise">أين وصلت<br><em>قطعتك؟</em></h1>
+        <p class="svc-lead up" style="--i:4">اكتب رقم الطلب ورقم الجوال الذي طلبت به، ونريك أين وصل.</p>
+      </div>
+      <form class="track-form up" id="track-form" novalidate aria-label="تتبع الطلب" style="--i:3">
+        <p class="form-error" id="track-error" role="alert" hidden></p>
+        <div class="field"><label for="t-no">رقم الطلب</label><input id="t-no" dir="ltr" autocomplete="off" spellcheck="false" required placeholder="DAR-2026-1052" aria-describedby="t-no-hint"><span class="hint" id="t-no-hint" data-hint>في رسالة التأكيد بعد إتمام الطلب</span></div>
+        <div class="field"><label for="t-phone">رقم الجوال</label><input id="t-phone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" required placeholder="+90 5xx xxx xx xx" aria-describedby="t-phone-hint"><span class="hint" id="t-phone-hint" data-hint>الرقم الذي كتبته عند الطلب</span></div>
+        <button class="btn btn--lg btn--henna" type="submit" id="track-send">تتبع الطلب</button>
+      </form>
+      <p class="demo-note"><span data-motif="starlet"></span><span>معاينة: تقرأ هذه الصفحة الطلبات المحفوظة في هذا المتصفح. أكمل طلبا من المتجر ثم تتبعه هنا. <button class="link-btn" type="button" id="t-demo" hidden>جرب بطلب تجريبي</button></span></p>
+    </section>
+
+    <div class="track-miss" id="track-miss" hidden tabindex="-1">
+      <b>لم نجد طلبا بهذه البيانات</b>
+      <p>تأكد من رقم الطلب كما في رسالة التأكيد، ومن رقم الجوال. وإن بقيت المشكلة، <a class="thread" href="https://wa.me/905538286235" target="_blank" rel="noopener">راسلنا على واتساب</a>.</p>
+    </div>
+
+    <section id="track-result" aria-live="polite">
+      <div class="tr-legend">
+        <h2>رحلة كل طلب</h2>
+        <ol class="tr-steps" aria-label="مراحل الطلب">
+          <li><span class="knot" aria-hidden="true"></span><b>استلمنا طلبك</b><span>تصلك رسالة التأكيد برقم الطلب</span></li>
+          <li><span class="knot" aria-hidden="true"></span><b>نجهز القطع</b><span>نطويها ونغلفها بعناية</span></li>
+          <li><span class="knot" aria-hidden="true"></span><b>في الطريق إليك</b><span>رقم الشحنة يصلك على واتساب</span></li>
+          <li><span class="knot" aria-hidden="true"></span><b>وصل</b><span>أو تستلمه من المركز</span></li>
+        </ol>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="assets/js/stitch.js?v=9"></script>
+<script src="assets/js/products.js?v=2"></script>
+<script src="assets/js/site.js?v=10"></script>
+<script src="assets/js/service.js?v=3"></script>
+</body>
+</html>

@@ -6,15 +6,15 @@
   const WA = "https://wa.me/905538286235";
   const IG = "https://www.instagram.com/filistinmirasmerkezi_dar/";
   const CATALOG = "https://drive.google.com/file/d/1CPTnajm8ko4JPwHOATp-Y_DdwfKiee4I/view";
-  const LINEN = "#F4EEE4", HENNA = "#B25426";
 
   /* ---------- Layout ---------- */
   const nav = [
     ["shop.html", "المتجر", "shop"],
     ["index.html#cats", "المجموعات"],
+    ["motifs.html", "النقوش", "motifs"],
     ["corporate.html", "هدايا المؤسسات", "corporate"],
     ["about.html", "من نحن", "about"],
-    ["about.html#visit", "زورونا"]
+    ["contact.html", "تواصل", "contact"]
   ];
   const navLinks = nav.map(([href, label, key]) => `<a href="${href}"${key === page ? ' aria-current="page"' : ""}>${label}</a>`).join("");
 
@@ -51,9 +51,10 @@
   <div class="band" data-band="saw" data-cell="4" data-night="1" aria-hidden="true" style="transform:scaleY(-1)"></div>
   <div class="wrap foot-grid">
     <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني" width="140" height="137"><p>القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.</p></div>
-    <div><h3>المتجر</h3><ul>${cats}</ul></div>
-    <div><h3>دار</h3><ul><li><a href="about.html">من نحن</a></li><li><a href="corporate.html">هدايا المؤسسات</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="about.html#visit">زورونا</a></li></ul></div>
-    <div><h3>تواصل</h3><ul><li><a href="${WA}" target="_blank" rel="noopener">واتساب</a></li><li><a href="${IG}" target="_blank" rel="noopener">إنستغرام</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">فيسبوك</a></li></ul></div>
+    <div><h2>المتجر</h2><ul>${cats}</ul></div>
+    <div><h2>دار</h2><ul><li><a href="about.html">من نحن</a></li><li><a href="motifs.html">النقوش</a></li><li><a href="corporate.html">هدايا المؤسسات</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="about.html#visit">زورونا</a></li></ul></div>
+    <div><h2>المساعدة</h2><ul><li><a href="track.html">تتبع طلبك</a></li><li><a href="help.html#shipping">الشحن والتوصيل</a></li><li><a href="help.html#returns">الإرجاع والاستبدال</a></li><li><a href="help.html">الأسئلة المتكررة</a></li><li><a href="policies.html">السياسات</a></li></ul></div>
+    <div><h2>تواصل</h2><ul><li><a href="contact.html">راسلنا</a></li><li><a href="${WA}" target="_blank" rel="noopener">واتساب</a></li><li><a href="${IG}" target="_blank" rel="noopener">إنستغرام</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">فيسبوك</a></li></ul></div>
   </div>
   <div class="wrap foot-base"><span>© 2026 دار، مركز التراث الفلسطيني</span><span>الصور من كتالوج دار 2026</span></div>
 </footer>
@@ -97,47 +98,33 @@
   }
   document.querySelectorAll(".rise").forEach(splitWords);
 
-  /* ---------- Stitch veil: the image is unpicked stitch by stitch ---------- */
+  /* ---------- Image reveal: a henna running stitch crosses the picture in reading direction,
+     and the picture settles behind it. It waits for the file, so it never sews in an empty frame ---------- */
+  const veilImg = host => host.querySelector(":scope > img") || host.querySelector("img");
+  function prepVeil(host) {
+    if (host.dataset.veiled || !veilImg(host)) return false;
+    host.dataset.veiled = "1";
+    host.classList.add("veil");
+    host.insertAdjacentHTML("beforeend", '<span class="veil__thread" aria-hidden="true"></span>');
+    return true;
+  }
   function veil(host) {
-    const r = host.getBoundingClientRect();
-    if (!r.width || !r.height || reduce) return;
-    host.querySelector(".stitch-veil")?.remove();
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    const c = document.createElement("canvas");
-    c.className = "stitch-veil";
-    c.width = Math.ceil(r.width * dpr); c.height = Math.ceil(r.height * dpr);
-    host.append(c);
-    const ctx = c.getContext("2d");
-    ctx.scale(dpr, dpr);
-    const size = r.width < 260 ? 10 : 14;
-    const cols = Math.ceil(r.width / size), rows = Math.ceil(r.height / size);
-    ctx.fillStyle = LINEN; ctx.fillRect(0, 0, r.width, r.height);
-    // Unpick from the bottom inline-start corner, with jitter so it reads as handwork
-    const cells = [];
-    for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
-      const d = ((cols - 1 - x) / cols + (rows - 1 - y) / rows) / 2;
-      cells.push({ x, y, t: d * 620 + Math.random() * 380, s: 0 });
-    }
-    ctx.strokeStyle = HENNA; ctx.lineWidth = Math.max(1.5, size * .16); ctx.lineCap = "square";
-    const X = (x, y) => {
-      const a = size * .22, b = size * .78;
-      ctx.beginPath();
-      ctx.moveTo(x * size + a, y * size + a); ctx.lineTo(x * size + b, y * size + b);
-      ctx.moveTo(x * size + b, y * size + a); ctx.lineTo(x * size + a, y * size + b);
-      ctx.stroke();
+    const img = veilImg(host);
+    let started = false, ended = false;
+    // Back to the element's own styles (hover zoom, gallery zoom) once the picture has settled
+    const finish = () => {
+      if (ended) return; ended = true;
+      host.classList.remove("veil", "is-shown");
+      host.querySelector(".veil__thread")?.remove();
     };
-    const start = performance.now();
-    let left = cells.length;
-    const frame = now => {
-      const t = now - start;
-      for (const cell of cells) {
-        if (cell.s === 2) continue;
-        if (cell.s === 0 && t >= cell.t) { cell.s = 1; X(cell.x, cell.y); }
-        if (cell.s === 1 && t >= cell.t + 110) { cell.s = 2; left--; ctx.clearRect(cell.x * size - .5, cell.y * size - .5, size + 1, size + 1); }
-      }
-      if (left > 0) requestAnimationFrame(frame); else c.remove();
+    const go = () => {
+      if (started) return; started = true;
+      requestAnimationFrame(() => host.classList.add("is-shown"));
+      img.addEventListener("transitionend", e => { if (e.target === img && e.propertyName === "transform") finish(); });
+      setTimeout(finish, 3200);
     };
-    requestAnimationFrame(frame);
+    if (!img || (img.complete && img.naturalWidth)) go();
+    else { img.addEventListener("load", go, { once: true }); img.addEventListener("error", go, { once: true }); setTimeout(go, 2500); }
   }
 
   /* ---------- Reveal on enter ---------- */
@@ -149,6 +136,7 @@
 
   function observe(root = document) {
     root.querySelectorAll(".rise:not(.is-in), .up:not(.is-in), [data-veil]").forEach(el => {
+      if (el.hasAttribute("data-veil")) { if (!reduce && prepVeil(el)) io.observe(el); return; }
       if (reduce) el.classList.add("is-in"); else io.observe(el);
     });
   }

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تواصل، دار</title>
+<meta name="description" content="تواصل مع دار، مركز التراث الفلسطيني في إسطنبول، على واتساب أو إنستغرام، أو زر المركز في Bahçelievler.">
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=10">
+<link rel="stylesheet" href="assets/css/site.css?v=16">
+<link rel="stylesheet" href="assets/css/shop.css?v=6">
+<link rel="stylesheet" href="assets/css/pages.css?v=4">
+<link rel="stylesheet" href="assets/css/service.css?v=1">
+</head>
+<body data-page="contact">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="مسار التصفح"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><span aria-current="page">تواصل</span></nav>
+  </div>
+
+  <!-- Channels and a ready WhatsApp message -->
+  <section class="contact wrap" aria-labelledby="contact-h">
+    <div>
+      <span class="eyebrow up"><span data-motif="starlet"></span>تواصل</span>
+      <h1 id="contact-h" class="svc-title rise">اكتب لنا<br><em>نرد عليك</em></h1>
+      <p class="svc-lead up" style="--i:4">أسرع طريق إلى دار رسالة على واتساب. اسألنا عن قطعة أو مقاس أو طلب، أو عن هدايا مؤسستك.</p>
+      <ul class="channels up" style="--i:6">
+        <li><a class="channel channel--wa" href="https://wa.me/905538286235" target="_blank" rel="noopener"><span data-motif="i-chat"></span><span><b>واتساب</b><bdi class="num">+90 553 828 62 35</bdi></span><span class="go" data-motif="i-arrow"></span></a></li>
+        <li><a class="channel" href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener"><span data-motif="i-camera"></span><span><b>إنستغرام</b><bdi>@filistinmirasmerkezi_dar</bdi></span><span class="go" data-motif="i-arrow"></span></a></li>
+        <li><a class="channel" href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener"><span data-motif="i-globe"></span><span><b>فيسبوك</b><bdi>Filistin Miras Merkezi</bdi></span><span class="go" data-motif="i-arrow"></span></a></li>
+        <li><a class="channel" href="https://maps.google.com/?q=Altın+Sk.+No:11/A+Bahçelievler+İstanbul" target="_blank" rel="noopener"><span data-motif="i-pin"></span><span><b>زيارة المركز</b><bdi lang="tr">Altın Sk. No:11/A, Bahçelievler, İstanbul</bdi></span><span class="go" data-motif="i-arrow"></span></a></li>
+      </ul>
+    </div>
+
+    <div class="contact__panel up" style="--i:3">
+      <h2 id="msg-h">رسالة جاهزة على واتساب</h2>
+      <p>اختر الموضوع واكتب سؤالك، ونفتح لك واتساب والرسالة مكتوبة.</p>
+      <form id="contact-form" novalidate aria-labelledby="msg-h">
+        <p class="form-error" id="contact-error" role="alert" hidden></p>
+        <fieldset class="topics">
+          <legend>الموضوع</legend>
+          <label><input type="radio" name="topic" value="سؤال عن قطعة" checked><span>سؤال عن قطعة</span></label>
+          <label><input type="radio" name="topic" value="طلب قائم"><span>طلب قائم</span></label>
+          <label><input type="radio" name="topic" value="هدايا مؤسسات"><span>هدايا مؤسسات</span></label>
+          <label><input type="radio" name="topic" value="زيارة المركز"><span>زيارة المركز</span></label>
+          <label><input type="radio" name="topic" value="موضوع آخر"><span>موضوع آخر</span></label>
+        </fieldset>
+        <div class="field" id="order-field" hidden><label for="c-order">رقم الطلب</label><input id="c-order" dir="ltr" autocomplete="off" placeholder="DAR-2026-1052" aria-describedby="c-order-hint"><span class="hint" id="c-order-hint">تجده في رسالة التأكيد. ويمكنك <a class="thread" href="track.html">تتبع طلبك</a> بنفسك.</span></div>
+        <div class="field"><label for="c-name">الاسم <span class="req" aria-hidden="true">*</span></label><input id="c-name" autocomplete="name" required aria-describedby="c-name-hint"><span class="hint" id="c-name-hint" data-hint></span></div>
+        <div class="field"><label for="c-msg">رسالتك <span class="req" aria-hidden="true">*</span></label><textarea id="c-msg" rows="4" required aria-describedby="c-msg-hint" placeholder="مثلا: هل يتوفر الثوب الأخضر بمقاس أكبر؟"></textarea><span class="hint" id="c-msg-hint" data-hint></span></div>
+        <button class="btn btn--lg btn--henna" type="submit" id="contact-send"><span data-motif="i-chat" data-mono="1"></span>افتح واتساب برسالتك</button>
+        <p class="small-note">لا يرسل شيء قبل أن تضغط إرسال في واتساب.</p>
+      </form>
+      <div class="quote-done" id="contact-done" hidden tabindex="-1"><b>جهزنا رسالتك</b><span>أرسلها من واتساب لتصل إلى دار. إن لم يفتح واتساب، <a class="thread" id="contact-link" href="https://wa.me/905538286235" target="_blank" rel="noopener">افتحه من هنا</a>.</span></div>
+    </div>
+  </section>
+
+  <!-- Answers people usually look for first -->
+  <section class="sec wrap" style="padding-block-start:0" aria-labelledby="before-h">
+    <div class="sec-head">
+      <div><span class="eyebrow up"><span data-motif="starlet"></span>قبل أن تكتب</span><h2 id="before-h" class="rise">ربما تجد الجواب هنا</h2></div>
+    </div>
+    <div class="audience">
+      <a class="up" href="track.html"><span data-motif="i-box"></span><span><b>تتبع طلبك</b><span>رقم الطلب ورقم جوالك يكفيان لترى أين وصل.</span></span><span class="go-line">تتبع الطلب <span data-motif="i-arrow"></span></span></a>
+      <a class="up" style="--i:1" href="help.html#shipping"><span data-motif="i-truck"></span><span><b>الشحن والتوصيل</b><span>داخل تركيا وخارجها، أو الاستلام من المركز.</span></span><span class="go-line">إجابات الشحن <span data-motif="i-arrow"></span></span></a>
+      <a class="up" style="--i:2" href="help.html#returns"><span data-motif="i-return"></span><span><b>الإرجاع والاستبدال</b><span>متى ترد القطعة، وكيف يعود المبلغ.</span></span><span class="go-line">إجابات الإرجاع <span data-motif="i-arrow"></span></span></a>
+      <a class="up" style="--i:3" href="help.html#care"><span data-motif="i-wash"></span><span><b>العناية بالقطع</b><span>كيف تغسل التطريز وتحفظه سنوات.</span></span><span class="go-line">دليل العناية <span data-motif="i-arrow"></span></span></a>
+    </div>
+  </section>
+
+  <!-- Visit -->
+  <section class="visit-band" aria-labelledby="visit-h">
+    <div class="wrap">
+      <figure class="visit-band__media arch" data-veil><img src="assets/img/dar/cup-hand.webp" alt="يدان تقدمان فنجانين عليهما نقشة تطريز حمراء" width="327" height="501" loading="lazy"></figure>
+      <div>
+        <span class="eyebrow up"><span data-motif="starlet"></span>زورونا</span>
+        <h2 id="visit-h" class="rise">الدار مفتوحة لكم</h2>
+        <p class="up">تعالوا المسوا القطع بأيديكم، واسمعوا حكاية كل نقشة. مركز دار في حي <bdi lang="tr">Bahçelievler</bdi> في إسطنبول.</p>
+        <address class="up" lang="tr"><bdi>Altın Sk. No:11/A</bdi><br><bdi>Bahçelievler, İstanbul</bdi></address>
+        <p class="small-note up">مواعيد الزيارة نؤكدها معكم على واتساب قبل الحضور.</p>
+        <div class="row up">
+          <a class="btn" href="https://maps.google.com/?q=Altın+Sk.+No:11/A+Bahçelievler+İstanbul" target="_blank" rel="noopener">افتح الخريطة <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+          <a class="btn btn--quiet" href="about.html#visit">عن المركز</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="assets/js/stitch.js?v=9"></script>
+<script src="assets/js/products.js?v=2"></script>
+<script src="assets/js/site.js?v=10"></script>
+<script src="assets/js/service.js?v=3"></script>
+</body>
+</html>

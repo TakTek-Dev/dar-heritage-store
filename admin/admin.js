@@ -22,15 +22,16 @@
   const saveProduct = (id, patch) => { state.products[id] = Object.assign({}, state.products[id], patch); persist(); };
   const unit = p => +p.price || DEMO_PRICE[p.cat];
 
-  /* ---------- Demo orders: generated once, clearly labelled, statuses persist ---------- */
-  if (!state.orders) {
+  /* ---------- Demo orders: generated once, clearly labelled, statuses persist.
+     Orders placed from the storefront in this browser (local: true) stay first, beside the demo set ---------- */
+  if (!(state.orders || []).some(o => !o.local)) {
     let seed = 7;
     const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
     const people = [["سارة أحمد", "إسطنبول"], ["Ayşe Yılmaz", "أنقرة"], ["محمد الخطيب", "إسطنبول"], ["Fatma Demir", "بورصة"], ["ليلى حسن", "غازي عنتاب"], ["Mehmet Kaya", "إسطنبول"], ["نور الهدى", "الرياض"], ["Zeynep Arslan", "إزمير"], ["رنا عبد الله", "إسطنبول"], ["Emre Çelik", "قونية"], ["هبة يوسف", "برلين"], ["Elif Şahin", "إسطنبول"], ["عمر سليم", "عمان"], ["Hatice Öztürk", "قيصري"], ["دينا مصطفى", "إسطنبول"], ["Ali Koç", "أنطاليا"]];
     const flow = ["new", "new", "new", "prep", "prep", "ship", "ship", "done", "done", "done", "done", "done", "done", "cancel", "done", "done"];
     const all = DAR_ALL_PRODUCTS;
     const today = new Date(); today.setHours(12, 0, 0, 0);
-    state.orders = people.map(([name, city], i) => {
+    state.orders = [...(state.orders || []), ...people.map(([name, city], i) => {
       const lines = Array.from({ length: 1 + Math.floor(rnd() * 3) }, () => ({ pid: all[Math.floor(rnd() * all.length)].id, qty: 1 + Math.floor(rnd() * 2) }));
       const d = new Date(today); d.setDate(d.getDate() - Math.floor(i * .9 + rnd() * 1.5));
       return {
@@ -39,7 +40,7 @@
         ship: city === "إسطنبول" && rnd() > .7 ? "pickup" : ["الرياض", "برلين", "عمان"].includes(city) ? "intl" : "tr",
         status: flow[i], date: d.toISOString(), phone: `+90 5${Math.floor(10 + rnd() * 89)} ••• •• ${Math.floor(10 + rnd() * 89)}`
       };
-    });
+    })];
     persist();
   }
   const orderTotal = o => o.lines.reduce((s, l) => { const p = product(l.pid); return s + (p ? unit(p) * l.qty : 0); }, 0) + (o.ship === "tr" ? +(state.settings.shipTr || 120) : 0);
