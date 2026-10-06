@@ -6,13 +6,12 @@
 <title>نظام دار البصري</title>
 <link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/tokens.css?v=4">
-<link rel="stylesheet" href="assets/css/base.css?v=7">
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=9">
 <style>
   /* Page-only layout for the system document */
   .ds-top {
-    position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--paper) 92%, transparent);
-    backdrop-filter: blur(8px); border-block-end: 1px solid var(--paper-3);
+    position: sticky; top: 0; z-index: 20; background: var(--paper); border-block-end: 1px solid var(--paper-3);
   }
   .ds-top .wrap { display: flex; align-items: center; gap: var(--s3); min-height: 64px; }
   .ds-top .mark { width: 28px; }
@@ -26,7 +25,7 @@
 
   .cover { padding-block: var(--s12) var(--s16); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s8); align-items: center; }
   .cover > * { min-width: 0; }
-  .cover h1 { font-size: var(--fs-hero); font-weight: 900; line-height: 1.3; letter-spacing: 0; }
+  .cover h1 { font-size: var(--fs-hero); font-weight: 900; line-height: 1.55; }
   .cover h1 em { font-style: normal; color: var(--henna); }
   .cover p { font: 400 var(--fs-lead)/1.8 var(--font-text); max-width: 34em; margin-block-start: var(--s4); color: var(--muted); }
   .cover .star { width: min(100%, 460px); justify-self: center; position: relative; }
@@ -69,24 +68,26 @@
   .sw { min-height: 220px; padding: var(--s3); display: flex; flex-direction: column; justify-content: space-between; gap: var(--s2); }
   .sw h3 { font-size: var(--fs-h3); }
   .sw dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px var(--s2); font-size: var(--fs-micro); }
-  .sw dt { opacity: .75; } .sw dd { margin: 0; }
+  .sw dd { margin: 0; }
   .sw--paper { grid-column: span 4; background: var(--paper); border: 1px solid var(--paper-3); }
   .sw--zaytoun { grid-column: span 4; background: var(--zaytoun); color: var(--paper); }
-  .sw--henna { grid-column: span 4; background: var(--henna); color: var(--paper); }
+  .sw--henna { grid-column: span 4; background: var(--henna); color: #fff; }
   .sw--sm { grid-column: span 3; min-height: 140px; }
   .ratio { display: flex; height: 40px; margin-block-start: var(--s3); }
   .ratio i { display: block; }
   .ratio-note { font-size: var(--fs-micro); color: var(--muted); margin-block-start: var(--s1); }
+  .st-demo { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; font: 500 var(--fs-micro)/1 var(--font-ui); }
+  .st-demo::before { content: ""; width: 8px; height: 8px; background: currentColor; }
 
   /* type */
   .type-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4); border-block-end: 1px solid var(--paper-3); align-items: baseline; }
   .type-row > * { min-width: 0; }
   .type-row .meta { font-size: var(--fs-micro); color: var(--muted); line-height: 1.6; }
   .type-row .meta b { display: block; color: var(--zaytoun); font-size: var(--fs-small); }
-  .t-hero { font: 900 var(--fs-hero)/1.3 var(--font-display); }
-  .t-h1 { font: 700 var(--fs-h1)/1.35 var(--font-display); }
-  .t-h2 { font: 700 var(--fs-h2)/1.4 var(--font-display); }
-  .t-h3 { font: 700 var(--fs-h3)/1.3 var(--font-display); }
+  .t-hero { font: 900 var(--fs-hero)/1.55 var(--font-display); }
+  .t-h1 { font: 700 var(--fs-h1)/1.5 var(--font-display); }
+  .t-h2 { font: 700 var(--fs-h2)/1.5 var(--font-display); }
+  .t-h3 { font: 700 var(--fs-h3)/1.45 var(--font-display); }
   .t-lead { font: 400 var(--fs-lead)/1.85 var(--font-text); max-width: 38em; }
   .t-body { font: 400 var(--fs-body)/1.75 var(--font-ui); max-width: 38em; }
   .t-ui { font: 500 1rem/1.4 var(--font-ui); }
@@ -116,9 +117,8 @@
   /* components */
   .comp { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s5); border-block-end: 1px solid var(--paper-3); }
   .comp > * { min-width: 0; }
-  .comp h3 { font: 700 1.25rem/1.3 var(--font-display); }
+  .comp h3 { font: 700 1.25rem/1.45 var(--font-display); }
   .comp .note { font-size: var(--fs-small); color: var(--muted); margin-block-start: var(--s1); line-height: 1.6; }
-  .row { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
   .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); }
   .form-demo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) var(--s4); max-width: 640px; }
 
@@ -183,10 +183,10 @@
     <div>
       <span class="eyebrow"><span data-motif="starlet"></span>مركز التراث الفلسطيني في إسطنبول</span>
       <h1 style="margin-block-start: var(--s3)">كل شيء هنا<br>يبدأ <em>بغرزة</em></h1>
-      <p>شعار دار مطرّز على شبكة من 44 غرزة. هذا النظام يأخذ الشبكة نفسها ويبني بها الموقع كله: المسافات والزوايا والأيقونات والحركة. فإذا غاب الشعار بقيت الغرزة تقول اسم البيت.</p>
+      <p>شعار دار مطرز على شبكة من 44 غرزة. هذا النظام يأخذ الشبكة نفسها ويبني بها الموقع كله: المسافات والزوايا والأيقونات والحركة. فإذا غاب الشعار بقيت الغرزة تقول اسم البيت.</p>
       <div class="row" style="margin-block-start: var(--s5)">
         <a class="btn btn--lg" href="#grid">ابدأ من الغرزة <span class="go" data-motif="i-arrow"></span></a>
-        <button class="btn btn--lg btn--quiet" type="button" data-replay="#cover-star">طرّز النجمة مرة أخرى</button>
+        <button class="btn btn--lg btn--quiet" type="button" data-replay="#cover-star">طرز النجمة مرة أخرى</button>
       </div>
     </div>
     <figure class="star" style="margin:0">
@@ -271,14 +271,21 @@
         <dl><dt>HEX</dt><dd class="latin">#B25426</dd><dt>الدور</dt><dd>الغرز والعناوين الكبيرة، والأزرار بنص أبيض</dd><dt>على الكتان</dt><dd class="num">4.3 : 1 للكبير فقط</dd></dl>
       </div>
       <div class="sw sw--sm" style="background:var(--zaytoun-deep);color:var(--paper)"><b>ليل</b><dl><dt>HEX</dt><dd class="latin">#1E2A21</dd><dt>الدور</dt><dd>أقسام الليل والفوتر</dd></dl></div>
-      <div class="sw sw--sm" style="background:var(--henna-ink);color:var(--paper)"><b>حناء داكن</b><dl><dt>HEX</dt><dd class="latin">#9A4520</dd><dt>الدور</dt><dd>مرور على أزرار الحناء</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--henna-ink);color:var(--paper)"><b>حناء داكن</b><dl><dt>HEX</dt><dd class="latin">#9A4520</dd><dt>الدور</dt><dd>نص صغير بالحناء، ومرور على أزرار الحناء</dd></dl></div>
       <div class="sw sw--sm" style="background:var(--paper-2)"><b>كتان 2</b><dl><dt>HEX</dt><dd class="latin">#EAE1D2</dd><dt>الدور</dt><dd>أسطح وصور فارغة</dd></dl></div>
       <div class="sw sw--sm" style="background:var(--line)"><b>صوف</b><dl><dt>HEX</dt><dd class="latin">#C9BBA3</dd><dt>الدور</dt><dd>خيوط زخرفية، ليس للنص</dd></dl></div>
     </div>
     <div class="ratio" aria-hidden="true">
       <i style="flex:70;background:var(--paper-2)"></i><i style="flex:20;background:var(--zaytoun)"></i><i style="flex:7;background:var(--zaytoun-deep)"></i><i style="flex:3;background:var(--henna)"></i>
     </div>
-    <p class="ratio-note">النسبة في أي شاشة: كتان 70 وزيتون 20 وليل 7 وحناء 3. الحناء غرزة، لا يصبح خلفية لقسم كامل.</p>
+    <div class="row" style="margin-block-start:var(--s4)" aria-label="ألوان الحالة" role="group">
+      <span class="st-demo" style="color:var(--henna-ink);background:var(--danger-soft)">جديد</span>
+      <span class="st-demo" style="color:var(--warn);background:var(--warn-soft)">قيد التجهيز</span>
+      <span class="st-demo" style="color:var(--info);background:var(--info-soft)">تم الشحن</span>
+      <span class="st-demo" style="color:var(--ok);background:var(--ok-soft)">تم التسليم</span>
+      <span style="font-size:var(--fs-micro);color:var(--muted)">ألوان الحالة في لوحة التحكم، ومعها كلمة دائما</span>
+    </div>
+    <p class="ratio-note">النسبة في أي شاشة: كتان 70 وزيتون 20 وليل 7 وحناء 3. الحناء غرزة، ويصير خلفية لقسم واحد فقط في الصفحة، مثل سؤال الأسبوع.</p>
   </section>
 
   <!-- Type -->
@@ -346,13 +353,13 @@
   <section class="ds wrap" id="components" aria-labelledby="k-h">
     <div class="ds-head">
       <div><span class="idx">07</span><h2 id="k-h">المكونات</h2></div>
-      <p>حية وقابلة للضغط. مرّر الماوس، واضغط Tab لترى التركيز المتقطع كغرزة الشلّ.</p>
+      <p>حية وقابلة للضغط. مرر الماوس، واضغط Tab لترى التركيز المتقطع كغرزة الشل.</p>
     </div>
 
     <div class="comp">
       <div><h3>الأزرار</h3><p class="note">زيتون للفعل الأساسي، حناء لفعل واحد فقط في الصفحة كالشراء. الارتفاع 48 أو 56.</p></div>
       <div class="row">
-        <button class="btn btn--lg" type="button">تسوّق المجموعة <span class="go" data-motif="i-arrow"></span></button>
+        <button class="btn btn--lg" type="button">تسوق المجموعة <span class="go" data-motif="i-arrow"></span></button>
         <button class="btn btn--lg btn--henna" type="button">إتمام الطلب</button>
         <button class="btn btn--quiet" type="button">احفظ لوقت لاحق</button>
         <button class="btn" type="button" aria-disabled="true">نفدت الكمية</button>
@@ -362,7 +369,7 @@
     </div>
 
     <div class="comp">
-      <div><h3>رابط الخيط</h3><p class="note">غرزة شلّ متقطعة تتصل خيطا واحدا عند المرور.</p></div>
+      <div><h3>رابط الخيط</h3><p class="note">غرزة شل متقطعة تتصل خيطا واحدا عند المرور.</p></div>
       <p class="t-lead">اقرأ <a class="thread" href="#">حكاية نقشة السرو</a> أو تصفح <a class="thread" href="#">كل الشالات</a>.</p>
     </div>
 
@@ -389,18 +396,27 @@
     <div class="comp">
       <div><h3>بطاقة المنتج</h3><p class="note">بلا إطار وبلا ظل. الصورة 4:5، وزر الإضافة يظهر عند المرور ويبقى ظاهرا على اللمس. الأسعار والأسماء هنا أمثلة للتصميم فقط.</p></div>
       <div class="cards">
-        <a class="product" href="#">
-          <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><span class="tag"><span data-motif="amulet"></span>صنع يدويا</span><button class="btn product__add" type="button">أضف إلى السلة</button></div>
-          <div class="product__meta"><div><h3 class="product__name">شال نجمة بيت لحم</h3><p class="product__origin">تطريز يدوي، الخليل</p></div><p class="product__price num">850 ₺</p></div>
-        </a>
-        <a class="product" href="#">
-          <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><span class="tag tag--henna">قطعة أخيرة</span><button class="btn product__add" type="button">أضف إلى السلة</button></div>
-          <div class="product__meta"><div><h3 class="product__name">حقيبة السرو</h3><p class="product__origin">تطريز يدوي، غزة</p></div><p class="product__price num">620 ₺<s>740 ₺</s></p></div>
-        </a>
-        <a class="product" href="#">
-          <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><button class="btn product__add" type="button" aria-disabled="true">نفدت الكمية</button></div>
-          <div class="product__meta"><div><h3 class="product__name">مخدة القبة</h3><p class="product__origin">تطريز يدوي، رام الله</p></div><p class="product__price num">450 ₺</p></div>
-        </a>
+        <article class="product">
+          <div class="product__frame">
+            <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><span class="tag"><span data-motif="amulet"></span>صنع يدويا</span></div>
+            <button class="btn product__add" type="button">أضف إلى السلة</button>
+          </div>
+          <div class="product__meta"><div><h3 class="product__name"><a href="#components">شال نجمة بيت لحم</a></h3><p class="product__origin">تطريز يدوي، الخليل</p></div><p class="product__price num">850 ₺</p></div>
+        </article>
+        <article class="product">
+          <div class="product__frame">
+            <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div><span class="tag tag--henna">قطعة أخيرة</span></div>
+            <button class="btn product__add" type="button">أضف إلى السلة</button>
+          </div>
+          <div class="product__meta"><div><h3 class="product__name"><a href="#components">حقيبة السرو</a></h3><p class="product__origin">تطريز يدوي، غزة</p></div><p class="product__price num">620 ₺<s>740 ₺</s></p></div>
+        </article>
+        <article class="product">
+          <div class="product__frame">
+            <div class="product__media"><div class="ph" data-ph><strong>صورة المنتج</strong>4:5 على خلفية كتان</div></div>
+            <button class="btn product__add" type="button" aria-disabled="true">نفدت الكمية</button>
+          </div>
+          <div class="product__meta"><div><h3 class="product__name"><a href="#components">مخدة القبة</a></h3><p class="product__origin">تطريز يدوي، رام الله</p></div><p class="product__price num">450 ₺</p></div>
+        </article>
       </div>
     </div>
 
@@ -438,7 +454,7 @@
           <tr><td>تأخير الغرزة</td><td class="num">4ms لكل غرزة</td></tr>
         </table>
         <div class="row" style="margin-block-start:var(--s4)">
-          <button class="btn" type="button" data-replay="#night-star">طرّز سطرا سطرا</button>
+          <button class="btn" type="button" data-replay="#night-star">طرز سطرا سطرا</button>
         </div>
       </div>
     </div>
@@ -456,7 +472,7 @@
         <li><span data-motif="starlet"></span>نضع التطريز حيث يوضع على الثوب: أعلى وجانب وأسفل</li>
         <li><span data-motif="starlet"></span>نصور المنتج على كتان، بضوء نهار، مع يد أو غرزة قريبة</li>
         <li><span data-motif="starlet"></span>نكتب اسم القرية أو المدينة التي جاءت منها النقشة</li>
-        <li><span data-motif="starlet"></span>نترك الحناء للغرز والعناوين الكبيرة وزر شراء واحد</li>
+        <li><span data-motif="starlet"></span>نترك الحناء للغرز والعناوين الكبيرة وزر شراء واحد وقسم واحد</li>
       </ul></div>
       <div class="no"><h3>لا نفعل</h3><ul>
         <li><span data-motif="i-close"></span>زوايا دائرية، ظلال ناعمة، تدرجات لونية، زجاج</li>
@@ -477,7 +493,7 @@
   </div>
 </footer>
 
-<script src="assets/js/stitch.js?v=6"></script>
+<script src="assets/js/stitch.js?v=7"></script>
 <script>
   // Placeholder tiles use the starlet so empty images still feel woven
   const ph = Dar.tile("starlet", { R: "#DDD1BD", G: "#DDD1BD" }, 2);

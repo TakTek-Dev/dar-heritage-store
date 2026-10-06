@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>الدخول، لوحة دار</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="stylesheet" href="../assets/css/tokens.css?v=4">
-<link rel="stylesheet" href="../assets/css/base.css?v=7">
-<link rel="stylesheet" href="admin.css?v=3">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=9">
+<link rel="stylesheet" href="admin.css?v=5">
 </head>
 <body class="admin">
 <main class="login">
@@ -17,26 +17,29 @@
   </div>
   <div class="login__form">
     <form id="login" novalidate>
-      <img src="../assets/brand/dar-logo-mark.svg" alt="دار">
+      <img src="../assets/brand/dar-logo-mark.svg" alt="دار" width="64" height="85">
       <div><h1>لوحة دار</h1><p style="color:var(--muted)">ادخل لإدارة المتجر والطلبات.</p></div>
-      <p class="form-error" id="err" role="alert" hidden style="background:#F6E3DE;color:var(--danger);padding:12px 16px"></p>
-      <label class="f"><span>البريد الإلكتروني</span><input id="email" type="email" autocomplete="username" dir="ltr" required></label>
-      <label class="f"><span>كلمة المرور</span><input id="pass" type="password" autocomplete="current-password" dir="ltr" required></label>
+      <p class="form-error" id="err" role="alert" hidden style="background:var(--danger-soft);color:var(--danger);padding:12px 16px"></p>
+      <label class="f"><span>البريد الإلكتروني</span><input id="email" type="email" autocomplete="username" dir="ltr" required aria-describedby="err"></label>
+      <label class="f"><span>كلمة المرور</span><input id="pass" type="password" autocomplete="current-password" dir="ltr" required aria-describedby="err"></label>
       <button class="btn btn--lg btn--henna" type="submit">دخول</button>
       <p style="color:var(--muted);font-size:var(--fs-micro)">معاينة تصميم: لا يتحقق هذا النموذج من أي حساب. الدخول الحقيقي يأتي مع الخادم، ومعه التحقق بخطوتين.</p>
     </form>
   </div>
 </main>
-<script src="../assets/js/stitch.js?v=6"></script>
+<script src="../assets/js/stitch.js?v=7"></script>
 <script>
   document.getElementById("login").addEventListener("submit", e => {
     e.preventDefault();
     const err = document.getElementById("err");
     const email = document.getElementById("email"), pass = document.getElementById("pass");
-    if (!email.value || !email.checkValidity() || !pass.value) {
+    const badEmail = !email.value || !email.checkValidity();
+    email.setAttribute("aria-invalid", badEmail);
+    pass.setAttribute("aria-invalid", !badEmail && !pass.value);
+    if (badEmail || !pass.value) {
       err.hidden = false;
-      err.textContent = !email.value || !email.checkValidity() ? "اكتب بريدا إلكترونيا صحيحا." : "اكتب كلمة المرور.";
-      (!email.value || !email.checkValidity() ? email : pass).focus();
+      err.textContent = badEmail ? "اكتب بريدا إلكترونيا صحيحا." : "اكتب كلمة المرور.";
+      (badEmail ? email : pass).focus();
       return;
     }
     location.href = "index.html";

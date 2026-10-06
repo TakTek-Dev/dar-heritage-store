@@ -6,15 +6,15 @@
 <title>لوحة تحكم دار</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/css/tokens.css?v=4">
-<link rel="stylesheet" href="../assets/css/base.css?v=7">
-<link rel="stylesheet" href="admin.css?v=3">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=9">
+<link rel="stylesheet" href="admin.css?v=5">
 </head>
 <body class="admin">
 
 <div class="app">
   <aside class="side" id="side" aria-label="قائمة لوحة التحكم">
-    <a class="side__brand" href="#overview"><img src="../assets/brand/dar-logo-mark.svg" alt=""><span><b>لوحة دار</b><small>المتجر والمحتوى</small></span></a>
+    <a class="side__brand" href="#overview"><img src="../assets/brand/dar-logo-mark.svg" alt="" width="40" height="53"><span><b>لوحة دار</b><small>المتجر والمحتوى</small></span></a>
     <nav>
       <a href="#overview" data-nav="overview"><span data-motif="i-home"></span>الرئيسية</a>
       <a href="#orders" data-nav="orders"><span data-motif="i-box"></span>الطلبات<span class="badge num" id="nav-new"></span></a>
@@ -31,7 +31,7 @@
   <div>
     <header class="top">
       <button class="icon-btn menu" type="button" aria-label="فتح القائمة" aria-controls="side" aria-expanded="false"><span data-motif="i-menu"></span></button>
-      <div><span class="crumb" id="crumb">لوحة دار</span><h1 id="title">الرئيسية</h1></div>
+      <div><span class="crumb" id="crumb">لوحة دار</span><h1 id="title" tabindex="-1">الرئيسية</h1></div>
       <div class="top__end">
         <span class="demo">معاينة: البيانات محفوظة في هذا المتصفح فقط</span>
       </div>
@@ -48,15 +48,15 @@
 </div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="sheet" id="sheet" aria-labelledby="sheet-h" aria-hidden="true">
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-h" aria-hidden="true">
   <div class="sheet__head"><h2 id="sheet-h"></h2><button class="icon-btn" type="button" aria-label="إغلاق" data-close-sheet><span data-motif="i-close"></span></button></div>
   <div class="sheet__body" id="sheet-body"></div>
   <div class="sheet__foot" id="sheet-foot"></div>
 </aside>
-<div class="toast-slot" id="toast-slot" role="status" aria-live="polite" style="position:fixed;inset-block-end:24px;inset-inline-start:50%;transform:translate(50%,160%);z-index:80;transition:transform 260ms cubic-bezier(0.23, 1, 0.32, 1)"></div>
+<div class="toast-slot" id="toast-slot" role="status" aria-live="polite"></div>
 
-<script src="../assets/js/stitch.js?v=6"></script>
+<script src="../assets/js/stitch.js?v=7"></script>
 <script src="../assets/js/products.js?v=2"></script>
-<script src="admin.js?v=3"></script>
+<script src="admin.js?v=5"></script>
 </body>
 </html>

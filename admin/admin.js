@@ -4,6 +4,7 @@
   const $ = s => document.getElementById(s);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const IMG = id => `../assets/img/dar/${id}.webp`;
+  const SM = id => `../assets/img/dar/${id}-480.webp`;
   const money = n => `${Math.round(n).toLocaleString("en-US")} ₺`;
   const DEMO_PRICE = { wear: 2400, bags: 850, kufiya: 450, wall: 650, jewel: 350, home: 550 };
   const catName = id => (DAR_CATS.find(c => c.id === id) || {}).name || "";
@@ -25,7 +26,7 @@
   if (!state.orders) {
     let seed = 7;
     const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    const people = [["سارة أحمد", "إسطنبول"], ["Ayşe Yılmaz", "أنقرة"], ["محمد الخطيب", "إسطنبول"], ["Fatma Demir", "بورصة"], ["ليلى حسن", "غازي عنتاب"], ["Mehmet Kaya", "إسطنبول"], ["نور الهدى", "الرياض"], ["Zeynep Arslan", "إزمير"], ["رنا عبد الله", "إسطنبول"], ["Emre Çelik", "قونية"], ["هبة يوسف", "برلين"], ["Elif Şahin", "إسطنبول"], ["عمر سليم", "عمّان"], ["Hatice Öztürk", "قيصري"], ["دينا مصطفى", "إسطنبول"], ["Ali Koç", "أنطاليا"]];
+    const people = [["سارة أحمد", "إسطنبول"], ["Ayşe Yılmaz", "أنقرة"], ["محمد الخطيب", "إسطنبول"], ["Fatma Demir", "بورصة"], ["ليلى حسن", "غازي عنتاب"], ["Mehmet Kaya", "إسطنبول"], ["نور الهدى", "الرياض"], ["Zeynep Arslan", "إزمير"], ["رنا عبد الله", "إسطنبول"], ["Emre Çelik", "قونية"], ["هبة يوسف", "برلين"], ["Elif Şahin", "إسطنبول"], ["عمر سليم", "عمان"], ["Hatice Öztürk", "قيصري"], ["دينا مصطفى", "إسطنبول"], ["Ali Koç", "أنطاليا"]];
     const flow = ["new", "new", "new", "prep", "prep", "ship", "ship", "done", "done", "done", "done", "done", "done", "cancel", "done", "done"];
     const all = DAR_ALL_PRODUCTS;
     const today = new Date(); today.setHours(12, 0, 0, 0);
@@ -35,7 +36,7 @@
       return {
         id: `DAR-2026-${String(1051 - i)}`, name, city, lines,
         channel: rnd() > .45 ? "web" : "wa", pay: city === "إسطنبول" && rnd() > .6 ? "bank" : "card",
-        ship: city === "إسطنبول" && rnd() > .7 ? "pickup" : ["الرياض", "برلين", "عمّان"].includes(city) ? "intl" : "tr",
+        ship: city === "إسطنبول" && rnd() > .7 ? "pickup" : ["الرياض", "برلين", "عمان"].includes(city) ? "intl" : "tr",
         status: flow[i], date: d.toISOString(), phone: `+90 5${Math.floor(10 + rnd() * 89)} ••• •• ${Math.floor(10 + rnd() * 89)}`
       };
     });
@@ -51,12 +52,14 @@
   const slot = $("toast-slot");
   let tTimer;
   function toast(text) {
+    slot.inert = false;
     slot.innerHTML = `<div class="toast"><span data-motif="starlet" data-mode="cross"></span><span>${text}</span></div>`;
     Dar.mount(slot);
-    slot.style.transform = "translate(50%, 0)";
+    slot.classList.add("is-on");
     clearTimeout(tTimer);
-    tTimer = setTimeout(() => slot.style.transform = "translate(50%, 160%)", 2600);
+    tTimer = setTimeout(() => { slot.classList.remove("is-on"); slot.inert = true; }, 3200);
   }
+  slot.inert = true;
 
   /* ---------- Launch readiness, computed from the data ---------- */
   function readiness() {
@@ -88,18 +91,18 @@
       <div class="panel">
         <div class="panel__head"><div><h2>جاهزية الإطلاق</h2><p>ما يحتاجه المتجر قبل استقبال أول طلب حقيقي</p></div></div>
         <div class="panel__body ready">
-          <div class="ready__score"><span id="ready-star" data-motif="star" data-mode="cross" data-order="radial" aria-hidden="true"></span><b class="num">${doneN} / ${tasks.length}</b><small>مهام مكتملة</small></div>
+          <div class="ready__score"><span id="ready-star" data-motif="star" data-mode="cross" data-order="radial" aria-hidden="true"></span><b class="num">${doneN} من ${tasks.length}</b><small>مهام مكتملة</small></div>
           <ul class="tasks">${tasks.map(t => `
             <li class="${t.done ? "is-done" : ""}">
               <span class="tick">${t.done ? '<span data-motif="i-check"></span>' : ""}</span>
               <span><b>${t.title}</b><small>${t.note}</small>${t.ratio !== undefined && !t.done ? `<span class="bar"><i style="width:${Math.round(t.ratio * 100)}%"></i></span>` : ""}</span>
-              ${t.done ? "" : `<a class="btn btn--quiet" href="${t.go}">أكمل</a>`}
+              ${t.done ? "" : `<a class="btn btn--quiet" href="${t.go}" aria-label="أكمل: ${t.title}">أكمل</a>`}
             </li>`).join("")}
           </ul>
         </div>
       </div>
 
-      <div class="stats" aria-label="مؤشرات تجريبية">
+      <div class="stats" role="group" aria-label="مؤشرات تجريبية">
         <div class="stat"><span>طلبات جديدة</span><b class="num">${orders.filter(o => o.status === "new").length}</b><small class="demo">تجريبي</small></div>
         <div class="stat"><span>بانتظار التجهيز</span><b class="num">${orders.filter(o => o.status === "prep").length}</b><small class="demo">تجريبي</small></div>
         <div class="stat"><span>مبيعات آخر 7 أيام</span><b class="num">${money(week.reduce((s, o) => s + orderTotal(o), 0))}</b><small class="demo">تجريبي</small></div>
@@ -113,7 +116,7 @@
             <div class="chart" role="img" aria-label="عدد الطلبات في آخر 14 يوما: ${perDay.join("، ")}">
               <div class="chart-grid" style="inset-block-start:0"><span class="num">${max}</span></div>
               <div class="chart-grid" style="inset-block-start:50%"><span class="num">${Math.round(max / 2)}</span></div>
-              ${perDay.map((n, i) => `<div class="col" tabindex="0" aria-label="${fmtDate(days[i].toISOString())}: ${n} طلبات"><i style="height:${n / max * 100}%"></i><span class="tip">${fmtDate(days[i].toISOString())}، ${n} ${n === 1 ? "طلب" : "طلبات"}</span></div>`).join("")}
+              ${perDay.map((n, i) => `<div class="col" aria-hidden="true"><i style="height:${n / max * 100}%"></i><span class="tip">${fmtDate(days[i].toISOString())}، ${n} ${n === 1 ? "طلب" : "طلبات"}</span></div>`).join("")}
             </div>
             <div class="chart-x num" aria-hidden="true">${days.map((d, i) => `<span>${i % 2 ? "" : d.getDate()}</span>`).join("")}</div>
           </div>
@@ -121,7 +124,8 @@
         <div class="panel">
           <div class="panel__head"><h2>أحدث الطلبات</h2><a class="thread" href="#orders">كل الطلبات</a></div>
           <div class="table-wrap"><table class="t"><tbody>
-            ${orders.slice(0, 5).map(o => `<tr class="is-click" data-order="${o.id}"><td><b class="num">${o.id.slice(-4)}</b><br><small style="color:var(--muted)">${esc(o.name)}</small></td><td>${stLabel(o.status)}</td><td class="num">${money(orderTotal(o))}</td></tr>`).join("")}
+            <caption class="sr-only">أحدث خمسة طلبات</caption><thead class="sr-only"><tr><th>الطلب</th><th>الحالة</th><th>الإجمالي</th></tr></thead>
+            ${orders.slice(0, 5).map(o => `<tr class="is-click" data-order="${o.id}"><td><button class="link-btn num" type="button" data-open="${o.id}">${o.id.slice(-4)}</button><br><small style="color:var(--muted)">${esc(o.name)}</small></td><td>${stLabel(o.status)}</td><td class="num">${money(orderTotal(o))}</td></tr>`).join("")}
           </tbody></table></div>
         </div>
       </div>`;
@@ -144,8 +148,8 @@
       <div class="panel"><div class="table-wrap">
         ${list.length ? `<table class="t">
           <thead><tr><th>الطلب</th><th>العميل</th><th class="hide-sm">القطع</th><th class="hide-sm">القناة</th><th class="hide-sm">الدفع</th><th>الحالة</th><th>الإجمالي</th><th class="hide-sm">التاريخ</th></tr></thead>
-          <tbody>${list.map(o => `<tr class="is-click" data-order="${o.id}" tabindex="0">
-            <td class="num"><b>${o.id}</b></td>
+          <tbody>${list.map(o => `<tr class="is-click" data-order="${o.id}">
+            <td class="num"><button class="link-btn" type="button" data-open="${o.id}" aria-label="افتح الطلب ${o.id}"><span class="hide-sm">DAR-2026-</span>${o.id.slice(-4)}</button></td>
             <td><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(o.city)}</small></td>
             <td class="hide-sm num">${o.lines.reduce((s, l) => s + l.qty, 0)}</td>
             <td class="hide-sm">${chan(o.channel)}</td>
@@ -179,13 +183,13 @@
       <p style="color:var(--muted)">اكتب السعر والمخزون مباشرة في الجدول، ويحفظ كل تغيير فورا ويظهر في المتجر.</p>
       <div class="panel"><div class="table-wrap">
         ${list.length ? `<table class="t" id="prod-table">
-          <thead><tr><th></th><th>القطعة</th><th class="hide-sm">المجموعة</th><th>السعر ₺</th><th class="hide-sm">المخزون</th><th>منشور</th><th></th></tr></thead>
+          <thead><tr><th><span class="sr-only">الصورة</span></th><th>القطعة</th><th class="hide-sm">المجموعة</th><th>السعر ₺</th><th class="hide-sm">المخزون</th><th>منشور</th><th><span class="sr-only">تعديل</span></th></tr></thead>
           <tbody>${list.map(p => `<tr data-id="${p.id}">
-            <td><img class="thumb${p.dark ? " is-dark" : ""}" src="${IMG(p.img)}" alt="" loading="lazy"></td>
+            <td><img class="thumb${p.dark ? " is-dark" : ""}" src="${SM(p.img)}" alt="" width="44" height="55"${list.indexOf(p) > 11 ? ' loading="lazy"' : ""}></td>
             <td class="name">${esc(p.name)}<small class="num">${p.code ? `كود ${p.code}` : "بلا كود"}${p.nameTr ? "، مترجمة" : ""}</small></td>
             <td class="hide-sm">${catName(p.cat)}</td>
             <td><input class="cell num${+p.price > 0 ? "" : " is-empty"}" type="number" min="0" step="10" inputmode="numeric" data-field="price" value="${+p.price > 0 ? p.price : ""}" placeholder="أضف السعر" aria-label="سعر ${esc(p.name)}"></td>
-            <td class="hide-sm"><input class="cell cell--sm num" type="number" min="0" inputmode="numeric" data-field="stock" value="${p.stock ?? ""}" placeholder="—" aria-label="مخزون ${esc(p.name)}"></td>
+            <td class="hide-sm"><input class="cell cell--sm num" type="number" min="0" inputmode="numeric" data-field="stock" value="${p.stock ?? ""}" placeholder="عدد" aria-label="مخزون ${esc(p.name)}"></td>
             <td><label class="switch"><input type="checkbox" data-field="status" ${p.status === "draft" ? "" : "checked"} aria-label="نشر ${esc(p.name)}"></label></td>
             <td><a class="btn btn--quiet" href="#product/${p.id}">تعديل</a></td>
           </tr>`).join("")}</tbody></table>` : `<div class="empty-t"><span data-motif="starlet" data-mode="cross"></span><b>${f === "noprice" ? "كل القطع لها أسعار" : "لا نتائج"}</b></div>`}
@@ -201,19 +205,19 @@
         <div class="form">
           <div class="panel"><div class="panel__body">
             <div class="lang-tabs" role="tablist" aria-label="لغة المحتوى">
-              <button type="button" role="tab" aria-selected="true" data-lang="ar">العربية</button>
-              <button type="button" role="tab" aria-selected="false" data-lang="tr">Türkçe ${p.nameTr ? "" : '<span class="miss">ناقص</span>'}</button>
-              <button type="button" role="tab" aria-selected="false" data-lang="en">English ${p.nameEn ? "" : '<span class="miss">ناقص</span>'}</button>
+              <button type="button" role="tab" id="tab-ar" aria-controls="pane-ar" aria-selected="true" data-lang="ar">العربية</button>
+              <button type="button" role="tab" id="tab-tr" aria-controls="pane-tr" aria-selected="false" tabindex="-1" data-lang="tr"><span lang="tr">Türkçe</span> ${p.nameTr ? "" : '<span class="miss">ناقص</span>'}</button>
+              <button type="button" role="tab" id="tab-en" aria-controls="pane-en" aria-selected="false" tabindex="-1" data-lang="en"><span lang="en">English</span> ${p.nameEn ? "" : '<span class="miss">ناقص</span>'}</button>
             </div>
-            <div class="form" data-pane="ar">
+            <div class="form" data-pane="ar" id="pane-ar" role="tabpanel" aria-labelledby="tab-ar">
               <label class="f"><span>اسم القطعة</span><input name="name" value="${esc(p.name)}" required></label>
               <label class="f"><span>الوصف</span><textarea name="desc">${esc(p.desc)}</textarea></label>
             </div>
-            <div class="form" data-pane="tr" hidden>
+            <div class="form" data-pane="tr" id="pane-tr" role="tabpanel" aria-labelledby="tab-tr" lang="tr" hidden>
               <label class="f"><span>Ürün adı</span><input name="nameTr" dir="ltr" lang="tr" value="${esc(p.nameTr)}"></label>
               <label class="f"><span>Açıklama</span><textarea name="descTr" dir="ltr" lang="tr">${esc(p.descTr)}</textarea></label>
             </div>
-            <div class="form" data-pane="en" hidden>
+            <div class="form" data-pane="en" id="pane-en" role="tabpanel" aria-labelledby="tab-en" lang="en" hidden>
               <label class="f"><span>Product name</span><input name="nameEn" dir="ltr" lang="en" value="${esc(p.nameEn)}"></label>
               <label class="f"><span>Description</span><textarea name="descEn" dir="ltr" lang="en">${esc(p.descEn)}</textarea></label>
             </div>
@@ -229,8 +233,8 @@
 
           <div class="panel"><div class="panel__head"><div><h2>الصور</h2><p>الصورة الأولى هي صورة البطاقة في المتجر</p></div></div>
             <div class="panel__body imgs">
-              ${shots.map((s, i) => `<figure class="${p.dark ? "is-dark" : ""}"><img src="${IMG(s)}" alt="">${i === 0 ? "<span>الرئيسية</span>" : ""}</figure>`).join("")}
-              <label class="drop"><span data-motif="i-upload"></span>أضف صورة<small>تحفظ بعد ربط الخادم</small><input type="file" accept="image/*" hidden id="img-up"></label>
+              ${shots.map((s, i) => `<figure class="${p.dark ? "is-dark" : ""}"><img src="${SM(s)}" alt="">${i === 0 ? "<span>الرئيسية</span>" : ""}</figure>`).join("")}
+              <label class="drop"><span data-motif="i-upload"></span>أضف صورة<small>تحفظ بعد ربط الخادم</small><input type="file" accept="image/*" class="sr-only" id="img-up"></label>
             </div>
           </div>
         </div>
@@ -245,12 +249,12 @@
             <label class="f"><span>الكود</span><input name="code" value="${esc(p.code)}" dir="ltr" class="num"></label>
             <label class="f"><span>المجموعة</span><select name="cat">${DAR_CATS.map(c => `<option value="${c.id}"${c.id === p.cat ? " selected" : ""}>${c.name}</option>`).join("")}</select></label>
             <label class="f"><span>الصنعة</span><select name="craft"><option value="">غير محدد</option>${Object.entries(DAR_CRAFT).map(([k, v]) => `<option value="${k}"${k === p.craft ? " selected" : ""}>${v}</option>`).join("")}</select></label>
-            <fieldset class="f" style="border:0;padding:0;margin:0"><span>الألوان</span><div class="chips">${Object.entries(DAR_COLORS).map(([k, c]) => `<label><input type="checkbox" name="colors" value="${k}"${(p.colors || []).includes(k) ? " checked" : ""}><i style="--c:${c.hex}"></i>${c.name}</label>`).join("")}</div></fieldset>
+            <fieldset class="f" style="border:0;padding:0;margin:0"><span>الألوان</span><div class="chips">${Object.entries(DAR_COLORS).map(([k, c]) => `<label><input class="box" type="checkbox" name="colors" value="${k}"${(p.colors || []).includes(k) ? " checked" : ""}><i style="--c:${c.hex}"></i>${c.name}</label>`).join("")}</div></fieldset>
           </div></div>
           <a class="btn btn--quiet" href="../product.html?id=${p.id}" target="_blank" rel="noopener"><span data-motif="i-eye"></span>عرض في المتجر</a>
         </div>
       </form>
-      <div class="savebar" id="savebar"><span>تعديلات غير محفوظة</span><span class="row"><button class="btn btn--quiet" type="button" data-discard>تجاهل</button><button class="btn btn--henna" type="button" data-save>حفظ</button></span></div>`;
+      <div class="savebar" id="savebar"><span role="status">تعديلات غير محفوظة</span><span class="row"><button class="btn btn--quiet" type="button" data-discard>تجاهل</button><button class="btn btn--henna" type="button" data-save>حفظ</button></span></div>`;
     },
 
     content() {
@@ -270,15 +274,15 @@
           <div class="panel__body form-grid">
             <label class="f full"><span>السؤال</span><input name="quizQ" value="${esc(quiz.q)}"></label>
             ${quiz.opts.map((o, i) => `<label class="f"><span>الخيار ${"ABC"[i]}</span><input name="quizO${i}" value="${esc(o)}"></label>`).join("")}
-            <fieldset class="f" style="border:0;padding:0;margin:0"><span>الجواب الصحيح</span><div class="chips">${[0, 1, 2].map(i => `<label><input type="radio" name="quizRight" value="${i}"${quiz.right === i ? " checked" : ""}>${"ABC"[i]}</label>`).join("")}</div></fieldset>
+            <fieldset class="f" style="border:0;padding:0;margin:0"><span>الجواب الصحيح</span><div class="chips">${[0, 1, 2].map(i => `<label><input class="radio" type="radio" name="quizRight" value="${i}"${quiz.right === i ? " checked" : ""}>${"ABC"[i]}</label>`).join("")}</div></fieldset>
             <label class="f full"><span>التلميح</span><input name="quizHint" value="${esc(quiz.hint)}"></label>
           </div>
         </div>
-        <div class="panel"><div class="panel__head"><div><h2>مختارات الرئيسية</h2><p>اختر 8 قطع تظهر تحت عنوان قطع من دار</p></div><span class="num" id="feat-n">${featured.length} / 8</span></div>
-          <div class="panel__body chips">${products().map(p => `<label><input type="checkbox" name="featured" value="${p.id}"${featured.includes(p.id) ? " checked" : ""}>${esc(p.name)}</label>`).join("")}</div>
+        <div class="panel"><div class="panel__head"><div><h2>مختارات الرئيسية</h2><p>اختر 8 قطع تظهر تحت عنوان قطع من دار</p></div><span class="num" id="feat-n">${featured.length} من 8</span></div>
+          <div class="panel__body chips">${products().map(p => `<label><input class="box" type="checkbox" name="featured" value="${p.id}"${featured.includes(p.id) ? " checked" : ""}>${esc(p.name)}</label>`).join("")}</div>
         </div>
       </form>
-      <div class="savebar" id="savebar"><span>تعديلات غير محفوظة</span><span class="row"><button class="btn btn--quiet" type="button" data-discard>تجاهل</button><button class="btn btn--henna" type="button" data-save>حفظ</button></span></div>`;
+      <div class="savebar" id="savebar"><span role="status">تعديلات غير محفوظة</span><span class="row"><button class="btn btn--quiet" type="button" data-discard>تجاهل</button><button class="btn btn--henna" type="button" data-save>حفظ</button></span></div>`;
     },
 
     settings() {
@@ -290,8 +294,8 @@
           <div class="panel__body form-grid">
             <fieldset class="f full" style="border:0;padding:0;margin:0"><span>العنوان المعتمد</span><small>إنستغرام ولينكتري يذكران عنوانين مختلفين. اختر الصحيح.</small>
               <div class="chips" style="margin-block-start:6px">
-                <label><input type="radio" name="address" value="Altın Sk. No:11/A، Bahçelievler، إسطنبول"${s.address?.startsWith("Altın") ? " checked" : ""}>Altın Sk. No:11/A، Bahçelievler</label>
-                <label><input type="radio" name="address" value="Halıcılar Cd. No:12، Akşemsettin، Fatih، إسطنبول"${s.address?.startsWith("Halıcılar") ? " checked" : ""}>Halıcılar Cd. No:12، Fatih</label>
+                <label><input class="radio" type="radio" name="address" value="Altın Sk. No:11/A، Bahçelievler، إسطنبول"${s.address?.startsWith("Altın") ? " checked" : ""}>Altın Sk. No:11/A، Bahçelievler</label>
+                <label><input class="radio" type="radio" name="address" value="Halıcılar Cd. No:12، Akşemsettin، Fatih، إسطنبول"${s.address?.startsWith("Halıcılar") ? " checked" : ""}>Halıcılar Cd. No:12، Fatih</label>
               </div></fieldset>
             <label class="f"><span>رقم واتساب</span><input name="whatsapp" dir="ltr" value="${esc(s.whatsapp ?? "+90 553 828 62 35")}"></label>
             <label class="f"><span>البريد الإلكتروني</span><input name="email" type="email" dir="ltr" value="${esc(s.email)}" placeholder="info@..."></label>
@@ -324,7 +328,7 @@
           <div class="panel__body" style="display:flex;gap:var(--s4);flex-wrap:wrap">${sw("langAr", true, "العربية").replace("<input", "<input disabled")}${sw("langTr", s.langTr ?? true, "Türkçe")}${sw("langEn", s.langEn ?? true, "English")}</div>
         </div>
       </form>
-      <div class="savebar" id="savebar"><span>تعديلات غير محفوظة</span><span class="row"><button class="btn btn--quiet" type="button" data-discard>تجاهل</button><button class="btn btn--henna" type="button" data-save>حفظ</button></span></div>`;
+      <div class="savebar" id="savebar"><span role="status">تعديلات غير محفوظة</span><span class="row"><button class="btn btn--quiet" type="button" data-discard>تجاهل</button><button class="btn btn--henna" type="button" data-save>حفظ</button></span></div>`;
     }
   };
 
@@ -349,11 +353,17 @@
     badges();
     wire[key]?.(view, params, id);
     closeSide();
-    scrollTo(0, 0);
+    if (refocus && view.querySelector(refocus)) view.querySelector(refocus).focus();
+    else { scrollTo(0, 0); if (!firstRoute) $("title").focus({ preventScroll: true }); }
+    refocus = null; firstRoute = false;
   }
   addEventListener("hashchange", route);
 
+  // After a filter re-renders the view, focus goes back to the control that changed it
+  let refocus = null, firstRoute = true;
   function setParam(k, v) {
+    const a = document.activeElement;
+    refocus = a?.dataset?.f ? `[data-f="${a.dataset.f}"]` : a?.id ? `#${a.id}` : null;
     const [path, query] = (location.hash.slice(1) || "overview").split("?");
     const p = new URLSearchParams(query || "");
     v ? p.set(k, v) : p.delete(k);
@@ -386,7 +396,6 @@
       q.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { setParam("q", q.value); }, 300); });
       if (q.value) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); }
       view.addEventListener("click", e => { const tr = e.target.closest("[data-order]"); if (tr) openOrder(tr.dataset.order); });
-      view.addEventListener("keydown", e => { const tr = e.target.closest("[data-order]"); if (tr && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openOrder(tr.dataset.order); } });
     },
 
     products(view) {
@@ -424,10 +433,21 @@
         toast("حفظت القطعة، وتظهر التعديلات في المتجر");
         return true;
       });
-      form.querySelector(".lang-tabs").addEventListener("click", e => {
-        const b = e.target.closest("[data-lang]"); if (!b) return;
-        form.querySelectorAll("[data-lang]").forEach(x => x.setAttribute("aria-selected", x === b));
+      // Tabs: click or arrow keys, one tab stop for the whole set
+      const tabs = [...form.querySelectorAll("[data-lang]")];
+      const pick = b => {
+        tabs.forEach(x => { x.setAttribute("aria-selected", x === b); x.tabIndex = x === b ? 0 : -1; });
         form.querySelectorAll("[data-pane]").forEach(p => p.hidden = p.dataset.pane !== b.dataset.lang);
+      };
+      form.querySelector(".lang-tabs").addEventListener("click", e => { const b = e.target.closest("[data-lang]"); if (b) pick(b); });
+      form.querySelector(".lang-tabs").addEventListener("keydown", e => {
+        const i = tabs.indexOf(document.activeElement); if (i < 0) return;
+        // Right-to-left: the left arrow moves to the next tab
+        const step = { ArrowLeft: 1, ArrowRight: -1, Home: -i, End: tabs.length - 1 - i }[e.key];
+        if (step === undefined) return;
+        e.preventDefault();
+        const next = tabs[(i + step + tabs.length) % tabs.length];
+        pick(next); next.focus();
       });
       $("img-up").addEventListener("change", e => {
         const file = e.target.files[0]; if (!file) return;
@@ -440,7 +460,7 @@
 
     content(view) {
       const form = $("settings-form");
-      const featN = () => { const n = form.querySelectorAll('[name="featured"]:checked').length; $("feat-n").textContent = `${n} / 8`; return n; };
+      const featN = () => { const n = form.querySelectorAll('[name="featured"]:checked').length; $("feat-n").textContent = `${n} من 8`; return n; };
       form.addEventListener("change", e => {
         if (e.target.name === "featured" && featN() > 8) { e.target.checked = false; featN(); toast("المختارات 8 قطع فقط"); }
       });
@@ -501,12 +521,12 @@
         <dt>القناة</dt><dd>${chan(o.channel)}</dd>
         <dt>التاريخ</dt><dd class="num">${new Date(o.date).toLocaleDateString("ar-EG-u-nu-latn", { dateStyle: "long" })}</dd>
       </dl>
-      <div class="panel"><table class="t"><tbody>${o.lines.map(l => { const p = product(l.pid); return p ? `<tr><td><img class="thumb${p.dark ? " is-dark" : ""}" src="${IMG(p.img)}" alt=""></td><td class="name">${esc(p.name)}<small class="num">× ${l.qty}</small></td><td class="num">${money(unit(p) * l.qty)}</td></tr>` : ""; }).join("")}
+      <div class="panel"><table class="t"><tbody>${o.lines.map(l => { const p = product(l.pid); return p ? `<tr><td><img class="thumb${p.dark ? " is-dark" : ""}" src="${SM(p.img)}" alt="" width="44" height="55"></td><td class="name">${esc(p.name)}<small class="num">× ${l.qty}</small></td><td class="num">${money(unit(p) * l.qty)}</td></tr>` : ""; }).join("")}
         <tr><td></td><td>الشحن</td><td class="num">${o.ship === "tr" ? money(+(state.settings.shipTr || 120)) : o.ship === "pickup" ? "مجاني" : "حسب الدولة"}</td></tr>
         <tr><td></td><td><b>الإجمالي</b></td><td class="num"><b>${money(orderTotal(o))}</b></td></tr></tbody></table></div>
       <div><h3 style="font:700 1rem/1.4 var(--font-display);margin-block-end:var(--s1)">مسار الطلب</h3>
         <ol class="timeline">${steps.map((s, i) => `<li class="${o.status !== "cancel" && i <= at ? "is-done" : ""}"><span>${STATUS[s]}</span></li>`).join("")}</ol></div>
-      <label class="f"><span>غيّر الحالة</span><select id="order-status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}"${k === o.status ? " selected" : ""}>${v}</option>`).join("")}</select></label>`;
+      <label class="f"><span>غير الحالة</span><select id="order-status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}"${k === o.status ? " selected" : ""}>${v}</option>`).join("")}</select></label>`;
     $("sheet-foot").innerHTML = `<button class="btn btn--henna" type="button" id="order-save">حفظ الحالة</button><button class="btn btn--quiet" type="button" title="الأرقام تجريبية" disabled><span data-motif="i-chat"></span>راسل العميل</button><button class="btn btn--quiet" type="button" onclick="print()">طباعة</button>`;
     Dar.mount(sheet);
     $("order-save").addEventListener("click", () => {
@@ -515,20 +535,41 @@
       closeSheet(); route();
     });
     sheet.classList.add("is-open"); scrim.classList.add("is-on"); sheet.setAttribute("aria-hidden", "false");
+    app.inert = true;   // the sheet is modal: nothing behind it takes focus
     sheet.querySelector("[data-close-sheet]").focus();
   }
   function closeSheet() {
+    if (!sheet.classList.contains("is-open")) return;
     sheet.classList.remove("is-open"); scrim.classList.remove("is-on"); sheet.setAttribute("aria-hidden", "true");
+    app.inert = false;
     lastFocus?.focus?.();
   }
   sheet.addEventListener("click", e => { if (e.target.closest("[data-close-sheet]")) closeSheet(); });
-  scrim.addEventListener("click", () => { closeSheet(); closeSide(); });
-  addEventListener("keydown", e => { if (e.key === "Escape") { closeSheet(); closeSide(); } });
+  scrim.addEventListener("click", () => { closeSheet(); closeSide(true); });
+  addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (sheet.classList.contains("is-open")) closeSheet();
+    else if (side.classList.contains("is-open")) closeSide(true);
+  });
 
   /* ---------- Sidebar on small screens ---------- */
-  const side = $("side"), menu = document.querySelector(".top .menu");
-  function closeSide() { side.classList.remove("is-open"); menu.setAttribute("aria-expanded", "false"); if (!sheet.classList.contains("is-open")) scrim.classList.remove("is-on"); }
-  menu.addEventListener("click", () => { side.classList.add("is-open"); scrim.classList.add("is-on"); menu.setAttribute("aria-expanded", "true"); side.querySelector("nav a").focus(); });
+  const side = $("side"), menu = document.querySelector(".top .menu"), app = document.querySelector(".app");
+  const mainCol = side.nextElementSibling;
+  // On phones the sidebar opens as a modal panel; focus returns to the menu button when it closes
+  function closeSide(returnFocus) {
+    const wasOpen = side.classList.contains("is-open");
+    side.classList.remove("is-open"); menu.setAttribute("aria-expanded", "false");
+    side.removeAttribute("role"); side.removeAttribute("aria-modal");
+    mainCol.inert = false;
+    if (!sheet.classList.contains("is-open")) scrim.classList.remove("is-on");
+    if (wasOpen && returnFocus) menu.focus();
+  }
+  menu.addEventListener("click", () => {
+    side.classList.add("is-open"); scrim.classList.add("is-on"); menu.setAttribute("aria-expanded", "true");
+    side.setAttribute("role", "dialog"); side.setAttribute("aria-modal", "true");
+    mainCol.inert = true;
+    side.querySelector("nav a").focus();
+  });
 
   // Thread band on the sidebar edge
   const chain = Dar.tile("chain", { G: "#F4EEE4" }, 2);

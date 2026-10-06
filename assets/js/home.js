@@ -39,6 +39,8 @@
   const intro = document.getElementById("intro");
   if (!document.documentElement.classList.contains("no-intro")) {
     document.body.style.overflow = "hidden";
+    // While the intro covers the page, nothing behind it can take focus
+    Site.modal(intro, true);
     const star = document.getElementById("intro-star");
     const ease = "cubic-bezier(0.23, 1, 0.32, 1)";
     star.classList.add("stitch-go");                       // stitches radiate from the center
@@ -50,10 +52,15 @@
       { duration: 700, delay: 2100, easing: "cubic-bezier(0.77, 0, 0.175, 1)", fill: "forwards" });
     lift.onfinish = () => {
       intro.hidden = true; document.body.style.overflow = "";
+      Site.modal(intro, false);
+      removeEventListener("keydown", skip);
       try { sessionStorage.setItem("dar-intro", "1"); } catch (e) {}
       Site.observe();
     };
-    intro.addEventListener("click", () => lift.finish(), { once: true });   // tap to skip
+    // Tap, click or any key skips it
+    const skip = () => lift.finish();
+    intro.addEventListener("click", skip, { once: true });
+    addEventListener("keydown", skip);
   } else {
     intro.hidden = true;
     Site.observe();
@@ -93,6 +100,28 @@
     if (n !== shown) { starCells.forEach((c, i) => c.classList.toggle("on", i < n)); shown = n; }
   });
   addEventListener("resize", sizeReels);
+
+  // Keyboard users move through the reels by focus; scroll the page so the focused reel is on screen
+  track.addEventListener("focusin", e => {
+    if (!wide.matches || reduce) return;
+    const reels = [...track.querySelectorAll(".reel")];
+    const i = reels.indexOf(e.target.closest(".reel"));
+    if (i < 0) return;
+    const top = pin.getBoundingClientRect().top + scrollY;
+    const room = pin.offsetHeight - innerHeight;
+    scrollTo({ top: top + room * (i / Math.max(1, reels.length - 1)), behavior: "auto" });
+  });
+
+  /* ---------- Ribbon pause ---------- */
+  const ribbon = document.querySelector(".ribbon");
+  const pauseBtn = ribbon.querySelector(".ribbon__pause");
+  pauseBtn.addEventListener("click", () => {
+    const paused = ribbon.classList.toggle("is-paused");
+    pauseBtn.setAttribute("aria-pressed", paused);
+    pauseBtn.innerHTML = `<span data-motif="${paused ? "i-play" : "i-pause"}" data-mono="1"></span>`;
+    Dar.mount(pauseBtn);
+  });
+  if (reduce) pauseBtn.hidden = true;
   addEventListener("load", () => { sizeReels(); Site.refresh(); });
   sizeReels(); Site.refresh();
 
@@ -113,6 +142,8 @@
     result.innerHTML = pick === right
       ? `صحيح. ${custom ? answer : "نابلس مدينة الكنافة والصابون النابلسي"}. ${more}`
       : `الجواب ${custom ? answer : "نابلس، مدينة الكنافة والصابون النابلسي"}. ${more}`;
+    // The options are now disabled, so focus moves to the answer instead of falling to the page
+    result.focus();
   });
 
   /* ---------- Newsletter ---------- */

@@ -7,10 +7,10 @@
 <meta name="description" content="قطعة من كتالوج دار، مركز التراث الفلسطيني في إسطنبول.">
 <link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/tokens.css?v=4">
-<link rel="stylesheet" href="assets/css/base.css?v=7">
-<link rel="stylesheet" href="assets/css/site.css?v=8">
-<link rel="stylesheet" href="assets/css/shop.css?v=4">
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=9">
+<link rel="stylesheet" href="assets/css/site.css?v=13">
+<link rel="stylesheet" href="assets/css/shop.css?v=6">
 </head>
 <body data-page="shop">
 
@@ -19,18 +19,19 @@
 <main id="main">
   <div class="wrap" id="pdp-root">
     <nav class="crumbs" aria-label="مسار التصفح" id="crumbs"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><a href="shop.html">المتجر</a></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>معاينة تصميم: الأسعار وسياسة الشحن تضاف قبل الإطلاق.</p>
 
     <section class="pdp" id="pdp" aria-labelledby="p-name" hidden>
       <div class="gallery">
-        <div class="gallery__thumbs" id="thumbs" aria-label="صور القطعة"></div>
-        <figure class="gallery__main" id="main-img" data-veil style="margin:0"><img id="main-photo" src="" alt=""></figure>
+        <div class="gallery__thumbs" id="thumbs" role="group" aria-label="صور القطعة"></div>
+        <figure class="gallery__main" id="main-img" data-veil style="margin:0"><img id="main-photo" src="" alt=""><button class="icon-btn product__fav" type="button" id="p-fav" aria-pressed="false"><span data-motif="i-heart"></span></button></figure>
       </div>
 
       <div class="info">
         <a class="eyebrow" id="p-cat" href="shop.html" style="text-decoration:none"><span data-motif="starlet"></span><span></span></a>
         <h1 id="p-name"></h1>
         <div class="info__code" id="p-code"></div>
-        <p class="info__price"><span>السعر قريبا</span><small>يضاف السعر من لوحة التحكم. <a id="p-ask-price" href="#" target="_blank" rel="noopener">اسأل عنه عبر واتساب</a></small></p>
+        <p class="info__price"><span>السعر قريبا</span><small><a id="p-ask-price" href="#" target="_blank" rel="noopener">اسأل عن السعر عبر واتساب</a></small></p>
 
         <div id="p-variants" hidden>
           <p class="variant-label">اللون: <b id="p-variant-name"></b></p>
@@ -38,9 +39,8 @@
         </div>
 
         <div class="buy">
-          <div class="qty"><button type="button" aria-label="إنقاص" data-step="-1"><span data-motif="i-minus"></span></button><output id="qty" class="num" aria-live="polite">1</output><button type="button" aria-label="زيادة" data-step="1"><span data-motif="i-plus"></span></button></div>
+          <div class="qty" role="group" aria-label="الكمية"><button type="button" aria-label="إنقاص الكمية" data-step="-1" disabled><span data-motif="i-minus"></span></button><output id="qty" class="num" aria-label="الكمية" aria-live="polite">1</output><button type="button" aria-label="زيادة الكمية" data-step="1"><span data-motif="i-plus"></span></button></div>
           <button class="btn btn--lg btn--henna" type="button" id="add" data-add="">أضف إلى السلة</button>
-          <button class="btn btn--icon btn--quiet product__fav" type="button" aria-label="أضف للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button>
         </div>
         <a class="ask thread" id="p-ask" href="#" target="_blank" rel="noopener"><span data-motif="i-chat"></span>اسأل دار عن هذه القطعة</a>
 
@@ -49,7 +49,7 @@
         <div class="acc">
           <details open><summary>الوصف<span data-motif="i-plus"></span></summary><div class="acc__body"><p id="p-desc"></p></div></details>
           <details><summary>التفاصيل<span data-motif="i-plus"></span></summary><div class="acc__body"><dl id="p-details"></dl></div></details>
-          <details><summary>الشحن والإرجاع<span data-motif="i-plus"></span></summary><div class="acc__body"><p>تحدد دار سياسة الشحن والإرجاع، وتظهر هنا بعد إضافتها من لوحة التحكم. للاستفسار الآن راسل دار على واتساب.</p></div></details>
+          <details><summary>الشحن والإرجاع<span data-motif="i-plus"></span></summary><div class="acc__body"><p>تنشر دار سياسة الشحن والإرجاع هنا قبل الإطلاق. للاستفسار الآن راسل دار على واتساب.</p></div></details>
         </div>
       </div>
     </section>
@@ -69,16 +69,16 @@
   </section>
 </main>
 
-<div class="buybar" id="buybar" aria-hidden="true">
+<div class="buybar" id="buybar" inert>
   <img id="bb-img" src="" alt="">
   <div><b id="bb-name"></b><small>السعر قريبا</small></div>
-  <button class="btn btn--henna" type="button" id="bb-add" tabindex="-1">أضف إلى السلة</button>
+  <button class="btn btn--henna" type="button" id="bb-add">أضف إلى السلة</button>
 </div>
 <div data-site="footer"></div>
 
-<script src="assets/js/stitch.js?v=6"></script>
+<script src="assets/js/stitch.js?v=7"></script>
 <script src="assets/js/products.js?v=2"></script>
-<script src="assets/js/site.js?v=3"></script>
-<script src="assets/js/product-page.js?v=4"></script>
+<script src="assets/js/site.js?v=6"></script>
+<script src="assets/js/product-page.js?v=6"></script>
 </body>
 </html>

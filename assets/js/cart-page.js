@@ -26,13 +26,13 @@
     $("lines").innerHTML = items.map((item, i) => {
       const { p, v, img, unit } = view(item);
       return `<li class="line" data-i="${i}">
-        <a class="line__img${p.dark ? " is-dark" : ""}" href="product.html?id=${p.id}" tabindex="-1" aria-hidden="true"><img src="${IMG(img)}" alt="" style="--pos:${p.pos || "50% 50%"}"></a>
+        <a class="line__img${p.dark ? " is-dark" : ""}" href="product.html?id=${p.id}" tabindex="-1" aria-hidden="true"><img src="${Site.SM(img)}" alt="" width="112" height="140" style="--pos:${p.pos || "50% 50%"}"></a>
         <div class="line__body">
           <a class="line__name" href="product.html?id=${p.id}">${p.name}</a>
           <p class="line__meta">${v ? `<span><i class="dot" style="--c:${DAR_COLORS[v.color].hex}"></i>${v.name}</span>` : ""}${p.code ? `<span class="num">كود ${p.code}</span>` : ""}</p>
           <div class="line__actions">
             <div class="qty"><button type="button" data-step="-1" aria-label="إنقاص ${p.name}"${item.qty === 1 ? " disabled" : ""}><span data-motif="i-minus"></span></button><output class="num" aria-label="الكمية">${item.qty}</output><button type="button" data-step="1" aria-label="زيادة ${p.name}"${item.qty === 9 ? " disabled" : ""}><span data-motif="i-plus"></span></button></div>
-            <button class="line__remove" type="button" data-remove>إزالة</button>
+            <button class="line__remove" type="button" data-remove aria-label="إزالة ${p.name} من السلة">إزالة</button>
           </div>
         </div>
         <p class="line__price num">${money(unit * item.qty)}${item.qty > 1 ? `<small>${money(unit)} للقطعة</small>` : ""}</p>
@@ -51,25 +51,36 @@
     $("wa-order").href = `${Site.WA}?text=${encodeURIComponent(msg)}`;
   }
 
+  const live = $("cart-live");
   $("lines").addEventListener("click", e => {
     const li = e.target.closest(".line"); if (!li) return;
     const items = cart.get();
     const i = +li.dataset.i;
+    const name = byId[items[i].pid].name;
     const step = e.target.closest("[data-step]");
     if (step) {
       items[i].qty = Math.min(9, Math.max(1, items[i].qty + +step.dataset.step));
       cart.set(items); render();
-      $("lines").querySelector(`[data-i="${i}"] [data-step="${step.dataset.step}"]`)?.focus();
+      live.textContent = `${name}: الكمية ${items[i].qty}`;
+      // Keep focus on the same control, or on its partner if it just became disabled
+      const line = $("lines").querySelector(`[data-i="${i}"]`);
+      const same = line.querySelector(`[data-step="${step.dataset.step}"]`);
+      (same.disabled ? line.querySelector(`[data-step="${-step.dataset.step}"]`) : same).focus();
     }
     if (e.target.closest("[data-remove]")) {
       const [gone] = items.splice(i, 1);
       const finish = () => {
         cart.set(items); render();
-        Site.showToast(`أزيلت ${byId[gone.pid].name} من السلة.`, "تراجع", "#undo");
-        document.querySelector('#toast-slot a[href="#undo"]')?.addEventListener("click", ev => {
+        // Focus moves to the next piece, or to the heading once the cart is empty
+        const next = $("lines").querySelector(`[data-i="${Math.min(i, items.length - 1)}"] .line__name`);
+        (items.length && next ? next : $("cart-heading")).focus();
+        const undo = Site.showToast(`أزيلت ${name} من السلة.`, "تراجع", "#undo");
+        undo?.addEventListener("click", ev => {
           ev.preventDefault();
           const now = cart.get(); now.splice(i, 0, gone); cart.set(now); render();
-          document.getElementById("toast-slot").classList.remove("is-on");
+          Site.hideToast();
+          $("lines").querySelector(`[data-i="${i}"] .line__name`)?.focus();
+          live.textContent = `أعيدت ${name} إلى السلة.`;
         }, { once: true });
       };
       if (reduce) return finish();
@@ -80,9 +91,9 @@
 
   // Gift wrap and note
   const ex = extras.get();
-  const gift = $("gift"), note = $("gift-note");
-  gift.checked = !!ex.gift; note.hidden = !ex.gift; note.value = ex.note || "";
-  gift.addEventListener("change", () => { note.hidden = !gift.checked; extras.set({ ...extras.get(), gift: gift.checked }); render(); if (gift.checked) note.focus(); });
+  const gift = $("gift"), note = $("gift-note"), noteWrap = $("gift-wrap");
+  gift.checked = !!ex.gift; noteWrap.hidden = !ex.gift; note.value = ex.note || "";
+  gift.addEventListener("change", () => { noteWrap.hidden = !gift.checked; extras.set({ ...extras.get(), gift: gift.checked }); render(); if (gift.checked) note.focus(); });
   note.addEventListener("input", () => { extras.set({ ...extras.get(), note: note.value }); render(); });
 
   // Suggestions: pieces not already in the cart

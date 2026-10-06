@@ -52,6 +52,11 @@
   main.classList.toggle("is-dark", !!p.dark);
   main.style.setProperty("--pos", p.pos || "50% 50%");
   const shots = [...new Set([p.img, ...(p.gallery || []), ...(p.variants || []).map(v => v.img)])];
+  if (shots.length < 2) document.querySelector(".gallery").classList.add("gallery--single");
+  const fav = $("p-fav");
+  fav.dataset.fav = p.id;
+  fav.setAttribute("aria-label", `حفظ ${p.name} في المفضلة`);
+  fav.setAttribute("aria-pressed", Site.favs.has(p.id));
   function show(img, alt) {
     if (photo.getAttribute("src") === IMG(img)) return;
     const swap = () => { photo.src = IMG(img); photo.alt = alt; photo.style.opacity = 1; };
@@ -61,7 +66,7 @@
     thumbs.querySelectorAll("button").forEach(b => b.setAttribute("aria-current", b.dataset.img === img));
   }
   thumbs.innerHTML = shots.length > 1 ? shots.map((s, i) =>
-    `<button type="button" data-img="${s}" aria-current="${i === 0}" aria-label="الصورة ${i + 1}"><img src="${IMG(s)}" alt="" loading="lazy"></button>`).join("") : "";
+    `<button type="button" data-img="${s}" aria-current="${i === 0}" aria-label="الصورة ${i + 1} من ${shots.length}"><img src="${Site.SM(s)}" alt="" width="84" height="105"></button>`).join("") : "";
   thumbs.addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
     show(b.dataset.img, p.name);
@@ -86,7 +91,7 @@
     $("p-variants").hidden = false;
     const label = $("p-variant-name");
     $("variants").innerHTML = p.variants.map((v, i) =>
-      `<button type="button" data-i="${i}" aria-pressed="${i === 0}" aria-label="${v.name}" style="--c:${DAR_COLORS[v.color].hex}"><img src="${IMG(v.img)}" alt=""></button>`).join("");
+      `<button type="button" data-i="${i}" aria-pressed="${i === 0}" aria-label="${v.name}" style="--c:${DAR_COLORS[v.color].hex}"><img src="${Site.SM(v.img)}" alt="" width="64" height="64"></button>`).join("");
     const pick = i => {
       const v = p.variants[i];
       label.textContent = v.name;
@@ -100,21 +105,24 @@
 
   /* ---------- Quantity ---------- */
   const qty = $("qty");
+  const [minus, plus] = document.querySelectorAll(".buy .qty button");
   document.querySelector(".buy .qty").addEventListener("click", e => {
     const b = e.target.closest("[data-step]"); if (!b) return;
     qty.value = Math.min(9, Math.max(1, +qty.value + +b.dataset.step));
     add.dataset.qty = qty.value;
+    minus.disabled = +qty.value === 1; plus.disabled = +qty.value === 9;
+    // A button that just became disabled cannot keep focus; hand it to its partner
+    if (b.disabled) (b === minus ? plus : minus).focus();
   });
 
   /* ---------- Mobile buy bar appears once the main button scrolls away ---------- */
   const bar = $("buybar");
-  $("bb-img").src = IMG(p.img); $("bb-name").textContent = p.name;
+  $("bb-img").src = Site.SM(p.img); $("bb-name").textContent = p.name;
   $("bb-add").addEventListener("click", () => add.click());
   new IntersectionObserver(([e]) => {
     const on = !e.isIntersecting && e.boundingClientRect.top < 0;
     bar.classList.toggle("is-on", on);
-    bar.setAttribute("aria-hidden", !on);
-    $("bb-add").tabIndex = on ? 0 : -1;
+    bar.inert = !on;
   }).observe(add);
 
   /* ---------- Related pieces from the same collection ---------- */

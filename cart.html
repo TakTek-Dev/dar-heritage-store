@@ -7,11 +7,11 @@
 <meta name="robots" content="noindex">
 <link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/tokens.css?v=4">
-<link rel="stylesheet" href="assets/css/base.css?v=7">
-<link rel="stylesheet" href="assets/css/site.css?v=8">
-<link rel="stylesheet" href="assets/css/shop.css?v=4">
-<link rel="stylesheet" href="assets/css/cart.css?v=3">
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=9">
+<link rel="stylesheet" href="assets/css/site.css?v=13">
+<link rel="stylesheet" href="assets/css/shop.css?v=6">
+<link rel="stylesheet" href="assets/css/cart.css?v=5">
 </head>
 <body data-page="cart">
 
@@ -23,13 +23,14 @@
     <p class="demo-note"><span data-motif="starlet"></span>الأسعار في هذه المعاينة تجريبية حتى تضاف أسعار دار الحقيقية من لوحة التحكم.</p>
 
     <div class="page-head">
-      <div><h1 class="rise">سلتك</h1><p id="cart-sub"></p></div>
+      <div><h1 class="rise" id="cart-heading" tabindex="-1">سلتك</h1><p id="cart-sub"></p></div>
       <a class="thread" href="shop.html">تابع التسوق</a>
     </div>
 
     <div class="cart" id="cart" hidden>
       <section aria-label="القطع في السلة">
         <ul class="lines" id="lines"></ul>
+        <p class="sr-only" id="cart-live" role="status" aria-live="polite"></p>
       </section>
 
       <aside class="summary" aria-labelledby="sum-h">
@@ -41,8 +42,8 @@
         </dl>
 
         <div class="gift">
-          <label class="check"><input type="checkbox" id="gift"><span>تغليف هدية تقليدي</span></label>
-          <textarea id="gift-note" placeholder="رسالة تكتبها دار على بطاقة الهدية" aria-label="رسالة الهدية" hidden maxlength="200"></textarea>
+          <label class="check"><input class="box" type="checkbox" id="gift"><span>تغليف هدية تقليدي</span></label>
+          <div id="gift-wrap" hidden style="display:grid;gap:6px"><label for="gift-note">رسالة على بطاقة الهدية</label><textarea id="gift-note" placeholder="تكتبها دار بخط اليد، 200 حرف على الأكثر" maxlength="200"></textarea></div>
         </div>
 
         <a class="btn btn--lg btn--henna" href="checkout.html">إتمام الطلب <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
@@ -70,9 +71,9 @@
 
 <div data-site="footer"></div>
 
-<script src="assets/js/stitch.js?v=6"></script>
+<script src="assets/js/stitch.js?v=7"></script>
 <script src="assets/js/products.js?v=2"></script>
-<script src="assets/js/site.js?v=3"></script>
-<script src="assets/js/cart-page.js?v=1"></script>
+<script src="assets/js/site.js?v=6"></script>
+<script src="assets/js/cart-page.js?v=3"></script>
 </body>
 </html>

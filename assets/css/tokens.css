@@ -25,9 +25,18 @@
   --henna-glow:   #E08A5C;  /* henna text on night (5.6:1) */
   --muted:        #5F6656;  /* secondary text, 5.2:1 on linen */
   --muted-night:  #A9B0A2;  /* secondary text on night */
-  --line:         #C9BBA3;  /* decorative thread lines, never text */
+  --line:         #C9BBA3;  /* decorative thread lines, never text or control edges */
+  --line-strong:  #857C6B;  /* control edges: 3.6:1 on linen, 4.1:1 on white */
   --danger:       #9B2C1F;
+  --danger-soft:  #F6E3DE;  /* error and "new" backgrounds */
   --ok:           #36603F;
+  --ok-soft:      #E1ECE2;
+  --warn:         #7A5A12;  /* status: preparing */
+  --warn-soft:    #F3EAD3;
+  --info:         #2F5C8A;  /* status: shipped */
+  --info-soft:    #E2EAF2;
+  --photo-black:  #000;     /* frame behind catalogue photos shot on black */
+  --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='%23F4EEE4' shape-rendering='crispEdges'%3E%3Crect x='10' y='2' width='1.02' height='1.02'/%3E%3Crect x='9' y='3' width='1.02' height='1.02'/%3E%3Crect x='8' y='4' width='1.02' height='1.02'/%3E%3Crect x='1' y='5' width='1.02' height='1.02'/%3E%3Crect x='7' y='5' width='1.02' height='1.02'/%3E%3Crect x='2' y='6' width='1.02' height='1.02'/%3E%3Crect x='6' y='6' width='1.02' height='1.02'/%3E%3Crect x='3' y='7' width='1.02' height='1.02'/%3E%3Crect x='5' y='7' width='1.02' height='1.02'/%3E%3Crect x='4' y='8' width='1.02' height='1.02'/%3E%3C/svg%3E");
 
   /* Type */
   --font-display: "Thmanyah Serif Display", "Times New Roman", serif;

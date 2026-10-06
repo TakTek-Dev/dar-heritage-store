@@ -7,13 +7,13 @@
 <meta name="robots" content="noindex">
 <link rel="preload" href="assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/tokens.css?v=4">
-<link rel="stylesheet" href="assets/css/base.css?v=7">
-<link rel="stylesheet" href="assets/css/site.css?v=8">
-<link rel="stylesheet" href="assets/css/shop.css?v=4">
-<link rel="stylesheet" href="assets/css/cart.css?v=3">
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=9">
+<link rel="stylesheet" href="assets/css/site.css?v=13">
+<link rel="stylesheet" href="assets/css/shop.css?v=6">
+<link rel="stylesheet" href="assets/css/cart.css?v=5">
 </head>
-<body data-page="cart">
+<body data-page="checkout">
 
 <div data-site="header"></div>
 
@@ -25,52 +25,6 @@
     <div class="page-head"><div><h1 class="rise">إتمام الطلب</h1></div><a class="thread" href="cart.html">عد إلى السلة</a></div>
 
     <div class="cart" id="checkout">
-      <form id="co-form" novalidate aria-describedby="co-error">
-        <ol class="steps" aria-label="خطوات الطلب">
-          <li class="is-on" data-step="1">التواصل</li>
-          <li data-step="2">التوصيل</li>
-          <li data-step="3">الدفع</li>
-        </ol>
-        <p class="form-error" id="co-error" role="alert" hidden></p>
-
-        <fieldset class="co-step" data-step="1" style="border:0;margin:0;padding-inline:0">
-          <div class="co-step__head"><h2><span class="n num">01</span>بيانات التواصل</h2></div>
-          <div class="co-grid">
-            <div class="field full"><label for="f-name">الاسم الكامل <span class="req" aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required placeholder="كما يظهر على الطرد"><span class="hint" data-hint></span></div>
-            <div class="field"><label for="f-phone">رقم الجوال <span class="req" aria-hidden="true">*</span></label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required placeholder="+90 5xx xxx xx xx"><span class="hint" data-hint>نتواصل معك على واتساب بخصوص الطلب</span></div>
-            <div class="field"><label for="f-email">البريد الإلكتروني</label><input id="f-email" name="email" type="email" autocomplete="email" dir="ltr" placeholder="name@email.com"><span class="hint" data-hint>لإرسال تأكيد الطلب، اختياري</span></div>
-          </div>
-        </fieldset>
-
-        <fieldset class="co-step" data-step="2" style="border:0;margin:0;padding-inline:0">
-          <div class="co-step__head"><h2><span class="n num">02</span>التوصيل</h2></div>
-          <div class="choices" role="radiogroup" aria-label="طريقة الاستلام">
-            <label class="choice"><input type="radio" name="ship" value="tr" checked><span><b>توصيل داخل تركيا</b><small>إلى باب البيت عبر شركة شحن</small></span><span class="cost num" data-cost="tr"></span></label>
-            <label class="choice"><input type="radio" name="ship" value="intl"><span><b>شحن دولي</b><small>تكلفة الشحن حسب الدولة، تؤكدها دار قبل الدفع</small></span><span class="cost">حسب الدولة</span></label>
-            <label class="choice"><input type="radio" name="ship" value="pickup"><span><b>استلام من المركز</b><small>Altın Sk. No:11/A، Bahçelievler، إسطنبول</small></span><span class="cost">مجاني</span></label>
-          </div>
-          <div class="co-grid" id="address" style="margin-block-start:var(--s4)">
-            <div class="field"><label for="f-country">الدولة</label>
-              <select id="f-country" name="country" autocomplete="country-name"><option>تركيا</option><option>السعودية</option><option>الإمارات</option><option>قطر</option><option>الكويت</option><option>الأردن</option><option>ألمانيا</option><option>المملكة المتحدة</option><option>دولة أخرى</option></select></div>
-            <div class="field"><label for="f-city">المدينة <span class="req" aria-hidden="true">*</span></label><input id="f-city" name="city" autocomplete="address-level2" required><span class="hint" data-hint></span></div>
-            <div class="field full"><label for="f-address">العنوان <span class="req" aria-hidden="true">*</span></label><input id="f-address" name="address" autocomplete="street-address" required placeholder="الحي، الشارع، رقم البناء والشقة"><span class="hint" data-hint></span></div>
-            <div class="field"><label for="f-zip">الرمز البريدي</label><input id="f-zip" name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr"></div>
-            <div class="field"><label for="f-note">ملاحظة للتوصيل</label><input id="f-note" name="note" placeholder="مثلا: اتصل قبل الوصول"></div>
-          </div>
-        </fieldset>
-
-        <fieldset class="co-step" data-step="3" style="border:0;margin:0;padding-inline:0">
-          <div class="co-step__head"><h2><span class="n num">03</span>الدفع</h2></div>
-          <div class="choices" role="radiogroup" aria-label="طريقة الدفع">
-            <label class="choice"><input type="radio" name="pay" value="card" checked><span><b>بطاقة بنكية</b><small>تنتقل إلى صفحة الدفع الآمنة لإدخال بيانات البطاقة. دار لا ترى رقم بطاقتك.</small><span class="ico"><span>VISA</span><span>Mastercard</span><span>Troy</span></span></span><span class="cost"></span></label>
-            <label class="choice"><input type="radio" name="pay" value="bank"><span><b>تحويل بنكي</b><small>نرسل لك بيانات الحساب على واتساب، ويجهز الطلب بعد وصول التحويل.</small></span><span class="cost"></span></label>
-          </div>
-          <label class="co-terms"><input type="checkbox" id="f-terms" required><span>قرأت <a class="thread" href="#">شروط البيع</a> و<a class="thread" href="#">سياسة الإرجاع</a> وأوافق عليها.</span></label>
-          <button class="btn btn--lg btn--henna" type="submit" id="co-submit" style="width:100%">تأكيد الطلب والانتقال للدفع</button>
-          <p class="trust" style="margin-block-start:var(--s2)"><span><span data-motif="starlet"></span>دفع مشفر عبر بوابة دفع معتمدة</span><span><span data-motif="starlet"></span>عائد طلبك يدعم مشاريع في غزة</span></p>
-        </fieldset>
-      </form>
-
       <aside class="summary co-summary" id="co-summary" aria-labelledby="co-sum-h">
         <button class="summary-toggle" type="button" aria-expanded="false" aria-controls="co-sum-body"><span>ملخص الطلب <span class="num" id="co-toggle-total"></span></span><span data-motif="i-plus"></span></button>
         <h2 id="co-sum-h">ملخص الطلب</h2>
@@ -84,6 +38,52 @@
           </dl>
         </div>
       </aside>
+      <form id="co-form" novalidate aria-describedby="co-error">
+        <ol class="steps" aria-label="خطوات الطلب">
+          <li class="is-on" data-step="1">التواصل</li>
+          <li data-step="2">التوصيل</li>
+          <li data-step="3">الدفع</li>
+        </ol>
+        <p class="form-error" id="co-error" role="alert" hidden></p>
+
+        <fieldset class="co-step" data-step="1" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">01</span>بيانات التواصل</h2></div>
+          <div class="co-grid">
+            <div class="field full"><label for="f-name">الاسم الكامل <span class="req" aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required placeholder="كما يظهر على الطرد" aria-describedby="f-name-hint"><span class="hint" id="f-name-hint" data-hint></span></div>
+            <div class="field"><label for="f-phone">رقم الجوال <span class="req" aria-hidden="true">*</span></label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required placeholder="+90 5xx xxx xx xx" aria-describedby="f-phone-hint"><span class="hint" id="f-phone-hint" data-hint>نتواصل معك على واتساب بخصوص الطلب</span></div>
+            <div class="field"><label for="f-email">البريد الإلكتروني</label><input id="f-email" name="email" type="email" autocomplete="email" dir="ltr" placeholder="name@email.com" aria-describedby="f-email-hint"><span class="hint" id="f-email-hint" data-hint>لإرسال تأكيد الطلب، اختياري</span></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step" data-step="2" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">02</span>التوصيل</h2></div>
+          <div class="choices" role="radiogroup" aria-label="طريقة الاستلام">
+            <label class="choice"><input class="radio" type="radio" name="ship" value="tr" checked><span><b>توصيل داخل تركيا</b><small>إلى باب البيت عبر شركة شحن</small></span><span class="cost num" data-cost="tr"></span></label>
+            <label class="choice"><input class="radio" type="radio" name="ship" value="intl"><span><b>شحن دولي</b><small>تكلفة الشحن حسب الدولة، تؤكدها دار قبل الدفع</small></span><span class="cost">حسب الدولة</span></label>
+            <label class="choice"><input class="radio" type="radio" name="ship" value="pickup"><span><b>استلام من المركز</b><small>Altın Sk. No:11/A، Bahçelievler، إسطنبول</small></span><span class="cost">مجاني</span></label>
+          </div>
+          <div class="co-grid" id="address" style="margin-block-start:var(--s4)">
+            <div class="field"><label for="f-country">الدولة</label>
+              <select id="f-country" name="country" autocomplete="country-name"><option>تركيا</option><option>السعودية</option><option>الإمارات</option><option>قطر</option><option>الكويت</option><option>الأردن</option><option>ألمانيا</option><option>المملكة المتحدة</option><option>دولة أخرى</option></select></div>
+            <div class="field"><label for="f-city">المدينة <span class="req" aria-hidden="true">*</span></label><input id="f-city" name="city" autocomplete="address-level2" required aria-describedby="f-city-hint"><span class="hint" id="f-city-hint" data-hint></span></div>
+            <div class="field full"><label for="f-address">العنوان <span class="req" aria-hidden="true">*</span></label><input id="f-address" name="address" autocomplete="street-address" required placeholder="الحي، الشارع، رقم البناء والشقة" aria-describedby="f-address-hint"><span class="hint" id="f-address-hint" data-hint></span></div>
+            <div class="field"><label for="f-zip">الرمز البريدي</label><input id="f-zip" name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr"></div>
+            <div class="field"><label for="f-note">ملاحظة للتوصيل</label><input id="f-note" name="note" placeholder="مثلا: اتصل قبل الوصول"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step" data-step="3" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">03</span>الدفع</h2></div>
+          <div class="choices" role="radiogroup" aria-label="طريقة الدفع">
+            <label class="choice"><input class="radio" type="radio" name="pay" value="card" checked><span><b>بطاقة بنكية</b><small>تنتقل إلى صفحة الدفع الآمنة لإدخال بيانات البطاقة. دار لا ترى رقم بطاقتك.</small><span class="ico"><span>VISA</span><span>Mastercard</span><span>Troy</span></span></span><span class="cost"></span></label>
+            <label class="choice"><input class="radio" type="radio" name="pay" value="bank"><span><b>تحويل بنكي</b><small>نرسل لك بيانات الحساب على واتساب، ويجهز الطلب بعد وصول التحويل.</small></span><span class="cost"></span></label>
+          </div>
+          <label class="co-terms"><input class="box" type="checkbox" id="f-terms" required><span>قرأت شروط البيع وسياسة الإرجاع وأوافق عليها. <small style="color:var(--muted)">تنشر قبل الإطلاق.</small></span></label>
+          <button class="btn btn--lg btn--henna" type="submit" id="co-submit" style="width:100%">تأكيد الطلب والانتقال للدفع</button>
+          <p class="trust" style="margin-block-start:var(--s2)"><span><span data-motif="starlet"></span>دفع مشفر عبر بوابة دفع معتمدة</span><span><span data-motif="starlet"></span>عائد طلبك يدعم مشاريع في غزة</span></p>
+        </fieldset>
+      </form>
+
     </div>
 
     <section class="done" id="done" hidden aria-live="polite">
@@ -98,9 +98,9 @@
 
 <div data-site="footer"></div>
 
-<script src="assets/js/stitch.js?v=6"></script>
+<script src="assets/js/stitch.js?v=7"></script>
 <script src="assets/js/products.js?v=2"></script>
-<script src="assets/js/site.js?v=3"></script>
-<script src="assets/js/checkout-page.js?v=2"></script>
+<script src="assets/js/site.js?v=6"></script>
+<script src="assets/js/checkout-page.js?v=4"></script>
 </body>
 </html>

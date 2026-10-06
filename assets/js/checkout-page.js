@@ -17,7 +17,7 @@
   /* ---------- Summary ---------- */
   $("mini").innerHTML = items.map(i => {
     const { p, v, unit, img } = view(i);
-    return `<li><span class="thumb${p.dark ? " is-dark" : ""}"><img src="${IMG(img)}" alt=""><span class="q num" aria-label="الكمية">${i.qty}</span></span><span><b>${p.name}</b>${v ? v.name : ""}</span><span class="num">${money(unit * i.qty)}</span></li>`;
+    return `<li><span class="thumb${p.dark ? " is-dark" : ""}"><img src="${Site.SM(img)}" alt="" width="56" height="70"><span class="q num" aria-label="الكمية">${i.qty}</span></span><span><b>${p.name}</b>${v ? v.name : ""}</span><span class="num">${money(unit * i.qty)}</span></li>`;
   }).join("");
   document.querySelector('[data-cost="tr"]').textContent = money(SHIP_TR);
   $("co-gift-dt").hidden = $("co-gift-dd").hidden = !extras.gift;
@@ -60,7 +60,7 @@
   /* ---------- Validation: say what is wrong and how to fix it ---------- */
   const messages = {
     "f-name": "اكتب الاسم الكامل كما سيظهر على الطرد.",
-    "f-phone": "اكتب رقم جوال صحيحا مع رمز الدولة، مثل +90 5xx xxx xx xx.",
+    "f-phone": "اكتب رقم جوال صحيحا مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.",
     "f-city": "اكتب المدينة.",
     "f-address": "اكتب العنوان كاملا: الحي والشارع ورقم البناء."
   };
@@ -92,7 +92,7 @@
     const err = $("co-error");
     if (bad.length || !terms.checked) {
       err.hidden = false;
-      err.textContent = bad.length ? `راجع ${bad.length === 1 ? "الحقل المعلم" : `${bad.length} حقول معلمة`} بالأحمر.` : "وافق على شروط البيع لإتمام الطلب.";
+      err.textContent = bad.length ? `${bad.length === 1 ? "حقل واحد يحتاج" : `${bad.length} حقول تحتاج`} تصحيحا. الملاحظة مكتوبة تحت كل حقل.` : "وافق على شروط البيع لإتمام الطلب.";
       (bad[0] || terms).focus();
       return;
     }

@@ -1,7 +1,7 @@
 /* DAR shop listing + product page. Depends on tokens.css, base.css, site.css */
 
 .crumbs { display: flex; flex-wrap: wrap; gap: var(--s1); font-size: var(--fs-small); color: var(--muted); padding-block: var(--s3) 0; }
-.crumbs a { color: inherit; text-decoration: none; }
+.crumbs a { color: inherit; text-decoration: none; display: inline-block; padding-block: 4px; }
 .crumbs a:hover { color: var(--zaytoun); }
 .crumbs span[aria-hidden] { opacity: .5; }
 
@@ -40,17 +40,15 @@
 .filters fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: var(--s1); }
 .filters legend { font: 700 var(--fs-small)/1.4 var(--font-ui); margin-block-end: var(--s1); padding: 0; }
 .check { display: flex; align-items: center; gap: var(--s1); min-height: 36px; cursor: pointer; font-size: var(--fs-small); }
-.check input { appearance: none; width: 20px; height: 20px; margin: 0; background: var(--paper); box-shadow: inset 0 0 0 2px var(--line); display: grid; place-items: center; cursor: pointer; flex: none; }
-.check input:checked { background: var(--zaytoun); box-shadow: none; }
-.check input:checked::after { content: ""; width: 10px; height: 10px; background: linear-gradient(45deg, transparent 42%, var(--paper) 42% 58%, transparent 58%), linear-gradient(-45deg, transparent 42%, var(--paper) 42% 58%, transparent 58%); }
-.check input:focus-visible { outline: 2px dashed var(--henna); outline-offset: 2px; }
 .check .n { margin-inline-start: auto; color: var(--muted); font-size: var(--fs-micro); }
 .swatches-f { display: flex; flex-wrap: wrap; gap: var(--s1); }
 .swatch {
   width: 36px; height: 36px; border: 0; padding: 0; cursor: pointer; background: var(--c); position: relative;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
 }
-.swatch[aria-pressed="true"] { outline: 2px solid var(--zaytoun); outline-offset: 3px; }
+/* Selection is a solid ring drawn with box-shadow; the dashed outline stays free for keyboard focus */
+.swatch[aria-pressed="true"] { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12), 0 0 0 3px var(--paper), 0 0 0 5px var(--zaytoun); }
+.swatch:focus-visible { outline-offset: 7px; }
 .filters__reset { justify-self: start; }
 .filters__close, .filter-apply { display: none; }
 
@@ -58,6 +56,7 @@
 .toolbar .field { min-width: 220px; flex: 1; max-width: 360px; }
 .toolbar .field input, .toolbar .field select { height: 44px; }
 .toolbar__count { font-size: var(--fs-small); color: var(--muted); }
+#q::-webkit-search-cancel-button { appearance: none; }
 .toolbar__end { display: flex; gap: var(--s2); align-items: end; }
 .filter-btn { display: none; }
 
@@ -68,7 +67,8 @@
 }
 .shop-note [data-motif] { width: 72px; }
 .shop-note b { font: 700 var(--fs-h3)/1.45 var(--font-display); }
-.shop-note small { font-size: var(--fs-small); opacity: .9; }
+.shop-note { --focus: #fff; }
+.shop-note small { font-size: var(--fs-small); }
 
 .empty { display: grid; justify-items: center; text-align: center; gap: var(--s2); padding-block: var(--s12); }
 .empty [data-motif] { width: 72px; }
@@ -85,17 +85,21 @@
 .gallery { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: var(--s2); align-items: start; }
 .gallery__thumbs { display: grid; gap: var(--s1); }
 .gallery__thumbs button { padding: 0; border: 0; background: var(--paper-2); cursor: pointer; aspect-ratio: 4 / 5; overflow: hidden; opacity: .6; transition: opacity var(--t-fast) ease; }
-.gallery__thumbs button[aria-current="true"] { opacity: 1; outline: 2px solid var(--zaytoun); outline-offset: 2px; }
+.gallery__thumbs button[aria-current="true"] { opacity: 1; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--zaytoun); }
+.gallery__thumbs button:focus-visible { opacity: 1; outline-offset: 6px; }
+.gallery--single { grid-template-columns: minmax(0, 1fr); }
 .gallery__thumbs img { width: 100%; height: 100%; object-fit: cover; }
 .gallery__main { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--paper-2); cursor: zoom-in; }
-.gallery__main.is-dark { background: #121212; }
+.gallery__main.is-dark { background: var(--photo-black); }
+.gallery__main .product__fav { z-index: 3; cursor: pointer; }
 .gallery__main img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transition: opacity 200ms ease, transform 300ms var(--ease-thread); }
 .gallery__main.is-dark img { object-fit: contain; }
 .gallery__main.is-zoom img { transform: scale(1.8); transition: transform 120ms linear; }
 .gallery__main .tag { position: absolute; inset-block-start: var(--s2); inset-inline-start: var(--s2); z-index: 2; }
 
 .info { position: sticky; top: 108px; display: grid; gap: var(--s3); }
-.info h1 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); line-height: 1.35; }
+.info > .eyebrow { justify-self: start; padding-block: 6px; }
+.info h1 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); line-height: 1.5; }
 .info__code { display: flex; gap: var(--s2); align-items: center; font-size: var(--fs-small); color: var(--muted); flex-wrap: wrap; }
 .info__price { font: 700 1.5rem/1.3 var(--font-ui); }
 .info__price small { display: block; font: 400 var(--fs-small)/1.5 var(--font-ui); color: var(--muted); }
@@ -105,14 +109,14 @@
 .variants { display: flex; gap: var(--s1); flex-wrap: wrap; }
 .variants button { width: 64px; aspect-ratio: 1; padding: 0; border: 0; cursor: pointer; overflow: hidden; background: var(--paper-2); position: relative; }
 .variants button img { width: 100%; height: 100%; object-fit: cover; }
-.variants button[aria-pressed="true"] { outline: 2px solid var(--zaytoun); outline-offset: 3px; }
+.variants button[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--zaytoun); }
+.variants button:focus-visible { outline-offset: 8px; }
 .variants button::after { content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; height: 6px; background: var(--c); }
 .buy { display: flex; gap: var(--s2); align-items: stretch; flex-wrap: wrap; }
 .buy .qty { min-height: 56px; }
 .buy .qty button { height: 56px; }
 .buy .btn--henna { flex: 1; min-width: 200px; }
-.buy .btn--icon { height: 56px; width: 56px; }
-.ask { display: inline-flex; align-items: center; gap: var(--s1); font-size: var(--fs-small); }
+.ask { display: inline-flex; align-items: center; gap: var(--s1); font-size: var(--fs-small); justify-self: start; }
 .ask [data-motif] { width: 18px; color: var(--zaytoun); }
 .impact { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s2); align-items: center; background: var(--paper-2); padding: var(--s2) var(--s3); font-size: var(--fs-small); }
 .impact [data-motif] { width: 36px; }
@@ -139,7 +143,7 @@
 }
 .buybar.is-on { transform: none; }
 .buybar img { width: 44px; height: 55px; object-fit: cover; }
-.buybar b { font: 700 .9375rem/1.3 var(--font-display); display: block; }
+.buybar b { font: 700 .9375rem/1.45 var(--font-display); display: block; }
 .buybar small { color: var(--muted); font-size: var(--fs-micro); }
 .buybar .btn { margin-inline-start: auto; }
 
@@ -166,9 +170,16 @@
   .filter-apply { display: inline-flex; }
   .filters__close { display: inline-grid !important; position: absolute; inset-block-start: var(--s2); inset-inline-end: var(--s2); }
   .toolbar .field { min-width: 0; max-width: none; flex-basis: 100%; }
-  .pdp { grid-template-columns: minmax(0, 1fr); gap: var(--s5); }
+  /* Tablets keep gallery and buy box side by side; the thumbs move under the photo */
+  .pdp { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s4); }
   .gallery { grid-template-columns: minmax(0, 1fr); }
-  .gallery__thumbs { grid-auto-flow: column; grid-auto-columns: 64px; order: 2; overflow-x: auto; }
+  .gallery__thumbs { grid-auto-flow: column; grid-auto-columns: 64px; order: 2; overflow-x: auto; padding: 8px; }
+}
+@media (max-width: 760px) {
+  /* The fixed buy bar never hides a focused element or the last footer line */
+  html:has(.buybar.is-on) { scroll-padding-block-end: 96px; }
+  body:has(.buybar) .foot-base { padding-block-end: 104px; }
+  .pdp { grid-template-columns: minmax(0, 1fr); gap: var(--s5); }
   .info { position: static; }
   .buybar { display: flex; }
 }
@@ -181,5 +192,5 @@
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
   .gallery__main.is-zoom img { transform: none; }
 }
-.buy .product__fav { position: static; }
-.buybar.is-on ~ .wa { transform: translateY(calc(100% + var(--s4))); }
+/* On phones the product page has its own WhatsApp question, so the floating button steps aside */
+@media (max-width: 760px) { body:has(.buybar) .wa { display: none; } }

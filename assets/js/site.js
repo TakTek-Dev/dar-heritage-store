@@ -1,4 +1,4 @@
-/* DAR shared layout and behaviour: header, drawer, footer, cart, toast, reveals.
+/* DAR shared layout and behaviour: header, drawer, footer, cart, favourites, toast, reveals.
    Each page sets <body data-page="..."> and loads a page script after this file. */
 (function () {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -18,8 +18,9 @@
   ];
   const navLinks = nav.map(([href, label, key]) => `<a href="${href}"${key === page ? ' aria-current="page"' : ""}>${label}</a>`).join("");
 
+  // Turkish and English are planned; until they exist the switch says so instead of linking nowhere
   const header = `
-<a class="btn skip" href="#main">تخطى إلى المحتوى</a>
+<a class="btn skip" href="#main">انتقل إلى المحتوى</a>
 <div class="thread-progress" id="thread" aria-hidden="true"></div>
 <div class="band hem-top" data-band="chain" data-cell="2" aria-hidden="true"></div>
 <header class="site-head">
@@ -28,20 +29,20 @@
     <button class="icon-btn menu-btn" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="drawer"><span data-motif="i-menu"></span></button>
     <a class="brand" href="index.html" aria-label="دار، مركز التراث الفلسطيني، الرئيسية"><img src="assets/brand/dar-logo-mark.svg" alt="دار" width="219" height="292"></a>
     <div class="head-tools">
-      <div class="lang" aria-label="اللغة"><a href="#" aria-current="true" lang="ar">ع</a><a href="#" lang="tr">TR</a><a href="#" lang="en">EN</a></div>
+      <div class="lang" role="group" aria-label="اللغة"><span class="lang__on" aria-current="true" title="العربية">ع</span><button type="button" data-soon="tr" aria-label="النسخة التركية قريبا">TR</button><button type="button" data-soon="en" aria-label="النسخة الإنجليزية قريبا">EN</button></div>
       <a class="icon-btn" href="shop.html" aria-label="البحث في المتجر"><span data-motif="i-search"></span></a>
-      <button class="icon-btn" type="button" aria-label="المفضلة"><span data-motif="i-heart"></span></button>
+      <a class="icon-btn" href="shop.html?fav=1" aria-label="المفضلة" id="fav-btn"><span data-motif="i-heart"></span><span class="count num" id="fav-count" hidden>0</span></a>
       <a class="icon-btn" href="cart.html" aria-label="السلة" id="cart-btn"${page === "cart" ? ' aria-current="page"' : ""}><span data-motif="i-bag"></span><span class="count num" id="cart-count" hidden>0</span></a>
     </div>
   </div>
 </header>
-<div class="drawer" id="drawer" aria-hidden="true">
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="القائمة" aria-hidden="true">
   <div style="display:flex;justify-content:space-between;align-items:center">
-    <img src="assets/brand/dar-logo-mark.svg" alt="دار">
+    <img src="assets/brand/dar-logo-mark.svg" alt="دار" width="33" height="44">
     <button class="icon-btn" type="button" aria-label="إغلاق القائمة" data-close-drawer><span data-motif="i-close"></span></button>
   </div>
-  <nav aria-label="القائمة">${navLinks}</nav>
-  <div class="lang" style="display:flex"><a href="#" aria-current="true">العربية</a><a href="#">Türkçe</a><a href="#">English</a></div>
+  <nav aria-label="أقسام الموقع">${navLinks}</nav>
+  <div class="lang" role="group" aria-label="اللغة" style="display:flex"><span class="lang__on" aria-current="true">العربية</span><button type="button" data-soon="tr"><span lang="tr">Türkçe</span><span class="sr-only">، قريبا</span></button><button type="button" data-soon="en"><span lang="en">English</span><span class="sr-only">، قريبا</span></button></div>
 </div>`;
 
   const cats = (window.DAR_CATS || []).map(c => `<li><a href="shop.html?cat=${c.id}">${c.name}</a></li>`).join("");
@@ -49,7 +50,7 @@
 <footer class="site-foot">
   <div class="band" data-band="saw" data-cell="4" data-night="1" aria-hidden="true" style="transform:scaleY(-1)"></div>
   <div class="wrap foot-grid">
-    <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني" width="140"><p>القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.</p></div>
+    <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني" width="140" height="137"><p>القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.</p></div>
     <div><h3>المتجر</h3><ul>${cats}</ul></div>
     <div><h3>دار</h3><ul><li><a href="index.html#story">من نحن</a></li><li><a href="index.html#corp">هدايا المؤسسات</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="index.html#visit">زورونا</a></li></ul></div>
     <div><h3>تواصل</h3><ul><li><a href="${WA}" target="_blank" rel="noopener">واتساب</a></li><li><a href="${IG}" target="_blank" rel="noopener">إنستغرام</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">فيسبوك</a></li></ul></div>
@@ -72,7 +73,7 @@
   thread.style.backgroundImage = chain.url;
   thread.style.backgroundSize = `${chain.w}px ${chain.h}px`;
 
-  /* ---------- Word rise: split into words, keep <em> and <br> ---------- */
+  /* ---------- Word rise: split into words, keep <em> and <br>. Spaces stay real, so screen readers read it whole ---------- */
   function splitWords(el) {
     let i = 0;
     const walk = node => {
@@ -87,11 +88,12 @@
             w.append(inner); frag.append(w);
           });
           child.replaceWith(frag);
-        } else if (child.nodeType === 1 && child.tagName !== "BR") walk(child);
+        } else if (child.nodeType === 1 && child.tagName === "BR") {
+          child.before(" ");
+        } else if (child.nodeType === 1) walk(child);
       });
     };
     walk(el);
-    el.setAttribute("aria-label", el.textContent.replace(/\s+/g, " ").trim());
   }
   document.querySelectorAll(".rise").forEach(splitWords);
 
@@ -151,6 +153,17 @@
     });
   }
 
+  /* ---------- Modal overlays: everything outside becomes inert while one is open ---------- */
+  function modal(el, open, keep = []) {
+    for (let n = el; n.parentElement && n !== document.body; n = n.parentElement) {
+      [...n.parentElement.children].forEach(s => {
+        if (s === n || keep.includes(s) || s.tagName === "SCRIPT") return;
+        if (open && !s.inert) { s.inert = true; s.dataset.inertBy = "modal"; }
+        if (!open && s.dataset.inertBy === "modal") { s.inert = false; delete s.dataset.inertBy; }
+      });
+    }
+  }
+
   /* ---------- Scroll state shared by all pages ---------- */
   const head = document.querySelector(".site-head");
   const wa = document.getElementById("wa");
@@ -162,11 +175,40 @@
     head.classList.toggle("is-scrolled", y > 8);
     const max = Math.max(1, document.documentElement.scrollHeight - vh);
     thread.style.setProperty("--p", `${Math.min(100, (y / max) * 100)}%`);
-    wa.classList.toggle("is-on", y > vh * .8);
+    // The floating WhatsApp button is out of reach (and out of the tab order) until it slides in
+    const waOn = y > vh * .8;
+    wa.classList.toggle("is-on", waOn);
+    wa.inert = !waOn;
     scrollHooks.forEach(fn => fn(y, vh));
   }
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   addEventListener("resize", onScroll);
+
+  /* ---------- Toast ---------- */
+  const slot = document.getElementById("toast-slot");
+  let toastTimer;
+  function hideToast() {
+    clearTimeout(toastTimer);
+    slot.classList.remove("is-on");
+    slot.inert = true;
+    setTimeout(() => { if (!slot.classList.contains("is-on")) slot.innerHTML = ""; }, 400);
+  }
+  const armToast = ms => { clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, ms); };
+  // A toast with an action stays 10 s, and never leaves while it is hovered or focused
+  function showToast(text, link, href = "cart.html") {
+    slot.inert = false;
+    slot.innerHTML = `<div class="toast"><span data-motif="starlet" data-mode="cross"></span><span>${text}${link ? ` <a class="thread" href="${href}">${link}</a>` : ""}</span><button class="icon-btn toast__close" type="button" aria-label="إغلاق الإشعار"><span data-motif="i-close"></span></button></div>`;
+    Dar.mount(slot);
+    slot.classList.add("is-on");
+    armToast(link ? 10000 : 4500);
+    return slot.querySelector("a");
+  }
+  slot.inert = true;
+  slot.addEventListener("click", e => { if (e.target.closest(".toast__close")) hideToast(); });
+  slot.addEventListener("pointerenter", () => clearTimeout(toastTimer));
+  slot.addEventListener("focusin", () => clearTimeout(toastTimer));
+  slot.addEventListener("pointerleave", () => { if (slot.classList.contains("is-on") && !slot.contains(document.activeElement)) armToast(4000); });
+  slot.addEventListener("focusout", e => { if (!slot.contains(e.relatedTarget) && slot.classList.contains("is-on")) armToast(4000); });
 
   /* ---------- Drawer ---------- */
   const drawer = document.getElementById("drawer");
@@ -176,22 +218,13 @@
     drawer.setAttribute("aria-hidden", !open);
     menuBtn.setAttribute("aria-expanded", open);
     document.body.style.overflow = open ? "hidden" : "";
+    if (open) hideToast();   // a stale toast must not sit on top of the dialog
+    modal(drawer, open, [slot]);
     if (open) drawer.querySelector("nav a").focus(); else menuBtn.focus({ preventScroll: true });
   };
   menuBtn.addEventListener("click", () => setDrawer(true));
   drawer.addEventListener("click", e => { if (e.target.closest("[data-close-drawer], nav a")) setDrawer(false); });
   addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("is-open")) setDrawer(false); });
-
-  /* ---------- Toast ---------- */
-  const slot = document.getElementById("toast-slot");
-  let toastTimer;
-  function showToast(text, link, href = "cart.html") {
-    slot.innerHTML = `<div class="toast"><span data-motif="starlet" data-mode="cross"></span><span>${text}</span>${link ? ` <a class="thread" href="${href}">${link}</a>` : ""}</div>`;
-    Dar.mount(slot);
-    slot.classList.add("is-on");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => slot.classList.remove("is-on"), 4000);
-  }
 
   /* ---------- Cart: kept in this browser until the backend exists ---------- */
   const count = document.getElementById("cart-count");
@@ -225,20 +258,39 @@
   }
   renderCount();
 
+  /* ---------- Favourites: saved in this browser, counted in the header ---------- */
+  const favCount = document.getElementById("fav-count");
+  const favs = {
+    get() { try { return JSON.parse(localStorage.getItem("dar-favs") || "[]"); } catch (e) { return []; } },
+    set(v) { try { localStorage.setItem("dar-favs", JSON.stringify(v)); } catch (e) {} renderFavs(); },
+    has(id) { return favs.get().includes(id); }
+  };
+  function renderFavs() {
+    const n = favs.get().length;
+    favCount.hidden = !n; favCount.textContent = n;
+    document.getElementById("fav-btn").setAttribute("aria-label", n ? `المفضلة، ${n} قطع` : "المفضلة");
+  }
+  renderFavs();
+
   document.addEventListener("click", e => {
     const add = e.target.closest("[data-add]");
     if (add && add.getAttribute("aria-disabled") !== "true") {
       e.preventDefault();
       addToCart(add.dataset.id, add.dataset.variant || "", add.dataset.add, +(add.dataset.qty || 1), add);
     }
-    const fav = e.target.closest(".product__fav");
+    const fav = e.target.closest("[data-fav]");
     if (fav) {
       e.preventDefault();
-      const on = fav.getAttribute("aria-pressed") !== "true";
-      fav.setAttribute("aria-pressed", on);
-      fav.setAttribute("aria-label", on ? "أزل من المفضلة" : "أضف للمفضلة");
+      const id = fav.dataset.fav;
+      const on = !favs.has(id);
+      favs.set(on ? [...favs.get(), id] : favs.get().filter(x => x !== id));
+      // Every button for this piece follows; the label stays, aria-pressed carries the state
+      document.querySelectorAll(`[data-fav="${id}"]`).forEach(b => b.setAttribute("aria-pressed", on));
       if (on && !reduce) fav.animate([{ transform: "scale(.9)" }, { transform: "scale(1.12)" }, { transform: "scale(1)" }], { duration: 300, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
+      if (on) showToast("حفظت القطعة في المفضلة.", "عرض المفضلة", "shop.html?fav=1");
     }
+    const soon = e.target.closest("[data-soon]");
+    if (soon) showToast(soon.dataset.soon === "tr" ? "النسخة التركية من الموقع قريبا." : "النسخة الإنجليزية من الموقع قريبا.");
   });
 
   /* ---------- Prices: the catalogue has none yet, so the preview uses labelled demo prices ---------- */
@@ -248,20 +300,22 @@
 
   /* ---------- Product card markup shared by home, shop and related lists ---------- */
   const IMG = id => `assets/img/dar/${id}.webp`;
-  function card(p, i = 0) {
+  const SM = id => `assets/img/dar/${id}-480.webp`;
+  const SRCSET = id => `${SM(id)} 480w, ${IMG(id)} 960w`;
+  function card(p, i = 0, eager = false) {
     const tag = p.craft === "hand" ? '<span class="tag tag--henna">تطريز يدوي</span>' : "";
     const meta = p.code ? `<p class="product__code num">كود ${p.code}</p>` : `<p class="product__origin">${(window.DAR_CATS.find(c => c.id === p.cat) || {}).name || ""}</p>`;
     return `<article class="product up" style="--i:${i % 4}">
       <div class="product__frame">
-        <a class="product__media${p.dark ? " product__media--dark" : ""}" href="product.html?id=${p.id}" tabindex="-1" aria-hidden="true" data-veil><img src="${IMG(p.img)}" alt="" loading="lazy" style="--pos:${p.pos || "50% 50%"}">${tag}</a>
-        <button class="icon-btn product__fav" type="button" aria-label="أضف ${p.name} للمفضلة" aria-pressed="false"><span data-motif="i-heart"></span></button>
-        <button class="btn product__add" type="button" data-id="${p.id}" data-add="${p.name}">أضف إلى السلة</button>
+        <a class="product__media${p.dark ? " product__media--dark" : ""}" href="product.html?id=${p.id}" tabindex="-1" aria-hidden="true" data-veil><img src="${SM(p.img)}" srcset="${SRCSET(p.img)}" sizes="(max-width: 520px) 50vw, (max-width: 1100px) 33vw, 22vw" alt="" loading="${eager ? "eager" : "lazy"}" style="--pos:${p.pos || "50% 50%"}">${tag}</a>
+        <button class="icon-btn product__fav" type="button" data-fav="${p.id}" aria-label="حفظ ${p.name} في المفضلة" aria-pressed="${favs.has(p.id)}"><span data-motif="i-heart"></span></button>
+        <button class="btn product__add" type="button" data-id="${p.id}" data-add="${p.name}" aria-label="أضف ${p.name} إلى السلة">أضف إلى السلة</button>
       </div>
       <div class="product__meta"><div><h3 class="product__name"><a href="product.html?id=${p.id}">${p.name}</a></h3>${meta}</div>${p.price ? `<p class="product__price num">${money(p.price)}</p>` : '<p class="product__price--soon">السعر قريبا</p>'}</div>
     </article>`;
   }
 
-  window.Site = { reduce, observe, veil, splitWords, showToast, addToCart, card, IMG, onScroll: fn => scrollHooks.push(fn), refresh: onScroll, WA, cart: store, price, money };
+  window.Site = { reduce, observe, veil, splitWords, showToast, hideToast, addToCart, card, IMG, SM, modal, onScroll: fn => scrollHooks.push(fn), refresh: onScroll, WA, cart: store, favs, price, money };
 
   // Pages that do not run an intro start revealing right away
   if (!document.body.hasAttribute("data-wait-intro")) observe();
