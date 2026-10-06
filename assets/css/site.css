@@ -118,6 +118,10 @@
 .cats > .cat:nth-child(5) { --i: 2; }
 .cats > .cat:nth-child(6) { --i: 3; }
 
+/* Review strip: only while a reviewer goes through review.html */
+.review-strip { display: flex; justify-content: center; align-items: center; gap: var(--s2); flex-wrap: wrap; padding: 6px var(--s2); background: var(--zaytoun-deep); color: var(--muted-night); font: 500 var(--fs-micro)/1.5 var(--font-ui); --focus: var(--henna-glow); }
+.review-strip a { color: #fff; text-underline-offset: 3px; }
+
 /* ---------- Ribbon ---------- */
 .ribbon { background: var(--zaytoun); color: #fff; overflow: hidden; }
 .ribbon__track { display: flex; width: max-content; animation: ribbon 46s linear infinite; }

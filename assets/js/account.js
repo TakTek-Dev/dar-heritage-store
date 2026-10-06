@@ -64,6 +64,8 @@
     const changing = params.get("change") === "1" && account.current();
     const safeNext = n => /^[a-z-]+\.html(#[a-z-]+)?$/.test(n || "") ? n : "account.html";
     const next = changing ? "account.html#profile" : safeNext(params.get("next"));
+    // The review guide links here with ?demo=1 to open the demo account in one step
+    if (params.get("demo") === "1") { demo(); sessionStorage.setItem("dar-welcome", "demo"); location.replace("account.html"); return; }
     if (account.current() && !changing) { location.replace(next); return; }
 
     const h = $("auth-h"), lead = $("auth-lead"), err = $("auth-error");

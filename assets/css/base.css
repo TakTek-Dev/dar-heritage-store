@@ -53,6 +53,9 @@ button, input, select { font: inherit; color: inherit; }
 }
 .eyebrow [data-motif] { width: 14px; }
 
+/* A button that reads as a text link, for small actions inside text */
+.link-btn { border: 0; background: none; padding: 0; font: inherit; color: var(--henna-ink); cursor: pointer; text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; }
+
 /* Running-stitch link: dashes become one solid thread on hover */
 .thread {
   text-decoration: none; padding-block-end: 4px;

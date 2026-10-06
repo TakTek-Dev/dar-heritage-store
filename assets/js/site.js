@@ -62,7 +62,12 @@
 <a class="wa" id="wa" href="${WA}" target="_blank" rel="noopener" aria-label="راسل دار على واتساب"><span data-motif="i-chat"></span><span class="wa__label">راسل دار</span></a>
 <div class="toast-slot" id="toast-slot" role="status" aria-live="polite"></div>`;
 
-  document.querySelector('[data-site="header"]')?.insertAdjacentHTML("afterend", header);
+  // Reviewers who came from the review guide get a way back to it on every page
+  let reviewing = false;
+  try { reviewing = sessionStorage.getItem("dar-review") === "1"; } catch (e) {}
+  const strip = reviewing ? '<div class="review-strip"><span>نسخة للمراجعة</span><a href="review.html">العودة إلى دليل الصفحات</a></div>' : "";
+  // After the skip link, so "skip to content" stays the first stop for keyboard users
+  document.querySelector('[data-site="header"]')?.insertAdjacentHTML("afterend", header.replace('<div class="thread-progress"', strip + '<div class="thread-progress"'));
   document.querySelector('[data-site="header"]')?.remove();
   document.querySelector('[data-site="footer"]')?.insertAdjacentHTML("afterend", footer);
   document.querySelector('[data-site="footer"]')?.remove();
