@@ -12,9 +12,9 @@
   const nav = [
     ["shop.html", "المتجر", "shop"],
     ["index.html#cats", "المجموعات"],
-    ["index.html#corp", "هدايا المؤسسات"],
-    ["index.html#story", "من نحن"],
-    ["index.html#visit", "زورونا"]
+    ["corporate.html", "هدايا المؤسسات", "corporate"],
+    ["about.html", "من نحن", "about"],
+    ["about.html#visit", "زورونا"]
   ];
   const navLinks = nav.map(([href, label, key]) => `<a href="${href}"${key === page ? ' aria-current="page"' : ""}>${label}</a>`).join("");
 
@@ -52,7 +52,7 @@
   <div class="wrap foot-grid">
     <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني" width="140" height="137"><p>القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.</p></div>
     <div><h3>المتجر</h3><ul>${cats}</ul></div>
-    <div><h3>دار</h3><ul><li><a href="index.html#story">من نحن</a></li><li><a href="index.html#corp">هدايا المؤسسات</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="index.html#visit">زورونا</a></li></ul></div>
+    <div><h3>دار</h3><ul><li><a href="about.html">من نحن</a></li><li><a href="corporate.html">هدايا المؤسسات</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="about.html#visit">زورونا</a></li></ul></div>
     <div><h3>تواصل</h3><ul><li><a href="${WA}" target="_blank" rel="noopener">واتساب</a></li><li><a href="${IG}" target="_blank" rel="noopener">إنستغرام</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">فيسبوك</a></li></ul></div>
   </div>
   <div class="wrap foot-base"><span>© 2026 دار، مركز التراث الفلسطيني</span><span>الصور من كتالوج دار 2026</span></div>

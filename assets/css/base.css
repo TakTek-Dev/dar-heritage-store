@@ -120,6 +120,8 @@ button, input, select { font: inherit; color: inherit; }
 .field .hint { font-size: var(--fs-micro); color: var(--muted); }
 .field.is-error input { border-color: var(--danger); border-block-end-style: solid; }
 .field.is-error .hint { color: var(--danger); }
+.req { color: var(--henna-ink); }
+.form-error { background: var(--danger-soft); color: var(--danger); padding: 12px var(--s2); font-size: var(--fs-small); margin-block-end: var(--s3); }
 
 /* Quantity stepper */
 .qty { display: inline-flex; align-items: center; background: var(--paper-2); }
