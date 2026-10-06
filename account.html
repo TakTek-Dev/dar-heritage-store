@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حسابي، دار</title>
+<meta name="robots" content="noindex">
+<script>
+  // Signed out visitors go to sign in first, before anything paints
+  try { if (!localStorage.getItem("dar-session")) location.replace("login.html?next=" + encodeURIComponent("account.html" + location.hash)); } catch (e) {}
+</script>
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=10">
+<link rel="stylesheet" href="assets/css/site.css?v=16">
+<link rel="stylesheet" href="assets/css/shop.css?v=6">
+<link rel="stylesheet" href="assets/css/pages.css?v=4">
+<link rel="stylesheet" href="assets/css/service.css?v=2">
+<link rel="stylesheet" href="assets/css/account.css?v=2">
+</head>
+<body data-page="account">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="مسار التصفح"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><span aria-current="page">حسابي</span></nav>
+
+    <header class="acct-head">
+      <div>
+        <span class="eyebrow"><span data-motif="starlet"></span>حسابي</span>
+        <h1 id="acct-h"></h1>
+        <p id="acct-since"></p>
+      </div>
+      <a class="btn btn--quiet" href="shop.html">تابع التسوق</a>
+    </header>
+    <p class="demo-note" id="acct-demo" hidden><span data-motif="starlet"></span><span>حساب تجريبي: الطلبات والعناوين فيه أمثلة، ويحفظ في هذا المتصفح فقط.</span></p>
+
+    <div class="acct">
+      <nav class="acct-nav" aria-label="أقسام الحساب">
+        <a href="#overview" data-tab="overview"><span data-motif="i-home"></span><span>نظرة عامة</span><span class="n"></span></a>
+        <a href="#orders" data-tab="orders"><span data-motif="i-box"></span><span>طلباتي</span><span class="n num" id="n-orders"></span></a>
+        <a href="#addresses" data-tab="addresses"><span data-motif="i-pin"></span><span>العناوين</span><span class="n num" id="n-addresses"></span></a>
+        <a href="#favorites" data-tab="favorites"><span data-motif="i-heart"></span><span>المفضلة</span><span class="n num" id="n-favorites"></span></a>
+        <a href="#profile" data-tab="profile"><span data-motif="i-user"></span><span>بياناتي</span><span class="n"></span></a>
+        <div class="out"><button type="button" id="sign-out">تسجيل الخروج</button></div>
+      </nav>
+
+      <div>
+        <section class="panel" id="overview" aria-labelledby="overview-h" hidden>
+          <header><h2 id="overview-h" tabindex="-1">نظرة عامة</h2></header>
+          <div id="ov-latest"></div>
+          <div class="tiles" id="ov-tiles"></div>
+        </section>
+
+        <section class="panel" id="orders" aria-labelledby="orders-h" hidden>
+          <header><h2 id="orders-h" tabindex="-1">طلباتي</h2><p>الطلبات التي أرسلتها برقم جوالك.</p></header>
+          <div class="orders" id="orders-list"></div>
+        </section>
+
+        <section class="panel" id="addresses" aria-labelledby="addresses-h" hidden>
+          <header><h2 id="addresses-h" tabindex="-1">العناوين</h2><p>العنوان الافتراضي يملأ صفحة الدفع وحده.</p></header>
+          <div class="addrs" id="addr-list"></div>
+        </section>
+
+        <section class="panel" id="favorites" aria-labelledby="favorites-h" hidden>
+          <header><h2 id="favorites-h" tabindex="-1">المفضلة</h2><p>القطع التي حفظتها بالقلب.</p></header>
+          <div id="fav-list"></div>
+        </section>
+
+        <section class="panel" id="profile" aria-labelledby="profile-h" hidden>
+          <header><h2 id="profile-h" tabindex="-1">بياناتي</h2></header>
+          <form class="profile" id="profile-form" novalidate>
+            <p class="form-error" id="profile-error" role="alert" hidden></p>
+            <div class="grid">
+              <div class="field"><label for="p-name">الاسم <span class="req" aria-hidden="true">*</span></label><input id="p-name" autocomplete="name" required aria-describedby="p-name-hint"><span class="hint" id="p-name-hint" data-hint></span></div>
+              <div class="field"><label for="p-email">البريد الإلكتروني</label><input id="p-email" type="email" dir="ltr" autocomplete="email" placeholder="name@email.com" aria-describedby="p-email-hint"><span class="hint" id="p-email-hint" data-hint>اختياري</span></div>
+            </div>
+            <div class="field"><span class="field-label" id="p-phone-l">رقم الجوال</span><div class="phone-line"><bdi class="num" id="p-phone"></bdi><a class="thread" href="login.html?change=1">غير الرقم</a></div></div>
+            <fieldset>
+              <legend>الرسائل</legend>
+              <label class="check"><input class="box" type="checkbox" id="p-notify-orders"><span>تحديثات طلباتي على واتساب<small>تأكيد الطلب، ورقم الشحنة، وموعد الاستلام.</small></span></label>
+              <label class="check"><input class="box" type="checkbox" id="p-notify-news"><span>رسالة حين تصل قطع جديدة<small>مرة في الشهر تقريبا، ويمكنك إيقافها في أي وقت.</small></span></label>
+            </fieldset>
+            <div class="field"><label for="p-lang">لغة الرسائل</label><select id="p-lang"><option value="ar">العربية</option><option value="tr" disabled>Türkçe، قريبا</option><option value="en" disabled>English، قريبا</option></select></div>
+            <button class="btn btn--lg" type="submit">احفظ بياناتي</button>
+          </form>
+          <div class="danger" id="danger">
+            <b>حذف الحساب</b>
+            <p>نحذف بياناتك وعناوينك. الطلبات السابقة تبقى في سجلات دار كما يطلب القانون.</p>
+            <div class="row" id="danger-actions"><button class="btn btn--quiet" type="button" id="del-ask">أريد حذف حسابي</button></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="assets/js/stitch.js?v=9"></script>
+<script src="assets/js/products.js?v=2"></script>
+<script src="assets/js/site.js?v=12"></script>
+<script src="assets/js/account.js?v=1"></script>
+</body>
+</html>

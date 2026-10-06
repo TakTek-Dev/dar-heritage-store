@@ -9,6 +9,15 @@
   let extras = {};
   try { extras = JSON.parse(localStorage.getItem("dar-cart-extras") || "{}"); } catch (e) {}
 
+  // A signed-in customer starts with their details and default address filled in
+  const me = Site.account.current();
+  if (me) {
+    const addr = (me.addresses || []).find(a => a.isDefault) || (me.addresses || [])[0];
+    const fill = (id, v) => { const el = $(id); if (el && !el.value && v) el.value = v; };
+    fill("f-name", addr?.name || me.name); fill("f-phone", addr?.phone || me.phone); fill("f-email", me.email);
+    if (addr) { fill("f-city", addr.city); fill("f-address", addr.address); }
+  }
+
   const SHIP_TR = +(DAR_SETTINGS.shipTr || 120);    // demo default until DAR sets the rate in the dashboard
   const form = $("co-form");
   const view = i => { const p = byId[i.pid]; const v = (p.variants || []).find(x => x.color === i.variant); return { p, v, unit: price(p), img: v ? v.img : p.img }; };

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الدخول إلى حسابك، دار</title>
+<meta name="description" content="ادخل إلى حسابك في دار برقم جوالك لتتابع طلباتك وعناوينك والقطع التي أحببتها.">
+<meta name="robots" content="noindex">
+<link rel="preload" href="assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=10">
+<link rel="stylesheet" href="assets/css/site.css?v=16">
+<link rel="stylesheet" href="assets/css/shop.css?v=6">
+<link rel="stylesheet" href="assets/css/pages.css?v=4">
+<link rel="stylesheet" href="assets/css/service.css?v=2">
+<link rel="stylesheet" href="assets/css/account.css?v=2">
+</head>
+<body data-page="login">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="مسار التصفح"><a href="index.html">الرئيسية</a><span aria-hidden="true">/</span><span aria-current="page">حسابي</span></nav>
+  </div>
+
+  <section class="auth wrap" aria-labelledby="auth-h">
+    <div class="auth__form">
+      <span class="eyebrow up"><span data-motif="starlet"></span>حسابي</span>
+      <h1 id="auth-h" class="svc-title" tabindex="-1">ادخل برقم جوالك</h1>
+      <p class="svc-lead" id="auth-lead">نرسل لك رمزا على واتساب، فلا كلمة مرور تتذكرها. والحساب يحفظ طلباتك وعناوينك والقطع التي أحببتها.</p>
+      <ol class="auth-steps" id="auth-steps" aria-label="خطوات الدخول">
+        <li class="is-on" aria-current="step">رقم الجوال</li>
+        <li>الرمز</li>
+        <li>بياناتك</li>
+      </ol>
+      <p class="form-error" id="auth-error" role="alert" hidden></p>
+
+      <form id="step-phone" novalidate aria-labelledby="auth-h">
+        <div class="field"><label for="a-phone">رقم الجوال</label><input id="a-phone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" required placeholder="+90 5xx xxx xx xx" aria-describedby="a-phone-hint"><span class="hint" id="a-phone-hint" data-hint>مع رمز الدولة، والرقم الذي عليه واتساب</span></div>
+        <button class="btn btn--lg btn--henna" type="submit">أرسل الرمز</button>
+      </form>
+
+      <form id="step-code" novalidate hidden aria-labelledby="auth-h">
+        <p class="code-to">أرسلنا رمزا من 6 أرقام إلى <bdi id="code-to" class="num"></bdi>. <button class="link-btn" type="button" id="change-phone">غير الرقم</button></p>
+        <p class="demo-code" id="demo-code"><span>معاينة: في الموقع الحقيقي يصلك الرمز على واتساب. رمز التجربة</span><b id="demo-code-value"></b></p>
+        <div class="field"><label for="a-code">الرمز</label><input class="otp" id="a-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required aria-describedby="a-code-hint"><span class="hint" id="a-code-hint" data-hint>يتحقق تلقائيا حين تكتب الأرقام الستة</span></div>
+        <button class="btn btn--lg btn--henna" type="submit">تأكيد الرمز</button>
+        <p class="resend"><span id="resend-wait">يمكنك طلب رمز جديد بعد <span class="num" id="resend-n">30</span> ثانية.</span><button class="link-btn" type="button" id="resend" hidden>أرسل رمزا جديدا</button></p>
+      </form>
+
+      <form id="step-profile" novalidate hidden aria-labelledby="auth-h">
+        <div class="field"><label for="a-name">الاسم <span class="req" aria-hidden="true">*</span></label><input id="a-name" autocomplete="name" required aria-describedby="a-name-hint"><span class="hint" id="a-name-hint" data-hint>كما تحب أن نناديك</span></div>
+        <div class="field"><label for="a-email">البريد الإلكتروني</label><input id="a-email" type="email" dir="ltr" autocomplete="email" placeholder="name@email.com" aria-describedby="a-email-hint"><span class="hint" id="a-email-hint" data-hint>اختياري، لنسخة من فاتورة كل طلب</span></div>
+        <label class="check"><input class="box" type="checkbox" id="a-news"><span>أرسلوا لي رسالة على واتساب حين تصل قطع جديدة</span></label>
+        <button class="btn btn--lg btn--henna" type="submit">أنشئ حسابي</button>
+      </form>
+
+      <p class="small-note">بالمتابعة توافق على <a class="thread" href="policies.html#terms">شروط البيع</a> و<a class="thread" href="policies.html#privacy">سياسة الخصوصية</a>.</p>
+      <p class="demo-note"><span data-motif="starlet"></span><span>معاينة: الحساب يحفظ في هذا المتصفح فقط حتى يجهز الخادم. <button class="link-btn" type="button" id="demo-acct">جرب حسابا تجريبيا</button></span></p>
+      <p class="auth-guest">لا تريد حسابا؟ <a class="thread" href="shop.html">تسوق كضيف</a>، فالطلب لا يحتاج حسابا.</p>
+    </div>
+
+    <figure class="auth__art">
+      <div class="auth__window arch" data-veil><img src="assets/img/dar/kufiya-woman.webp" alt="امرأة تلبس شالا من الكوفية بتطريز أحمر أمام قوس حجري وشجرة زيتون" width="425" height="450"></div>
+      <ul class="perks">
+        <li><span data-motif="i-box"></span><span><b>طلباتك في مكان واحد</b>حالة كل طلب، وتتبعه، وإعادة طلبه بضغطة.</span></li>
+        <li><span data-motif="i-pin"></span><span><b>عناوينك محفوظة</b>تملأ صفحة الدفع وحدها في المرة القادمة.</span></li>
+        <li><span data-motif="i-heart"></span><span><b>القطع التي أحببتها</b>تجدها كلها هنا حين تعود.</span></li>
+      </ul>
+    </figure>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="assets/js/stitch.js?v=9"></script>
+<script src="assets/js/products.js?v=2"></script>
+<script src="assets/js/site.js?v=12"></script>
+<script src="assets/js/account.js?v=1"></script>
+</body>
+</html>

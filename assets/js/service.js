@@ -185,9 +185,12 @@
     const fromUrl = new URLSearchParams(location.search).get("no");
     let last = null;
     try { last = JSON.parse(sessionStorage.getItem("dar-last-order") || "null"); } catch (e) {}
+    const me = Site.account.current();
+    if (me) phone.value = me.phone;
     if (fromUrl) {
       no.value = fromUrl;
-      if (last && last.id === fromUrl) { phone.value = last.phone; lookup(); } else phone.focus();
+      if (last && last.id === fromUrl) phone.value = last.phone;
+      if (phone.value) lookup(); else phone.focus();
     }
 
     // Demo shortcut: the newest order placed in this browser, or a shipped one from the dashboard

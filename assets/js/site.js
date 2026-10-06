@@ -31,6 +31,7 @@
     <div class="head-tools">
       <div class="lang" role="group" aria-label="اللغة"><span class="lang__on" aria-current="true" title="العربية">ع</span><button type="button" data-soon="tr" aria-label="النسخة التركية قريبا">TR</button><button type="button" data-soon="en" aria-label="النسخة الإنجليزية قريبا">EN</button></div>
       <a class="icon-btn" href="shop.html" aria-label="البحث في المتجر"><span data-motif="i-search"></span></a>
+      <a class="icon-btn" href="account.html" aria-label="حسابي" id="acct-btn"${page === "account" || page === "login" ? ' aria-current="page"' : ""}><span data-motif="i-user"></span></a>
       <a class="icon-btn" href="shop.html?fav=1" aria-label="المفضلة" id="fav-btn"><span data-motif="i-heart"></span><span class="count num" id="fav-count" hidden>0</span></a>
       <a class="icon-btn" href="cart.html" aria-label="السلة" id="cart-btn"${page === "cart" ? ' aria-current="page"' : ""}><span data-motif="i-bag"></span><span class="count num" id="cart-count" hidden>0</span></a>
     </div>
@@ -53,7 +54,7 @@
     <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني" width="140" height="137"><p>القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.</p></div>
     <div><h2>المتجر</h2><ul>${cats}</ul></div>
     <div><h2>دار</h2><ul><li><a href="about.html">من نحن</a></li><li><a href="motifs.html">النقوش</a></li><li><a href="corporate.html">هدايا المؤسسات</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="about.html#visit">زورونا</a></li></ul></div>
-    <div><h2>المساعدة</h2><ul><li><a href="track.html">تتبع طلبك</a></li><li><a href="help.html#shipping">الشحن والتوصيل</a></li><li><a href="help.html#returns">الإرجاع والاستبدال</a></li><li><a href="help.html">الأسئلة المتكررة</a></li><li><a href="policies.html">السياسات</a></li></ul></div>
+    <div><h2>المساعدة</h2><ul><li><a href="account.html">حسابي</a></li><li><a href="track.html">تتبع طلبك</a></li><li><a href="help.html#shipping">الشحن والتوصيل</a></li><li><a href="help.html#returns">الإرجاع والاستبدال</a></li><li><a href="help.html">الأسئلة المتكررة</a></li><li><a href="policies.html">السياسات</a></li></ul></div>
     <div><h2>تواصل</h2><ul><li><a href="contact.html">راسلنا</a></li><li><a href="${WA}" target="_blank" rel="noopener">واتساب</a></li><li><a href="${IG}" target="_blank" rel="noopener">إنستغرام</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">فيسبوك</a></li></ul></div>
   </div>
   <div class="wrap foot-base"><span>© 2026 دار، مركز التراث الفلسطيني</span><span>الصور من كتالوج دار 2026</span></div>
@@ -214,6 +215,22 @@
   drawer.addEventListener("click", e => { if (e.target.closest("[data-close-drawer], nav a")) setDrawer(false); });
   addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("is-open")) setDrawer(false); });
 
+  /* ---------- Customer account: kept in this browser until the backend exists.
+     Accounts are keyed by the national part of the phone number, the session holds that key ---------- */
+  const phoneKey = v => String(v || "").replace(/\D/g, "").slice(-10);
+  const account = {
+    key: phoneKey,
+    all() { try { return JSON.parse(localStorage.getItem("dar-accounts") || "{}"); } catch (e) { return {}; } },
+    find(phone) { return account.all()[phoneKey(phone)] || null; },
+    current() { let k = null; try { k = localStorage.getItem("dar-session"); } catch (e) {} return k ? account.all()[k] || null : null; },
+    save(user) { const all = account.all(); all[phoneKey(user.phone)] = user; try { localStorage.setItem("dar-accounts", JSON.stringify(all)); } catch (e) {} return user; },
+    remove(user) { const all = account.all(); delete all[phoneKey(user.phone)]; try { localStorage.setItem("dar-accounts", JSON.stringify(all)); } catch (e) {} account.signOut(); },
+    signIn(user) { try { localStorage.setItem("dar-session", phoneKey(user.phone)); } catch (e) {} },
+    signOut() { try { localStorage.removeItem("dar-session"); } catch (e) {} }
+  };
+  const me = account.current();
+  if (me) document.getElementById("acct-btn").setAttribute("aria-label", `حسابي، ${me.name}`);
+
   /* ---------- Cart: kept in this browser until the backend exists ---------- */
   const count = document.getElementById("cart-count");
   const cartBtn = document.getElementById("cart-btn");
@@ -303,7 +320,7 @@
     </article>`;
   }
 
-  window.Site = { reduce, observe, veil, splitWords, showToast, hideToast, addToCart, card, IMG, SM, modal, onScroll: fn => scrollHooks.push(fn), refresh: onScroll, WA, cart: store, favs, price, money };
+  window.Site = { reduce, observe, veil, splitWords, showToast, hideToast, addToCart, card, IMG, SM, modal, onScroll: fn => scrollHooks.push(fn), refresh: onScroll, WA, cart: store, favs, price, money, account };
 
   // Pages that do not run an intro start revealing right away
   if (!document.body.hasAttribute("data-wait-intro")) observe();
