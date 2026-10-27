@@ -6,10 +6,12 @@
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const phoneOk = v => /^\+?\d{9,15}$/.test(String(v).replace(/[\s()-]/g, ""));
   const emailOk = v => !v || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-  const fmtDate = iso => new Date(iso).toLocaleDateString("ar-EG-u-nu-latn", { day: "numeric", month: "long" });
-  const fmtMonth = iso => new Date(iso).toLocaleDateString("ar-EG-u-nu-latn", { month: "long", year: "numeric" });
-  const pieces = n => n === 1 ? "قطعة واحدة" : n === 2 ? "قطعتان" : n <= 10 ? `${n} قطع` : `${n} قطعة`;
-  const PHONE_MSG = "اكتب الرقم مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.";
+  const fmtDate = iso => new Date(iso).toLocaleDateString(L("ar-EG-u-nu-latn", "en-GB"), { day: "numeric", month: "long" });
+  const fmtMonth = iso => new Date(iso).toLocaleDateString(L("ar-EG-u-nu-latn", "en-GB"), { month: "long", year: "numeric" });
+  const pieces = n => L(n === 1 ? "قطعة واحدة" : n === 2 ? "قطعتان" : n <= 10 ? `${n} قطع` : `${n} قطعة`, n === 1 ? "1 piece" : `${n} pieces`);
+  const pname = p => L(p.name, p.name_en);
+  const SEP = L("، ", ", ");
+  const PHONE_MSG = L("اكتب الرقم مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.", "Write the number with the country code, like +90 5xx xxx xx xx.");
 
   // Marks a field wrong or right, and swaps its hint for the reason
   function mark(input, ok, message) {
@@ -32,12 +34,15 @@
   /* ---------- Demo account: one tap gives a full account to look at ---------- */
   function demo() {
     const phone = "+90 532 000 11 22";
-    const user = account.find(phone) || account.save({
-      name: "سارة أحمد", phone, email: "sara@example.com", since: "2026-03-12T10:00:00.000Z", demo: true,
-      notify: { orders: true, news: true }, lang: "ar",
+    const demoName = L("سارة أحمد", "Sara Ahmad"), demoCity = L("إسطنبول", "Istanbul");
+    // A demo account made in the other language is made again, so its sample names read in this one
+    const had = account.find(phone);
+    const user = had && (!had.demo || (had.demoLang || "ar") === DAR_LANG) ? had : account.save({
+      name: demoName, phone, email: "sara@example.com", since: "2026-03-12T10:00:00.000Z", demo: true, demoLang: DAR_LANG,
+      notify: { orders: true, news: true }, lang: DAR_LANG,
       addresses: [
-        { id: "a1", label: "البيت", name: "سارة أحمد", phone, city: "إسطنبول", address: "Şirinevler Mah. Adnan Kahveci Blv. No:12 D:4, Bahçelievler", isDefault: true },
-        { id: "a2", label: "العمل", name: "سارة أحمد", phone, city: "إسطنبول", address: "Kızıltaş Sk. No:3, Fatih" }
+        { id: "a1", label: L("البيت", "Home"), name: demoName, phone, city: demoCity, address: "Şirinevler Mah. Adnan Kahveci Blv. No:12 D:4, Bahçelievler", isDefault: true },
+        { id: "a2", label: L("العمل", "Work"), name: demoName, phone, city: demoCity, address: "Kızıltaş Sk. No:3, Fatih" }
       ]
     });
     // Two past orders, kept where checkout keeps orders, so tracking and the dashboard see them too
@@ -46,8 +51,8 @@
     if (!list.some(o => o.local && account.key(o.phone) === account.key(phone))) {
       let next = Math.max(1051, ...list.map(o => +String(o.id).split("-").pop() || 0));
       const day = 864e5, now = Date.now(), year = new Date().getFullYear();
-      const older = { id: `DAR-${year}-${++next}`, name: user.name, city: "إسطنبول", phone, lines: [{ pid: "kufiya", qty: 2 }], channel: "web", pay: "bank", ship: "pickup", status: "done", date: new Date(now - 24 * day).toISOString(), local: true };
-      const newer = { id: `DAR-${year}-${++next}`, name: user.name, city: "إسطنبول", phone, lines: [{ pid: "thob-green", qty: 1 }, { pid: "cups-red", qty: 1 }], channel: "web", pay: "card", ship: "tr", status: "ship", date: new Date(now - 2 * day).toISOString(), local: true };
+      const older = { id: `DAR-${year}-${++next}`, name: user.name, city: demoCity, phone, lines: [{ pid: "kufiya", qty: 2 }], channel: "web", pay: "bank", ship: "pickup", status: "done", date: new Date(now - 24 * day).toISOString(), local: true };
+      const newer = { id: `DAR-${year}-${++next}`, name: user.name, city: demoCity, phone, lines: [{ pid: "thob-green", qty: 1 }, { pid: "cups-red", qty: 1 }], channel: "web", pay: "card", ship: "tr", status: "ship", date: new Date(now - 2 * day).toISOString(), local: true };
       list.unshift(newer, older);
       state.orders = list;
       try { localStorage.setItem("dar-admin", JSON.stringify(state)); } catch (e) {}
@@ -72,9 +77,9 @@
     const steps = [...$("auth-steps").children];
     const forms = { phone: phoneForm, code: $("step-code"), profile: $("step-profile") };
     const titles = {
-      phone: changing ? ["رقمك الجديد", "نرسل رمزا إلى الرقم الجديد لنتأكد أنه لك."] : [h.textContent, lead.textContent],
-      code: ["اكتب الرمز", "الرمز صالح لعشر دقائق، ولا تشاركه مع أحد."],
-      profile: ["أهلا بك في دار", "خطوة أخيرة: كيف نناديك؟"]
+      phone: changing ? [L("رقمك الجديد", "Your new number"), L("نرسل رمزا إلى الرقم الجديد لنتأكد أنه لك.", "We send a code to the new number to make sure it is yours.")] : [h.textContent, lead.textContent],
+      code: [L("اكتب الرمز", "Enter the code"), L("الرمز صالح لعشر دقائق، ولا تشاركه مع أحد.", "The code works for ten minutes. Do not share it with anyone.")],
+      profile: [L("أهلا بك في دار", "Welcome to DAR"), L("خطوة أخيرة: كيف نناديك؟", "One last step: what should we call you?")]
     };
     const phoneIn = $("a-phone"), codeIn = $("a-code");
     let phone = "", code = "", timer;
@@ -114,8 +119,8 @@
       if (!mark(phoneIn, phoneOk(phoneIn.value), PHONE_MSG)) { phoneIn.focus(); return; }
       if (changing) {
         const other = account.find(phoneIn.value);
-        if (account.key(phoneIn.value) === account.key(changing.phone)) { mark(phoneIn, false, "هذا رقمك الحالي. اكتب الرقم الجديد."); phoneIn.focus(); return; }
-        if (other) { mark(phoneIn, false, "هذا الرقم مسجل في حساب آخر."); phoneIn.focus(); return; }
+        if (account.key(phoneIn.value) === account.key(changing.phone)) { mark(phoneIn, false, L("هذا رقمك الحالي. اكتب الرقم الجديد.", "This is your current number. Write the new one.")); phoneIn.focus(); return; }
+        if (other) { mark(phoneIn, false, L("هذا الرقم مسجل في حساب آخر.", "This number belongs to another account.")); phoneIn.focus(); return; }
       }
       phone = phoneIn.value.trim();
       const btn = e.submitter;
@@ -132,7 +137,7 @@
     forms.code.addEventListener("submit", e => {
       e.preventDefault();
       if (codeIn.value !== code) {
-        mark(codeIn, false, codeIn.value.length < 6 ? "الرمز ستة أرقام." : "الرمز غير صحيح. تأكد منه، أو اطلب رمزا جديدا.");
+        mark(codeIn, false, codeIn.value.length < 6 ? L("الرمز ستة أرقام.", "The code has six digits.") : L("الرمز غير صحيح. تأكد منه، أو اطلب رمزا جديدا.", "That code is not right. Check it, or ask for a new one."));
         codeIn.select();
         return;
       }
@@ -154,17 +159,17 @@
       $("a-name").focus();
     });
     $("change-phone").addEventListener("click", () => { clearInterval(timer); show("phone"); phoneIn.focus(); phoneIn.select(); });
-    $("resend").addEventListener("click", () => { sendCode(); codeIn.focus(); Site.showToast("أرسلنا رمزا جديدا."); });
+    $("resend").addEventListener("click", () => { sendCode(); codeIn.focus(); Site.showToast(L("أرسلنا رمزا جديدا.", "We sent you a new code.")); });
 
     forms.profile.addEventListener("submit", e => {
       e.preventDefault();
       const name = $("a-name"), email = $("a-email");
       const bad = [
-        [name, name.value.trim().length > 1, "اكتب اسمك."],
-        [email, emailOk(email.value.trim()), "أكمل البريد، مثل name@email.com، أو اتركه فارغا."]
+        [name, name.value.trim().length > 1, L("اكتب اسمك.", "Write your name.")],
+        [email, emailOk(email.value.trim()), L("أكمل البريد، مثل name@email.com، أو اتركه فارغا.", "Complete the email, like name@email.com, or leave it empty.")]
       ].filter(([input, ok, msg]) => !mark(input, ok, msg)).map(([input]) => input);
       if (bad.length) { bad[0].focus(); return; }
-      const user = account.save({ name: name.value.trim(), phone, email: email.value.trim(), since: new Date().toISOString(), notify: { orders: true, news: $("a-news").checked }, lang: "ar", addresses: [] });
+      const user = account.save({ name: name.value.trim(), phone, email: email.value.trim(), since: new Date().toISOString(), notify: { orders: true, news: $("a-news").checked }, lang: DAR_LANG, addresses: [] });
       account.signIn(user);
       sessionStorage.setItem("dar-welcome", "new");
       location.replace(next);
@@ -179,17 +184,18 @@
     let user = account.current();
     if (!user) { location.replace("login.html?next=account.html"); return; }
     const byId = Object.fromEntries((window.DAR_ALL_PRODUCTS || []).map(p => [p.id, p]));
-    const SHIP = { tr: "توصيل داخل تركيا", intl: "شحن دولي", pickup: "استلام من المركز" };
-    const STATUS = { new: "استلمنا طلبك", prep: "قيد التجهيز", ship: "تم الشحن", done: "تم التسليم", cancel: "ملغي" };
+    const SHIP = { tr: L("توصيل داخل تركيا", "Delivery in Türkiye"), intl: L("شحن دولي", "International shipping"), pickup: L("استلام من المركز", "Pick up at the centre") };
+    const STATUS = { new: L("استلمنا طلبك", "Order received"), prep: L("قيد التجهيز", "Being prepared"), ship: L("تم الشحن", "Shipped"), done: L("تم التسليم", "Delivered"), cancel: L("ملغي", "Cancelled") };
     const firstName = () => user.name.split(/\s+/)[0];
 
     const welcome = sessionStorage.getItem("dar-welcome");
     if (welcome) {
       sessionStorage.removeItem("dar-welcome");
-      Site.showToast({ new: `أهلا بك يا ${firstName()}، حسابك جاهز.`, phone: "غيرنا رقم جوالك.", demo: `هذا حساب تجريبي باسم ${user.name}.` }[welcome] || `أهلا بعودتك يا ${firstName()}.`);
+      Site.showToast(L({ new: `أهلا بك يا ${firstName()}، حسابك جاهز.`, phone: "غيرنا رقم جوالك.", demo: `هذا حساب تجريبي باسم ${user.name}.` }[welcome] || `أهلا بعودتك يا ${firstName()}.`,
+        { new: `Welcome, ${firstName()}. Your account is ready.`, phone: "We changed your phone number.", demo: `This is a demo account for ${user.name}.` }[welcome] || `Welcome back, ${firstName()}.`));
     }
-    $("acct-h").textContent = `أهلا، ${firstName()}`;
-    $("acct-since").textContent = `في دار منذ ${fmtMonth(user.since)}`;
+    $("acct-h").textContent = L(`أهلا، ${firstName()}`, `Hello, ${firstName()}`);
+    $("acct-since").textContent = L(`في دار منذ ${fmtMonth(user.since)}`, `With DAR since ${fmtMonth(user.since)}`);
     $("acct-demo").hidden = !user.demo;
 
     const save = () => { user = account.save(user); counts(); };
@@ -204,7 +210,7 @@
     // Same four stops as the tracking page
     function stepItems(o) {
       const pickup = o.ship === "pickup";
-      const stops = ["استلمنا طلبك", "نجهز القطع", pickup ? "جاهز للاستلام" : "في الطريق إليك", pickup ? "تم الاستلام" : "وصل"];
+      const stops = [L("استلمنا طلبك", "Order received"), L("نجهز القطع", "Preparing your pieces"), pickup ? L("جاهز للاستلام", "Ready to pick up") : L("في الطريق إليك", "On its way"), pickup ? L("تم الاستلام", "Picked up") : L("وصل", "Delivered")];
       const at = { new: 0, prep: 1, ship: 2, done: 3 }[o.status] ?? -1;
       return stops.map((t, i) => `<li class="${o.status === "done" || i < at ? "is-done" : i === at ? "is-on" : ""}" style="--n:${i}"${i === at && o.status !== "done" ? ' aria-current="step"' : ""}><span class="knot" aria-hidden="true"></span><b>${t}</b></li>`).join("");
     }
@@ -214,13 +220,13 @@
       const thumbs = o.lines.map(l => {
         const p = byId[l.pid]; if (!p) return "";
         const v = (p.variants || []).find(x => x.color === l.variant);
-        return `<li><img src="${Site.SM(v ? v.img : p.img)}" alt="${esc(p.name)}${l.qty > 1 ? `، ${l.qty} قطع` : ""}" width="64" height="80" loading="lazy"></li>`;
+        return `<li><img src="${Site.SM(v ? v.img : p.img)}" alt="${esc(pname(p))}${l.qty > 1 ? L(`، ${l.qty} قطع`, `, ${l.qty} pieces`) : ""}" width="64" height="80" loading="lazy"></li>`;
       }).join("");
       return `<article class="order">
-        <div class="order__head"><div><h3><bdi>${esc(o.id)}</bdi></h3><p>${fmtDate(o.date)}، ${SHIP[o.ship] || ""}، ${pieces(n)}</p></div><span class="st st--${o.status}">${STATUS[o.status] || ""}</span></div>
-        ${withSteps && o.status !== "cancel" ? `<ol class="tr-steps" aria-label="مراحل الطلب">${stepItems(o)}</ol>` : ""}
-        <ul class="thumbs" aria-label="القطع">${thumbs}</ul>
-        <div class="order__foot"><span class="total num">${money(total)}<small>سعر تجريبي</small></span><div class="row"><a class="btn btn--quiet" href="track.html?no=${encodeURIComponent(o.id)}">تتبع الطلب</a><button class="btn" type="button" data-reorder="${esc(o.id)}">اطلبها مرة أخرى</button></div></div>
+        <div class="order__head"><div><h3><bdi>${esc(o.id)}</bdi></h3><p>${fmtDate(o.date)}${SEP}${SHIP[o.ship] || ""}${SEP}${pieces(n)}</p></div><span class="st st--${o.status}">${STATUS[o.status] || ""}</span></div>
+        ${withSteps && o.status !== "cancel" ? `<ol class="tr-steps" aria-label="${L("مراحل الطلب", "Order stages")}">${stepItems(o)}</ol>` : ""}
+        <ul class="thumbs" aria-label="${L("القطع", "Pieces")}">${thumbs}</ul>
+        <div class="order__foot"><span class="total num">${money(total)}<small>${L("سعر تجريبي", "Sample price")}</small></span><div class="row"><a class="btn btn--quiet" href="track.html?no=${encodeURIComponent(o.id)}">${L("تتبع الطلب", "Track order")}</a><button class="btn" type="button" data-reorder="${esc(o.id)}">${L("اطلبها مرة أخرى", "Order again")}</button></div></div>
       </article>`;
     }
 
@@ -228,8 +234,8 @@
       const orders = ordersOf(user);
       $("ov-latest").innerHTML = orders.length
         ? orderCard(orders[0], true)
-        : empty("i-box", "لا طلبات بعد", "حين تطلب قطعة برقم جوالك، تظهر هنا مع حالتها.", "shop.html", "تسوق القطع");
-      $("ov-tiles").innerHTML = [["orders", orders.length, "الطلبات"], ["addresses", (user.addresses || []).length, "العناوين المحفوظة"], ["favorites", Site.favs.get().length, "المفضلة"]]
+        : empty("i-box", L("لا طلبات بعد", "No orders yet"), L("حين تطلب قطعة برقم جوالك، تظهر هنا مع حالتها.", "When you order with your phone number, the order shows here with its status."), "shop.html", L("تسوق القطع", "Shop the pieces"));
+      $("ov-tiles").innerHTML = [["orders", orders.length, L("الطلبات", "Orders")], ["addresses", (user.addresses || []).length, L("العناوين المحفوظة", "Saved addresses")], ["favorites", Site.favs.get().length, L("المفضلة", "Favourites")]]
         .map(([id, n, label]) => `<a class="tile" href="#${id}" data-go="${id}"><b class="num">${n}</b><span>${label}</span></a>`).join("");
       Dar.mount($("ov-latest"));
     }
@@ -237,7 +243,7 @@
       const orders = ordersOf(user);
       $("orders-list").innerHTML = orders.length
         ? orders.map(o => orderCard(o, false)).join("")
-        : empty("i-box", "لا طلبات بعد", "طلباتك من الموقع برقم جوالك تظهر هنا.", "shop.html", "تسوق القطع");
+        : empty("i-box", L("لا طلبات بعد", "No orders yet"), L("طلباتك من الموقع برقم جوالك تظهر هنا.", "Orders you place on the site with your phone number show here."), "shop.html", L("تسوق القطع", "Shop the pieces"));
       Dar.mount($("orders-list"));
     }
 
@@ -245,12 +251,12 @@
     function addresses(focusSel) {
       const list = user.addresses || [];
       $("addr-list").innerHTML = list.map(a => `
-        <article class="addr${a.isDefault ? " is-default" : ""}" data-addr="${a.id}" tabindex="-1" aria-label="${esc(a.label || "عنوان")}">
-          <div class="addr__top"><b>${esc(a.label || "عنوان")}</b>${a.isDefault ? '<span class="tag">الافتراضي</span>' : ""}</div>
-          <p>${esc(a.name)}، <bdi class="num">${esc(a.phone)}</bdi></p>
-          <p>${esc(a.city)}، <bdi>${esc(a.address)}</bdi></p>
-          <div class="addr__actions"><button class="link-btn" type="button" data-edit="${a.id}">تعديل</button>${a.isDefault ? "" : `<button class="link-btn" type="button" data-default="${a.id}">اجعله الافتراضي</button>`}<button class="link-btn" type="button" data-del="${a.id}">حذف</button></div>
-        </article>`).join("") + '<button class="addr-add" type="button" data-new><span data-motif="i-plus"></span>أضف عنوانا</button>';
+        <article class="addr${a.isDefault ? " is-default" : ""}" data-addr="${a.id}" tabindex="-1" aria-label="${esc(a.label || L("عنوان", "Address"))}">
+          <div class="addr__top"><b>${esc(a.label || L("عنوان", "Address"))}</b>${a.isDefault ? `<span class="tag">${L("الافتراضي", "Default")}</span>` : ""}</div>
+          <p>${esc(a.name)}${SEP}<bdi class="num">${esc(a.phone)}</bdi></p>
+          <p>${esc(a.city)}${SEP}<bdi>${esc(a.address)}</bdi></p>
+          <div class="addr__actions"><button class="link-btn" type="button" data-edit="${a.id}">${L("تعديل", "Edit")}</button>${a.isDefault ? "" : `<button class="link-btn" type="button" data-default="${a.id}">${L("اجعله الافتراضي", "Make default")}</button>`}<button class="link-btn" type="button" data-del="${a.id}">${L("حذف", "Delete")}</button></div>
+        </article>`).join("") + `<button class="addr-add" type="button" data-new><span data-motif="i-plus"></span>${L("أضف عنوانا", "Add an address")}</button>`;
       Dar.mount($("addr-list"));
       if (focusSel) $("addr-list").querySelector(focusSel)?.focus();
     }
@@ -259,16 +265,16 @@
       const f = (id, label, value, extra = "", hint = "") => `<div class="field${id === "address" ? " full" : ""}"><label for="ad-${id}">${label}</label><input id="ad-${id}" value="${esc(value || "")}" ${extra} aria-describedby="ad-${id}-hint"><span class="hint" id="ad-${id}-hint" data-hint>${hint}</span></div>`;
       const req = '<span class="req" aria-hidden="true">*</span>';
       return `<form class="addr-form" data-form="${a.id || ""}" novalidate aria-labelledby="ad-h">
-        <h3 id="ad-h" tabindex="-1">${isNew ? "عنوان جديد" : "تعديل العنوان"}</h3>
+        <h3 id="ad-h" tabindex="-1">${isNew ? L("عنوان جديد", "New address") : L("تعديل العنوان", "Edit address")}</h3>
         <div class="grid">
-          ${f("label", "اسم العنوان", a.label, 'placeholder="البيت، العمل"')}
-          ${f("name", `اسم المستلم ${req}`, a.name || user.name, 'autocomplete="name" required')}
-          ${f("phone", `جوال المستلم ${req}`, a.phone || user.phone, 'type="tel" inputmode="tel" dir="ltr" autocomplete="tel" required')}
-          ${f("city", `المدينة ${req}`, a.city, 'autocomplete="address-level2" required')}
-          ${f("address", `العنوان ${req}`, a.address, 'autocomplete="street-address" required placeholder="الحي، الشارع، رقم المبنى والشقة"')}
+          ${f("label", L("اسم العنوان", "Address name"), a.label, `placeholder="${L("البيت، العمل", "Home, Work")}"`)}
+          ${f("name", `${L("اسم المستلم", "Recipient name")} ${req}`, a.name || user.name, 'autocomplete="name" required')}
+          ${f("phone", `${L("جوال المستلم", "Recipient phone")} ${req}`, a.phone || user.phone, 'type="tel" inputmode="tel" dir="ltr" autocomplete="tel" required')}
+          ${f("city", `${L("المدينة", "City")} ${req}`, a.city, 'autocomplete="address-level2" required')}
+          ${f("address", `${L("العنوان", "Address")} ${req}`, a.address, `autocomplete="street-address" required placeholder="${L("الحي، الشارع، رقم المبنى والشقة", "Area, street, building and flat number")}"`)}
         </div>
-        <label class="check"><input class="box" type="checkbox" id="ad-default"${a.isDefault || !(user.addresses || []).length ? " checked" : ""}><span>اجعله العنوان الافتراضي</span></label>
-        <div class="row"><button class="btn" type="submit">احفظ العنوان</button><button class="btn btn--quiet" type="button" data-cancel>إلغاء</button></div>
+        <label class="check"><input class="box" type="checkbox" id="ad-default"${a.isDefault || !(user.addresses || []).length ? " checked" : ""}><span>${L("اجعله العنوان الافتراضي", "Make this my default address")}</span></label>
+        <div class="row"><button class="btn" type="submit">${L("احفظ العنوان", "Save address")}</button><button class="btn btn--quiet" type="button" data-cancel>${L("إلغاء", "Cancel")}</button></div>
       </form>`;
     }
     const addrList = $("addr-list");
@@ -287,10 +293,10 @@
       } else if (t.dataset.default) {
         list.forEach(a => { a.isDefault = a.id === t.dataset.default; });
         save(); addresses(`[data-addr="${t.dataset.default}"]`);
-        Site.showToast("صار هذا عنوانك الافتراضي.");
+        Site.showToast(L("صار هذا عنوانك الافتراضي.", "This is now your default address."));
       } else if (t.dataset.del) {
         const actions = t.closest(".addr__actions");
-        actions.outerHTML = `<div class="addr__ask" role="group" aria-label="تأكيد حذف العنوان"><span>حذف هذا العنوان؟</span><button class="link-btn" type="button" data-del-yes="${t.dataset.del}">احذف</button><button class="link-btn" type="button" data-del-no="${t.dataset.del}">تراجع</button></div>`;
+        actions.outerHTML = `<div class="addr__ask" role="group" aria-label="${L("تأكيد حذف العنوان", "Confirm deleting the address")}"><span>${L("حذف هذا العنوان؟", "Delete this address?")}</span><button class="link-btn" type="button" data-del-yes="${t.dataset.del}">${L("احذف", "Delete")}</button><button class="link-btn" type="button" data-del-no="${t.dataset.del}">${L("تراجع", "Keep it")}</button></div>`;
         addrList.querySelector(`[data-del-no="${t.dataset.del}"]`).focus();
       } else if (t.dataset.delNo) {
         addresses(`[data-addr="${t.dataset.delNo}"]`);
@@ -299,26 +305,26 @@
         user.addresses = list.filter(a => a !== gone);
         if (gone?.isDefault && user.addresses[0]) user.addresses[0].isDefault = true;
         save(); addresses(user.addresses[0] ? `[data-addr="${user.addresses[0].id}"]` : "[data-new]");
-        Site.showToast("حذفنا العنوان.");
+        Site.showToast(L("حذفنا العنوان.", "We deleted the address."));
       }
     });
     addrList.addEventListener("submit", e => {
       e.preventDefault();
       const form = e.target, v = id => $(`ad-${id}`).value.trim();
       const bad = [
-        ["name", v("name").length > 1, "اكتب اسم المستلم."],
+        ["name", v("name").length > 1, L("اكتب اسم المستلم.", "Write the recipient's name.")],
         ["phone", phoneOk(v("phone")), PHONE_MSG],
-        ["city", v("city").length > 1, "اكتب المدينة."],
-        ["address", v("address").length > 5, "اكتب الحي والشارع ورقم المبنى."]
+        ["city", v("city").length > 1, L("اكتب المدينة.", "Write the city.")],
+        ["address", v("address").length > 5, L("اكتب الحي والشارع ورقم المبنى.", "Write the area, street and building number.")]
       ].filter(([id, ok, msg]) => !mark($(`ad-${id}`), ok, msg));
       if (bad.length) { $(`ad-${bad[0][0]}`).focus(); return; }
       const list = user.addresses || (user.addresses = []);
       let a = list.find(x => x.id === form.dataset.form);
       if (!a) { a = { id: `a${Date.now().toString(36)}` }; list.push(a); }
-      Object.assign(a, { label: v("label") || "عنوان", name: v("name"), phone: v("phone"), city: v("city"), address: v("address") });
+      Object.assign(a, { label: v("label") || L("عنوان", "Address"), name: v("name"), phone: v("phone"), city: v("city"), address: v("address") });
       if ($("ad-default").checked || !list.some(x => x.isDefault && x !== a)) list.forEach(x => { x.isDefault = x === a; });
       save(); addresses(`[data-addr="${a.id}"]`);
-      Site.showToast("حفظنا العنوان.");
+      Site.showToast(L("حفظنا العنوان.", "We saved the address."));
     });
     addrList.addEventListener("input", e => { if (e.target.closest(".is-error")) mark(e.target, true); });
 
@@ -327,7 +333,7 @@
       const list = Site.favs.get().map(id => (window.DAR_PRODUCTS || []).find(p => p.id === id)).filter(Boolean);
       $("fav-list").innerHTML = list.length
         ? `<div class="products">${list.map((p, i) => Site.card(p, i)).join("")}</div>`
-        : empty("i-heart", "لا قطع في المفضلة", "اضغط القلب على أي قطعة لتحفظها هنا.", "shop.html", "تصفح المتجر");
+        : empty("i-heart", L("لا قطع في المفضلة", "No favourites yet"), L("اضغط القلب على أي قطعة لتحفظها هنا.", "Tap the heart on any piece to keep it here."), "shop.html", L("تصفح المتجر", "Browse the shop"));
       Dar.mount($("fav-list"));
       Site.observe($("fav-list"));
     }
@@ -343,22 +349,22 @@
       $("p-phone").textContent = user.phone;
       $("p-notify-orders").checked = user.notify?.orders !== false;
       $("p-notify-news").checked = !!user.notify?.news;
-      $("p-lang").value = user.lang || "ar";
+      $("p-lang").value = [...$("p-lang").options].some(o => o.value === user.lang && !o.disabled) ? user.lang : DAR_LANG;
     }
     $("profile-form").addEventListener("submit", e => {
       e.preventDefault();
       const name = $("p-name"), email = $("p-email"), err = $("profile-error");
       const bad = [
-        [name, name.value.trim().length > 1, "اكتب اسمك."],
-        [email, emailOk(email.value.trim()), "أكمل البريد، مثل name@email.com، أو اتركه فارغا."]
+        [name, name.value.trim().length > 1, L("اكتب اسمك.", "Write your name.")],
+        [email, emailOk(email.value.trim()), L("أكمل البريد، مثل name@email.com، أو اتركه فارغا.", "Complete the email, like name@email.com, or leave it empty.")]
       ].filter(([input, ok, msg]) => !mark(input, ok, msg)).map(([input]) => input);
-      if (bad.length) { err.hidden = false; err.textContent = bad.length === 1 ? "حقل واحد يحتاج تصحيحا. الملاحظة مكتوبة تحته." : "حقلان يحتاجان تصحيحا. الملاحظة مكتوبة تحت كل حقل."; bad[0].focus(); return; }
+      if (bad.length) { err.hidden = false; err.textContent = bad.length === 1 ? L("حقل واحد يحتاج تصحيحا. الملاحظة مكتوبة تحته.", "One field needs fixing. The note is under it.") : L("حقلان يحتاجان تصحيحا. الملاحظة مكتوبة تحت كل حقل.", "Two fields need fixing. The note is under each one."); bad[0].focus(); return; }
       err.hidden = true;
       Object.assign(user, { name: name.value.trim(), email: email.value.trim(), lang: $("p-lang").value, notify: { orders: $("p-notify-orders").checked, news: $("p-notify-news").checked } });
       save();
-      $("acct-h").textContent = `أهلا، ${firstName()}`;
-      document.getElementById("acct-btn").setAttribute("aria-label", `حسابي، ${user.name}`);
-      Site.showToast("حفظنا بياناتك.");
+      $("acct-h").textContent = L(`أهلا، ${firstName()}`, `Hello, ${firstName()}`);
+      document.getElementById("acct-btn").setAttribute("aria-label", L(`حسابي، ${user.name}`, `My account, ${user.name}`));
+      Site.showToast(L("حفظنا بياناتك.", "We saved your details."));
     });
     $("profile-form").addEventListener("input", e => { if (e.target.closest(".is-error")) mark(e.target, true); });
 
@@ -366,7 +372,7 @@
     $("danger").addEventListener("click", e => {
       const id = e.target.closest("button")?.id;
       if (id === "del-ask") {
-        dangerActions.innerHTML = '<span>لا يمكن التراجع عن الحذف.</span><button class="btn btn--danger" type="button" id="del-yes">احذف حسابي</button><button class="btn btn--quiet" type="button" id="del-no">تراجع</button>';
+        dangerActions.innerHTML = `<span>${L("لا يمكن التراجع عن الحذف.", "This cannot be undone.")}</span><button class="btn btn--danger" type="button" id="del-yes">${L("احذف حسابي", "Delete my account")}</button><button class="btn btn--quiet" type="button" id="del-no">${L("تراجع", "Keep it")}</button>`;
         $("del-no").focus();
       } else if (id === "del-no") {
         dangerActions.innerHTML = askHTML;
@@ -392,7 +398,7 @@
         added++;
       });
       Site.cart.set(items);
-      Site.showToast(added ? "أضفنا قطع الطلب إلى سلتك." : "قطع هذا الطلب لم تعد متاحة.", added ? "عرض السلة" : "", "cart.html");
+      Site.showToast(added ? L("أضفنا قطع الطلب إلى سلتك.", "We added the order's pieces to your cart.") : L("قطع هذا الطلب لم تعد متاحة.", "The pieces in this order are no longer available."), added ? L("عرض السلة", "View cart") : "", "cart.html");
     });
 
     /* Sections: one shows at a time, the address bar remembers which */

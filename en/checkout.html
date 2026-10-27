@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Checkout, DAR</title>
+<meta name="robots" content="noindex">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=12">
+<link rel="stylesheet" href="../assets/css/site.css?v=20">
+<link rel="stylesheet" href="../assets/css/shop.css?v=7">
+<link rel="stylesheet" href="../assets/css/cart.css?v=7">
+</head>
+<body data-page="checkout">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap" id="checkout-wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><a href="cart.html">Cart</a><span aria-hidden="true">/</span><span aria-current="page">Checkout</span></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>Design preview: the order is not sent, and prices and shipping are sample values until DAR sets them.</p>
+
+    <div class="page-head"><div><h1 class="rise">Checkout</h1></div><a class="thread" href="cart.html">Back to the cart</a></div>
+
+    <div class="cart" id="checkout">
+      <aside class="summary co-summary" id="co-summary" aria-labelledby="co-sum-h">
+        <button class="summary-toggle" type="button" aria-expanded="false" aria-controls="co-sum-body"><span>Order summary <span class="num" id="co-toggle-total"></span></span><span data-motif="i-plus"></span></button>
+        <h2 id="co-sum-h">Order summary</h2>
+        <ul class="mini-lines" id="mini"></ul>
+        <div class="summary-body" id="co-sum-body">
+          <dl>
+            <dt>Subtotal</dt><dd class="num" id="co-sub"></dd>
+            <dt>Shipping</dt><dd class="num" id="co-ship"></dd>
+            <dt id="co-gift-dt" hidden>Gift wrap</dt><dd id="co-gift-dd" hidden>Added</dd>
+            <dt class="total">Total</dt><dd class="total num" id="co-total"></dd>
+          </dl>
+        </div>
+      </aside>
+      <form id="co-form" novalidate aria-describedby="co-error">
+        <ol class="steps" aria-label="Order steps">
+          <li class="is-on" data-step="1">Contact</li>
+          <li data-step="2">Delivery</li>
+          <li data-step="3">Payment</li>
+        </ol>
+        <p class="form-error" id="co-error" role="alert" hidden></p>
+
+        <fieldset class="co-step" data-step="1" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">01</span>Contact details</h2></div>
+          <div class="co-grid">
+            <div class="field full"><label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required placeholder="As it should appear on the parcel" aria-describedby="f-name-hint"><span class="hint" id="f-name-hint" data-hint></span></div>
+            <div class="field"><label for="f-phone">Mobile number <span class="req" aria-hidden="true">*</span></label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required placeholder="+90 5xx xxx xx xx" aria-describedby="f-phone-hint"><span class="hint" id="f-phone-hint" data-hint>We contact you on WhatsApp about the order</span></div>
+            <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" dir="ltr" placeholder="name@email.com" aria-describedby="f-email-hint"><span class="hint" id="f-email-hint" data-hint>For the order confirmation, optional</span></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step" data-step="2" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">02</span>Delivery</h2></div>
+          <div class="choices" role="radiogroup" aria-label="How you receive the order">
+            <label class="choice"><input class="radio" type="radio" name="ship" value="tr" checked><span><b>Delivery within Türkiye</b><small>To your door with a courier</small></span><span class="cost num" data-cost="tr"></span></label>
+            <label class="choice"><input class="radio" type="radio" name="ship" value="intl"><span><b>International shipping</b><small>The cost depends on the country; DAR confirms it before you pay</small></span><span class="cost">By country</span></label>
+            <label class="choice"><input class="radio" type="radio" name="ship" value="pickup"><span><b>Pick up from the centre</b><small>Altın Sk. No:11/A, Bahçelievler, Istanbul</small></span><span class="cost">Free</span></label>
+          </div>
+          <div class="co-grid" id="address" style="margin-block-start:var(--s4)">
+            <div class="field"><label for="f-country">Country</label>
+              <select id="f-country" name="country" autocomplete="country-name"><option>Türkiye</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Germany</option><option>United Kingdom</option><option>Another country</option></select></div>
+            <div class="field"><label for="f-city">City <span class="req" aria-hidden="true">*</span></label><input id="f-city" name="city" autocomplete="address-level2" required aria-describedby="f-city-hint"><span class="hint" id="f-city-hint" data-hint></span></div>
+            <div class="field full"><label for="f-address">Address <span class="req" aria-hidden="true">*</span></label><input id="f-address" name="address" autocomplete="street-address" required placeholder="Neighbourhood, street, building and flat number" aria-describedby="f-address-hint"><span class="hint" id="f-address-hint" data-hint></span></div>
+            <div class="field"><label for="f-zip">Postcode</label><input id="f-zip" name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr"></div>
+            <div class="field"><label for="f-note">Delivery note</label><input id="f-note" name="note" placeholder="For example: call before you arrive"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step" data-step="3" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">03</span>Payment</h2></div>
+          <div class="choices" role="radiogroup" aria-label="Payment method">
+            <label class="choice"><input class="radio" type="radio" name="pay" value="card" checked><span><b>Bank card</b><small>You go to a secure payment page to enter your card details. DAR never sees your card number.</small><span class="ico"><span>VISA</span><span>Mastercard</span><span>Troy</span></span></span><span class="cost"></span></label>
+            <label class="choice"><input class="radio" type="radio" name="pay" value="bank"><span><b>Bank transfer</b><small>We send you the account details on WhatsApp, and prepare the order once the transfer arrives.</small></span><span class="cost"></span></label>
+          </div>
+          <label class="co-terms"><input class="box" type="checkbox" id="f-terms" required><span>I have read and agree to the <a class="thread" href="policies.html#terms" target="_blank" rel="noopener">terms of sale</a> and the <a class="thread" href="policies.html#returns" target="_blank" rel="noopener">returns policy</a>.</span></label>
+          <button class="btn btn--lg btn--henna" type="submit" id="co-submit" style="width:100%">Confirm order and go to payment</button>
+          <p class="trust" style="margin-block-start:var(--s2)"><span><span data-motif="starlet"></span>Encrypted payment through an approved gateway</span><span><span data-motif="starlet"></span>Your order supports projects in Gaza</span></p>
+        </fieldset>
+      </form>
+
+    </div>
+
+    <section class="done" id="done" hidden aria-live="polite">
+      <span data-motif="star" data-mode="cross" data-order="radial" aria-hidden="true" id="done-star"></span>
+      <h1 tabindex="-1" id="done-h">Thank you</h1>
+      <p id="done-text"></p>
+      <p class="order-no num" id="order-no"></p>
+      <div class="row" style="justify-content:center"><a class="btn btn--lg" id="done-track" href="track.html">Track your order</a><a class="btn btn--lg btn--quiet" href="shop.html">Continue shopping</a><a class="btn btn--lg btn--wa" href="https://wa.me/905538286235" target="_blank" rel="noopener"><span data-motif="i-chat"></span>Message DAR</a></div>
+    </section>
+  </div>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=4"></script>
+<script src="../assets/js/site.js?v=16"></script>
+<script src="../assets/js/checkout-page.js?v=7"></script>
+</body>
+</html>

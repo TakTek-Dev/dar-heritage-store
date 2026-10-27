@@ -32,6 +32,7 @@
 .specimen:nth-of-type(even) .chart-panel { order: 2; }
 .specimen__n { font: 700 var(--fs-h3)/1 var(--font-display); color: var(--henna); }
 .specimen h2 { font-size: var(--fs-h1); font-weight: 900; line-height: 1.5; margin-block: var(--s2) 4px; }
+.specimen h2 [lang="ar-Latn"] { display: block; font: 500 var(--fs-lead)/1.4 var(--font-text); color: var(--muted); } /* English page: transliteration under the motif name */
 .specimen .aka { color: var(--muted); font-size: var(--fs-small); }
 .specimen__story { font: 400 var(--fs-lead)/1.9 var(--font-text); margin-block: var(--s3); max-width: 34em; }
 .specimen dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s1) var(--s3); margin: 0; padding-block-start: var(--s3); border-block-start: 1px solid var(--paper-3); font-size: var(--fs-small); }

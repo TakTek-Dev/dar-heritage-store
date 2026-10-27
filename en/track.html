@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Track your order, DAR</title>
+<meta name="description" content="Follow your DAR order with your order number and mobile number.">
+<meta name="robots" content="noindex">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=12">
+<link rel="stylesheet" href="../assets/css/site.css?v=20">
+<link rel="stylesheet" href="../assets/css/shop.css?v=7">
+<link rel="stylesheet" href="../assets/css/pages.css?v=6">
+<link rel="stylesheet" href="../assets/css/service.css?v=4">
+<script src="../assets/js/i18n.js?v=1"></script>
+</head>
+<body data-page="track">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><a href="help.html">Help</a><span aria-hidden="true">/</span><span aria-current="page">Track your order</span></nav>
+
+    <section class="track-head" aria-labelledby="track-h">
+      <div>
+        <span class="eyebrow up"><span data-motif="starlet"></span>Order tracking</span>
+        <h1 id="track-h" class="svc-title rise">Where has<br><em>your piece got to?</em></h1>
+        <p class="svc-lead up" style="--i:4">Enter your order number and the mobile number you ordered with, and we will show you where it is.</p>
+      </div>
+      <form class="track-form up" id="track-form" novalidate aria-label="Track your order" style="--i:3">
+        <p class="form-error" id="track-error" role="alert" hidden></p>
+        <div class="field"><label for="t-no">Order number</label><input id="t-no" dir="ltr" autocomplete="off" spellcheck="false" required placeholder="DAR-2026-1052" aria-describedby="t-no-hint"><span class="hint" id="t-no-hint" data-hint>In the confirmation message after you order</span></div>
+        <div class="field"><label for="t-phone">Mobile number</label><input id="t-phone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" required placeholder="+90 5xx xxx xx xx" aria-describedby="t-phone-hint"><span class="hint" id="t-phone-hint" data-hint>The number you gave when you ordered</span></div>
+        <button class="btn btn--lg btn--henna" type="submit" id="track-send">Track order</button>
+      </form>
+      <p class="demo-note"><span data-motif="starlet"></span><span>Preview: this page reads the orders saved in this browser. Place an order in the shop, then track it here. <button class="link-btn" type="button" id="t-demo" hidden>Try a demo order</button></span></p>
+    </section>
+
+    <div class="track-miss" id="track-miss" hidden tabindex="-1">
+      <b>We could not find an order with these details</b>
+      <p>Check the order number as it appears in your confirmation, and your mobile number. If it still does not work, <a class="thread" href="https://wa.me/905538286235" target="_blank" rel="noopener">message us on WhatsApp</a>.</p>
+    </div>
+
+    <section id="track-result" aria-live="polite">
+      <div class="tr-legend">
+        <h2>The journey of every order</h2>
+        <ol class="tr-steps" aria-label="Order stages">
+          <li><span class="knot" aria-hidden="true"></span><b>Order received</b><span>Your confirmation arrives with the order number</span></li>
+          <li><span class="knot" aria-hidden="true"></span><b>Preparing your pieces</b><span>Folded and wrapped with care</span></li>
+          <li><span class="knot" aria-hidden="true"></span><b>On its way to you</b><span>Tracking number sent on WhatsApp</span></li>
+          <li><span class="knot" aria-hidden="true"></span><b>Delivered</b><span>Or collected from the centre</span></li>
+        </ol>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=4"></script>
+<script src="../assets/js/site.js?v=16"></script>
+<script src="../assets/js/service.js?v=5"></script>
+</body>
+</html>
