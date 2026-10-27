@@ -225,7 +225,7 @@
 }
 .quiz__opt:active { transform: scale(.98); }
 @media (hover: hover) and (pointer: fine) { .quiz__opt:not([disabled]):hover { background: rgba(255, 255, 255, .24); } }
-.quiz__opt .key { font: 500 var(--fs-small)/1 var(--font-ui); }
+.quiz__opt .key { font: 700 var(--fs-small)/1.6 var(--font-ui); }
 .quiz__opt[disabled] { cursor: default; }
 .quiz__opt.is-right { background: #fff; color: var(--zaytoun); }
 .quiz__opt.is-wrong { background: rgba(0, 0, 0, .2); color: rgba(255, 255, 255, .75); }
