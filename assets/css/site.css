@@ -89,11 +89,11 @@
 
 /* Image reveal: a henna running stitch crosses the picture in reading direction and the picture settles behind it.
    The thread and the cut share one duration and curve, so the stitch always sits on the edge. */
-.veil { --veil-delay: calc(var(--i, 0) * 90ms); }
+.veil { --veil-delay: calc(var(--i, 0) * 50ms); }
 .veil:not(.is-shown) > img { clip-path: inset(0 0 0 100%); transform: scale(1.12); }
 .veil.is-shown > img {
   clip-path: inset(0); transform: none;
-  transition: clip-path 1000ms var(--ease-pull) var(--veil-delay), transform 1600ms var(--ease-thread) var(--veil-delay) !important;
+  transition: clip-path 550ms var(--ease-pull) var(--veil-delay), transform 900ms var(--ease-thread) var(--veil-delay) !important;
 }
 .veil__thread {
   position: absolute; z-index: 3; inset: 0; pointer-events: none;
@@ -102,16 +102,16 @@
 }
 .veil.is-shown > .veil__thread {
   transform: translateX(-3px); opacity: 0;
-  transition: transform 1000ms var(--ease-pull) var(--veil-delay), opacity 160ms linear calc(var(--veil-delay) + 880ms);
+  transition: transform 550ms var(--ease-pull) var(--veil-delay), opacity 120ms linear calc(var(--veil-delay) + 480ms);
 }
 [dir="ltr"] .veil:not(.is-shown) > img { clip-path: inset(0 100% 0 0); }
 [dir="ltr"] .veil__thread { background-position: right top; transform: translateX(-100%); }
 [dir="ltr"] .veil.is-shown > .veil__thread { transform: translateX(3px); }
 /* Labels, tags and shades wait for their picture */
 .veil > :not(img, .veil__thread) { opacity: 0; }
-.veil.is-shown > :not(img, .veil__thread) { opacity: 1; transition: opacity 500ms linear calc(var(--veil-delay) + 600ms); }
+.veil.is-shown > :not(img, .veil__thread) { opacity: 1; transition: opacity 300ms linear calc(var(--veil-delay) + 300ms); }
 .cat.veil::after { opacity: 0; }
-.cat.veil.is-shown::after { opacity: 1; transition: opacity 600ms linear calc(var(--veil-delay) + 350ms); }
+.cat.veil.is-shown::after { opacity: 1; transition: opacity 400ms linear calc(var(--veil-delay) + 200ms); }
 .cats > .cat:nth-child(2), .windows > .window:nth-of-type(2) { --i: 1; }
 .cats > .cat:nth-child(3), .windows > .window:nth-of-type(3) { --i: 2; }
 .cats > .cat:nth-child(4) { --i: 1; }
@@ -177,11 +177,22 @@
 .reels-sec .sec-head p { color: var(--muted-night); }
 .reels-pin { position: relative; }
 /* overflow: clip, so focusing a reel never scrolls the stage sideways; home.js scrolls the page instead */
-.reels-stage { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: var(--s5); overflow: clip; }
+.reels-stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s5); padding-block: var(--s12); }
 .reels-intro { width: min(100% - var(--gutter) * 2, var(--max)); margin-inline: auto; }
 .reels-intro .sec-head { margin-block-end: 0; }
-.reels-track { display: flex; gap: var(--s3); padding-inline: var(--gutter); width: max-content; will-change: transform; }
-.reel { position: relative; width: clamp(220px, 20vw, 300px); aspect-ratio: 9 / 16; flex: none; overflow: hidden; background: #263328; color: #fff; text-decoration: none; display: block; }
+/* The strip scrolls on its own (swipe, trackpad, arrows); the page keeps scrolling normally */
+.reels-track { display: flex; gap: var(--s3); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; padding-block-end: var(--s2); }
+.reels-track::-webkit-scrollbar { display: none; }
+.reels-nav { display: flex; align-items: center; gap: var(--s1); }
+.reels-nav .thread { margin-inline-end: var(--s2); }
+.reels-btn { border: 1px solid rgba(255, 255, 255, .28); color: #fff; transition: background var(--t-base), opacity var(--t-base); }
+.reels-btn:hover { background: rgba(255, 255, 255, .1); }
+.reels-btn:disabled { opacity: .35; cursor: default; background: none; }
+.reels-btn [data-motif] { width: 16px; transform: scaleX(-1); }
+.reels-btn--next [data-motif] { transform: none; }
+[dir="ltr"] .reels-btn [data-motif] { transform: none; }
+[dir="ltr"] .reels-btn--next [data-motif] { transform: scaleX(-1); }
+.reel { position: relative; scroll-snap-align: start; width: clamp(220px, 20vw, 300px); aspect-ratio: 9 / 16; flex: none; overflow: hidden; background: #263328; color: #fff; text-decoration: none; display: block; }
 .reel img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transition: transform 1.2s var(--ease-thread); }
 .reel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .9), rgba(0, 0, 0, .55) 30%, transparent 58%); }
 .reel__cap { position: absolute; z-index: 1; inset-inline: var(--s3); inset-block-end: var(--s3); display: grid; gap: 6px; }
@@ -340,10 +351,9 @@
   .join form { flex-direction: column; align-items: stretch; }
   .sec { padding-block: var(--s10); }
   .join { margin-block-start: var(--s10); }
-  .reels-pin { height: auto !important; }
-  .reels-stage { position: static; height: auto; padding-block: var(--s10); }
-  .reels-track { transform: none !important; overflow-x: auto; width: auto; scroll-snap-type: x mandatory; padding-block-end: var(--s2); scrollbar-width: none; }
-  .reel { width: min(64vw, 280px); scroll-snap-align: start; }
+  .reels-stage { padding-block: var(--s10); }
+  .reels-btn { display: none; }
+  .reel { width: min(64vw, 280px); }
 }
 @media (max-width: 520px) {
   .foot-base { padding-block-end: 88px; }
@@ -360,9 +370,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reels-pin { height: auto !important; }
-  .reels-stage { position: static; height: auto; padding-block: var(--s10); }
-  .reels-track { transform: none !important; overflow-x: auto; width: auto; }
   .ribbon__track { animation: none; }
   .rise .w > span { transform: none; transition: none; }
   .up { transform: none; opacity: 1; transition: opacity 200ms ease; }
