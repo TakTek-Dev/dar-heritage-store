@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="tr" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Yardım, DAR</title>
+<meta name="description" content="DAR mağazasında sipariş, ödeme, kargo, iade ve nakışlı parçaların bakımı hakkında yanıtlar.">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;700&amp;family=Noto+Serif+Display:wght@400;500;700;900&amp;family=Noto+Serif:wght@400;500&amp;text=%C4%9F%C4%9E%C5%9F%C5%9E%C4%B0%E2%82%BA&amp;display=swap">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=6">
+<link rel="stylesheet" href="../assets/css/base.css?v=13">
+<link rel="stylesheet" href="../assets/css/site.css?v=21">
+<link rel="stylesheet" href="../assets/css/shop.css?v=8">
+<link rel="stylesheet" href="../assets/css/pages.css?v=6">
+<link rel="stylesheet" href="../assets/css/service.css?v=4">
+<script src="../assets/js/i18n.js?v=1"></script>
+</head>
+<body data-page="help">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="İçerik yolu"><a href="index.html">Ana sayfa</a><span aria-hidden="true">/</span><span aria-current="page">Yardım</span></nav>
+  </div>
+
+  <section class="help-head wrap" aria-labelledby="help-h">
+    <div>
+      <span class="eyebrow up"><span data-motif="starlet"></span>Yardım</span>
+      <h1 id="help-h" class="svc-title rise">Size nasıl yardımcı olabiliriz?</h1>
+      <p class="svc-lead up" style="--i:3">Sipariş, kargo, iade ve parçalarınızın bakımı hakkında kısa yanıtlar. Aradığınızı bulamadınız mı? <a class="thread" href="contact.html">Bize yazın</a>.</p>
+    </div>
+    <div class="up" style="--i:5">
+      <div class="help-search" role="search">
+        <span data-motif="i-search"></span>
+        <label class="sr-only" for="help-q">Sorularda arayın</label>
+        <input id="help-q" type="search" autocomplete="off" placeholder="Arayın: kargo, iade, yıkama" aria-describedby="help-count">
+      </div>
+      <p class="help-count" id="help-count" role="status" aria-live="polite"></p>
+    </div>
+    <p class="demo-note"><span data-motif="starlet"></span><span>Bu yanıtlar mağaza sayfalarına dayanan bir taslaktır, yayından önce DAR tarafından gözden geçirilecektir. Bu şekilde işaretlenen değerleri <span class="tbd">DAR belirler</span>.</span></p>
+  </section>
+
+  <nav class="topics-nav wrap" aria-label="Yardım bölümleri">
+    <a href="#order"><span data-motif="i-card"></span>Sipariş ve ödeme</a>
+    <a href="#shipping"><span data-motif="i-truck"></span>Kargo ve teslimat</a>
+    <a href="#returns"><span data-motif="i-return"></span>İade ve değişim</a>
+    <a href="#care"><span data-motif="i-wash"></span>Parçalarınızın bakımı</a>
+    <a href="#custom"><span data-motif="i-needle"></span>Özel siparişler</a>
+  </nav>
+
+  <div class="wrap" id="help-list">
+    <section class="faq-sec" id="order" aria-labelledby="order-h">
+      <div class="faq-sec__head"><span data-motif="i-card"></span><h2 id="order-h">Sipariş ve ödeme</h2><p>Sepetten onay mesajına kadar.</p></div>
+      <div class="acc">
+        <details data-k="satın al alışveriş sepet ödeme sipariş ver"><summary>Bir parçayı nasıl sipariş ederim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Parçayı kendi sayfasından sepetinize ekleyin, sonra siparişinizi ödeme sayfasında tamamlayın. İsterseniz sepetinizi olduğu gibi <a href="cart.html">sepet sayfasından</a> WhatsApp ile DAR’a gönderebilirsiniz.</p></div></details>
+        <details data-k="hesap kayıt üye ol giriş oturum misafir"><summary>Sipariş vermek için hesap gerekir mi?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Hayır, cep telefonu numaranızla misafir olarak sipariş verebilirsiniz. Hesap ise siparişlerinizi, adreslerinizi ve beğendiğiniz parçaları saklar; <a href="login.html">giriş sayfasından</a> WhatsApp’a gelen bir kodla giriş yaparsınız.</p></div></details>
+        <details data-k="visa mastercard kredi kartı banka kartı havale eft ödeme"><summary>Hangi ödeme yöntemlerini kullanabilirim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Güvenli bir ödeme sayfası üzerinden banka kartı; kart bilgileriniz hiçbir zaman DAR’dan geçmez. Ya da banka havalesi: bilgileri size WhatsApp’tan gönderir, havale ulaşınca siparişinizi hazırlarız.</p></div></details>
+        <details data-k="lira tl dolar euro döviz para birimi fiyat"><summary>Fiyatlar hangi para biriminde?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Türk lirası. Türkiye dışından bir kartla öderseniz bankanız tutarı kendi para biriminize çevirir.</p></div></details>
+        <details data-k="değiştir iptal düzenle vazgeç"><summary>Siparişimi değiştirebilir ya da iptal edebilir miyim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Evet, kargoya verilmeden önce. Sipariş numaranızla bize WhatsApp’tan yazın; siparişinizi değiştirelim ya da iptal edip ödemenizi iade edelim.</p></div></details>
+        <details data-k="takip kargo durum nerede"><summary>Siparişimin nerede olduğunu nasıl öğrenirim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p><a href="track.html">Sipariş takibi sayfasında</a>, sipariş numaranız ve cep telefonunuzla. Siparişinizi kargoya verdiğimizde takip numarasını size WhatsApp’tan göndeririz.</p></div></details>
+      </div>
+    </section>
+
+    <section class="faq-sec" id="shipping" aria-labelledby="shipping-h">
+      <div class="faq-sec__head"><span data-motif="i-truck"></span><h2 id="shipping-h">Kargo ve teslimat</h2><p>Türkiye içine, yurt dışına ve merkezimizin kapısından.</p></div>
+      <div class="acc">
+        <details data-k="gönderim teslimat ülke yurt dışı uluslararası"><summary>Nerelere gönderiyorsunuz?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Türkiye’nin her şehrine, uluslararası kargoyla da yurt dışına. Siparişinizi İstanbul’daki merkezden de teslim alabilirsiniz.</p></div></details>
+        <details data-k="kargo ücreti fiyat masraf teslimat bedeli"><summary>Kargo ne kadar?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Türkiye içinde, onaylamadan önce ödeme sayfasında gösterilen sabit bir ücret. Uluslararası kargo ülkeye ve ağırlığa göre fiyatlanır, ödemeden önce sizinle netleştiririz. Merkezden teslim alma ücretsizdir.</p></div></details>
+        <details data-k="teslimat süresi ne zaman kaç gün gelir ulaşır"><summary>Siparişim ne zaman gelir?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Stoktaki parçaları, siparişinizi onayladıktan sonra <span class="tbd">DAR’ın belirleyeceği gün sayısı</span> içinde kargoya veririz. Siparişe özel işlenen parçalar için sizinle bir tarih belirleriz.</p></div></details>
+        <details data-k="hediye başkasına armağan"><summary>Başka birine hediye gönderebilir misiniz?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Evet. Ödeme sayfasına onun adresini yazın, sepette geleneksel hediye paketini seçip mesajınızı yazın; DAR mesajınızı bir karta elle yazar.</p></div></details>
+        <details data-k="teslim al gel al merkez mağaza"><summary>Siparişimi merkezden teslim alabilir miyim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Evet. Ödeme sayfasında merkezden teslim almayı seçin; siparişiniz hazır olduğunda size WhatsApp’tan haber veririz.</p></div></details>
+      </div>
+    </section>
+
+    <section class="faq-sec" id="returns" aria-labelledby="returns-h">
+      <div class="faq-sec__head"><span data-motif="i-return"></span><h2 id="returns-h">İade ve değişim</h2><p>Karar vermek için 14 gün. Yalnızca size özel yapılan parçalar iade edilemez.</p></div>
+      <div class="acc">
+        <details data-k="iade geri gönder para iadesi cayma"><summary>Bir parçayı iade edebilir miyim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Evet. Parçayı teslim aldıktan sonraki 14 gün içinde, kullanılmamış, orijinal durumunda ve ambalajında olması koşuluyla, gerekçe göstermeden iade edebilirsiniz.</p></div></details>
+        <details data-k="iade istisna hariç"><summary>Hangi parçalar iade edilemez?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Bedeninize göre dikilen ya da siparişinize göre işlenen parçalar ve logo veya isim basılı hediyeler, çünkü yalnızca sizin için yapıldılar. Küpeler de, hijyen nedeniyle ambalajı açıldıktan sonra iade edilemez.</p></div></details>
+        <details data-k="iade nasıl"><summary>Bir parçayı nasıl iade ederim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Sipariş numaranızı ve iade etmek istediğiniz parçayı bize WhatsApp’tan yazın; nasıl göndereceğinizi size iletelim.</p></div></details>
+        <details data-k="iade kargo ücreti kim öder"><summary>İade kargosunu kim öder?<span data-motif="i-plus"></span></summary><div class="acc__body"><p><span class="tbd">DAR belirler</span>. Parçanız kusurlu ya da sipariş ettiğinizden farklı gelirse kargo bizden.</p></div></details>
+        <details data-k="para iadesi geri ödeme"><summary>Paramı ne zaman geri alırım?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>İade talebiniz bize ulaştıktan sonraki 14 gün içinde, ödeme yaptığınız yöntemle.</p></div></details>
+        <details data-k="değişim değiştir beden renk"><summary>Başka bir beden ya da renkle değiştirebilir miyim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Evet, stokta varsa, iadeyle aynı koşullarda.</p></div></details>
+      </div>
+    </section>
+
+    <section class="faq-sec" id="care" aria-labelledby="care-h">
+      <div class="faq-sec__head"><span data-motif="i-wash"></span><h2 id="care-h">Parçalarınızın bakımı</h2><p>El nakışı, nazik davranırsanız ömür boyu dayanır.</p></div>
+      <div class="care">
+        <div data-k="yıkama yıkamak su deterjan temizlik çamaşır"><span data-motif="i-wash"></span><b>Elde yıkayın</b><span>Soğuk suda, hafif bir deterjanla; uzun süre suda bekletmeyin.</span></div>
+        <div data-k="sıkma bükme yıkama kurutma havlu"><span data-motif="i-fold"></span><b>Sıkmayın</b><span>Suyunu almak için iki havlu arasında bastırın. Sıkmak ilmekleri çeker.</span></div>
+        <div data-k="kurutma kurutmak güneş solma"><span data-motif="i-sun"></span><b>Gölgede kurutun</b><span>Düz bir yüzeye serilmiş olarak, renkleri solmasın diye doğrudan güneşten uzakta.</span></div>
+        <div data-k="ütü ütüleme"><span data-motif="i-iron"></span><b>Tersinden ütüleyin</b><span>Nakışın arka yüzünden, araya pamuklu bir bez koyarak.</span></div>
+        <div data-k="saklama saklamak katlama nem rutubet"><span data-motif="i-box"></span><b>Katlayarak saklayın</b><span>Bir kumaş torbada, nemden uzakta. Uzun süre asılı bırakmayın, yoksa esner.</span></div>
+        <div data-k="çerçeve tablo aksesuar temizlik silme parfüm"><span data-motif="i-frame"></span><b>Çerçeveler ve aksesuarlar</b><span>Çerçeveleri güneşten uzağa asın, aksesuarları parfümden uzak tutup kuru bir bezle silin.</span></div>
+      </div>
+    </section>
+
+    <section class="faq-sec" id="custom" aria-labelledby="custom-h">
+      <div class="faq-sec__head"><span data-motif="i-needle"></span><h2 id="custom-h">Özel siparişler</h2><p>Yalnızca size özel bir parça, ya da kurumunuz adına hediyeler.</p></div>
+      <div class="acc">
+        <details data-k="özel sipariş kişiye özel siparişe göre nakış işleme"><summary>Siparişe özel nakış işliyor musunuz?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Fikrinizi, bedeninizi ve renklerinizi bize gönderin; mümkün olup olmadığını ve ne kadar süreceğini size söyleyelim.</p></div></details>
+        <details data-k="kurumsal şirket firma kurum hediye logo teklif"><summary>Kurumlar için hediye sunuyor musunuz?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Evet: kurumunuzun logosu ve resmî paketlemeyle plaketler, çerçeveler ve kutular. <a href="corporate.html#quote">Kurumsal hediyeler sayfasından</a> teklif isteyin.</p></div></details>
+        <details data-k="hediye mesaj kart not"><summary>Hediyeye bir mesaj ekleyebilir miyim?<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Evet. Sepette geleneksel hediye paketini seçip mesajınızı yazın; DAR mesajınızı bir karta elle yazar.</p></div></details>
+      </div>
+    </section>
+
+    <div class="empty help-empty" id="help-empty" hidden>
+      <span data-motif="i-search"></span>
+      <b>Bu kelimeyle sonuç bulunamadı</b>
+      <p>Başka bir kelime deneyin ya da sorunuzu bize yazın, yanıtlayalım.</p>
+      <a class="btn" href="contact.html">Bize yazın</a>
+    </div>
+  </div>
+
+  <!-- Full policies -->
+  <section class="sec wrap" aria-labelledby="pol-h">
+    <div class="sec-head">
+      <div><span class="eyebrow up"><span data-motif="starlet"></span>Politikalar</span><h2 id="pol-h" class="rise">Metnin tamamı</h2><p class="up">Her siparişin arkasındaki koşullar, sade bir dille.</p></div>
+    </div>
+    <ul class="policy-links up">
+      <li><a href="policies.html#terms">Satış koşulları <span data-motif="i-arrow"></span></a></li>
+      <li><a href="policies.html#shipping">Kargo ve teslimat <span data-motif="i-arrow"></span></a></li>
+      <li><a href="policies.html#returns">İade ve değişim <span data-motif="i-arrow"></span></a></li>
+      <li><a href="policies.html#privacy">Gizlilik ve kişisel verilerin korunması <span data-motif="i-arrow"></span></a></li>
+    </ul>
+  </section>
+
+  <section class="cta-band" aria-labelledby="cta-h">
+    <div class="wrap">
+      <div><h2 id="cta-h">Sorunuz burada yok mu?</h2><p>Bize WhatsApp’tan yazın, sizi bizzat yanıtlayalım.</p></div>
+      <div class="row">
+        <a class="btn btn--lg btn--paper" href="contact.html">Bize yazın</a>
+        <a class="btn btn--lg btn--paper" href="track.html">Siparişinizi takip edin</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=5"></script>
+<script src="../assets/js/site.js?v=17"></script>
+<script src="../assets/js/service.js?v=5"></script>
+</body>
+</html>

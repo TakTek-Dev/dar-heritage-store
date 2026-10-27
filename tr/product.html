@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="tr" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>DAR'dan bir parça</title>
+<meta name="description" content="İstanbul'daki Filistin Miras Merkezi DAR'ın kataloğundan bir parça.">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;700&amp;family=Noto+Serif+Display:wght@400;500;700;900&amp;family=Noto+Serif:wght@400;500&amp;text=%C4%9F%C4%9E%C5%9F%C5%9E%C4%B0%E2%82%BA&amp;display=swap">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=6">
+<link rel="stylesheet" href="../assets/css/base.css?v=13">
+<link rel="stylesheet" href="../assets/css/site.css?v=21">
+<link rel="stylesheet" href="../assets/css/shop.css?v=8">
+</head>
+<body data-page="shop">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap" id="pdp-root">
+    <nav class="crumbs" aria-label="Sayfa yolu" id="crumbs"><a href="index.html">Ana sayfa</a><span aria-hidden="true">/</span><a href="shop.html">Mağaza</a></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>Tasarım önizlemesi: fiyatlar ve kargo politikası açılıştan önce eklenecek.</p>
+
+    <section class="pdp" id="pdp" aria-labelledby="p-name" hidden>
+      <div class="gallery">
+        <div class="gallery__thumbs" id="thumbs" role="group" aria-label="Parçanın fotoğrafları"></div>
+        <figure class="gallery__main" id="main-img" data-veil style="margin:0"><img id="main-photo" alt=""><button class="icon-btn product__fav" type="button" id="p-fav" aria-pressed="false"><span data-motif="i-heart"></span></button></figure>
+      </div>
+
+      <div class="info">
+        <a class="eyebrow" id="p-cat" href="shop.html" style="text-decoration:none"><span data-motif="starlet"></span><span></span></a>
+        <h1 id="p-name"></h1>
+        <div class="info__code" id="p-code"></div>
+        <p class="info__price"><span>Fiyat yakında</span><small><a id="p-ask-price" href="#" target="_blank" rel="noopener">Fiyatı WhatsApp'tan sorun</a></small></p>
+
+        <div id="p-variants" hidden>
+          <p class="variant-label">Renk: <b id="p-variant-name"></b></p>
+          <div class="variants" id="variants" role="group" aria-label="Renk seçin"></div>
+        </div>
+
+        <div class="buy">
+          <div class="qty" role="group" aria-label="Adet"><button type="button" aria-label="Adedi azalt" data-step="-1" disabled><span data-motif="i-minus"></span></button><output id="qty" class="num" aria-label="Adet" aria-live="polite">1</output><button type="button" aria-label="Adedi artır" data-step="1"><span data-motif="i-plus"></span></button></div>
+          <button class="btn btn--lg btn--henna" type="button" id="add" data-add="">Sepete ekle</button>
+        </div>
+        <a class="ask thread" id="p-ask" href="#" target="_blank" rel="noopener"><span data-motif="i-chat"></span>Bu parçayı DAR'a sorun</a>
+
+        <div class="impact"><span data-motif="amulet" data-mode="cross"></span><p><b>Bu parçanın geliri Gazze'deki projelere destek olur</b>özellikle kadınlar ve çocuklar için.</p></div>
+
+        <div class="acc">
+          <details open><summary>Açıklama<span data-motif="i-plus"></span></summary><div class="acc__body"><p id="p-desc"></p></div></details>
+          <details><summary>Ayrıntılar<span data-motif="i-plus"></span></summary><div class="acc__body"><dl id="p-details"></dl></div></details>
+          <details><summary>Kargo ve iade<span data-motif="i-plus"></span></summary><div class="acc__body"><p>Türkiye içine teslimat ve yurt dışına kargo var; dilerseniz parçanızı İstanbul'daki merkezden ücretsiz teslim alabilirsiniz. Kullanılmamış bir parçayı teslim aldıktan sonra 14 gün içinde iade edebilirsiniz; siparişe özel üretilen parçalar bunun dışındadır.</p><p>Ayrıntılar için <a class="thread" href="help.html#shipping">Kargo ve teslimat</a> ile <a class="thread" href="help.html#returns">İade ve değişim</a> sayfalarına bakın.</p></div></details>
+        </div>
+      </div>
+    </section>
+
+    <div class="not-found" id="not-found" hidden>
+      <span data-motif="starlet" data-mode="cross"></span>
+      <h1 style="font-size:var(--fs-h2)">Bu parçayı bulamadık</h1>
+      <p style="color:var(--muted)">Bağlantı değişmiş ya da parça tükenmiş olabilir.</p>
+      <a class="btn" href="shop.html">Mağazaya dön</a>
+    </div>
+  </div>
+
+  <div class="band" data-band="chain" data-cell="3" aria-hidden="true"></div>
+  <section class="wrap related" id="related-sec" aria-labelledby="related-h" hidden>
+    <div class="sec-head"><div><span class="eyebrow up"><span data-motif="starlet"></span>Aynı koleksiyondan</span><h2 id="related-h" class="rise">Bunları da beğenebilirsiniz</h2></div><a class="thread" id="related-all" href="shop.html">Tüm koleksiyon</a></div>
+    <div class="products" id="related"></div>
+  </section>
+</main>
+
+<div class="buybar" id="buybar" inert>
+  <img id="bb-img" alt="">
+  <div><b id="bb-name"></b><small>Fiyat yakında</small></div>
+  <button class="btn btn--henna" type="button" id="bb-add">Sepete ekle</button>
+</div>
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=5"></script>
+<script src="../assets/js/site.js?v=17"></script>
+<script src="../assets/js/product-page.js?v=8"></script>
+</body>
+</html>

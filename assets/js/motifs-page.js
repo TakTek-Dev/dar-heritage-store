@@ -13,7 +13,8 @@
     chart.style.setProperty("--size", `${sizeOf(w, h)}px`);
     chart.classList.toggle("is-stitched", mode === "cross");
     const label = L(`${mode === "cross" ? "نقشة" : "مخطط نقشة"} ${chart.dataset.name}، ${w} في ${h} غرزة`,
-      `${chart.dataset.name} ${mode === "cross" ? "motif" : "motif chart"}, ${w} by ${h} stitches`);
+      `${chart.dataset.name} ${mode === "cross" ? "motif" : "motif chart"}, ${w} by ${h} stitches`,
+      `${chart.dataset.name} ${mode === "cross" ? "motifi" : "motif şeması"}, ${w} × ${h} ilmek`);
     chart.innerHTML = `<span data-motif="${name}"${mode === "cross" ? ' data-mode="cross"' : ""} data-order="${chart.dataset.order || "rows"}"${animate ? " data-stitch" : ""} data-label="${label}"></span>`;
     Dar.mount(chart);
     return { w, h, rows };
@@ -27,10 +28,11 @@
     // Facts come from the chart itself, so they stay true if a chart is redrawn
     const flat = rows.join("");
     const count = [...flat].filter(c => c !== ".").length;
-    const colours = [flat.includes("R") && L("حناء", "Henna"), flat.includes("G") && L("زيتون", "Olive")].filter(Boolean).join(L(" و", " and "));
+    const colours = [flat.includes("R") && L("حناء", "Henna", "Kına"), flat.includes("G") && L("زيتون", "Olive", "Zeytin")].filter(Boolean).join(L(" و", " and ", " ve "));
     sp.querySelector("[data-facts]").insertAdjacentHTML("afterbegin",
       L(`<dt>على المخطط</dt><dd class="num">${w} × ${h} غرزة</dd><dt>عدد الغرز</dt><dd class="num">${count.toLocaleString("en-US")}</dd><dt>الألوان</dt><dd>${colours}</dd>`,
-        `<dt>On the chart</dt><dd class="num">${w} × ${h} stitches</dd><dt>Stitch count</dt><dd class="num">${count.toLocaleString("en-US")}</dd><dt>Colours</dt><dd>${colours}</dd>`));
+        `<dt>On the chart</dt><dd class="num">${w} × ${h} stitches</dd><dt>Stitch count</dt><dd class="num">${count.toLocaleString("en-US")}</dd><dt>Colours</dt><dd>${colours}</dd>`,
+        `<dt>Şemada</dt><dd class="num">${w} × ${h} ilmek</dd><dt>İlmek sayısı</dt><dd class="num">${count.toLocaleString("tr-TR")}</dd><dt>Renkler</dt><dd>${colours}</dd>`));
 
     sp.querySelectorAll("[data-view]").forEach(btn => btn.addEventListener("click", () => {
       if (btn.dataset.view === mode) return;

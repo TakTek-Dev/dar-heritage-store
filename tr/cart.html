@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="tr" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Sepet, DAR</title>
+<meta name="robots" content="noindex">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;700&amp;family=Noto+Serif+Display:wght@400;500;700;900&amp;family=Noto+Serif:wght@400;500&amp;text=%C4%9F%C4%9E%C5%9F%C5%9E%C4%B0%E2%82%BA&amp;display=swap">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=6">
+<link rel="stylesheet" href="../assets/css/base.css?v=13">
+<link rel="stylesheet" href="../assets/css/site.css?v=21">
+<link rel="stylesheet" href="../assets/css/shop.css?v=8">
+<link rel="stylesheet" href="../assets/css/cart.css?v=7">
+</head>
+<body data-page="cart">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Sayfa yolu"><a href="index.html">Ana sayfa</a><span aria-hidden="true">/</span><a href="shop.html">Mağaza</a><span aria-hidden="true">/</span><span aria-current="page">Sepet</span></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>Bu önizlemedeki fiyatlar örnektir; DAR gerçek fiyatları panelden ekleyecek.</p>
+
+    <div class="page-head">
+      <div><h1 class="rise" id="cart-heading" tabindex="-1">Sepetiniz</h1><p id="cart-sub"></p></div>
+      <a class="thread" href="shop.html">Alışverişe devam edin</a>
+    </div>
+
+    <div class="cart" id="cart" hidden>
+      <section aria-label="Sepetteki parçalar">
+        <ul class="lines" id="lines"></ul>
+        <p class="sr-only" id="cart-live" role="status" aria-live="polite"></p>
+      </section>
+
+      <aside class="summary" aria-labelledby="sum-h">
+        <h2 id="sum-h">Sipariş özeti</h2>
+        <dl>
+          <dt>Ara toplam</dt><dd class="num" id="subtotal"></dd>
+          <dt>Kargo</dt><dd>Ödeme adımında hesaplanır</dd>
+          <dt class="total">Tahmini toplam</dt><dd class="total num" id="total"></dd>
+        </dl>
+
+        <div class="gift">
+          <label class="check"><input class="box" type="checkbox" id="gift"><span>Geleneksel hediye paketi</span></label>
+          <div id="gift-wrap" hidden style="display:grid;gap:6px"><label for="gift-note">Hediye kartı için mesajınız</label><textarea id="gift-note" placeholder="DAR elle yazar, en fazla 200 karakter" maxlength="200"></textarea></div>
+        </div>
+
+        <a class="btn btn--lg btn--henna" href="checkout.html">Ödemeye geç <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+        <p class="or">ya da</p>
+        <a class="btn btn--lg btn--wa" id="wa-order" href="#" target="_blank" rel="noopener"><span data-motif="i-chat"></span>WhatsApp'tan sipariş verin</a>
+
+        <div class="impact"><span data-motif="amulet" data-mode="cross"></span><p><b>Siparişiniz Gazze'deki projelere destek olur</b>özellikle kadınlar ve çocuklar için.</p></div>
+        <p class="trust"><span><span data-motif="starlet"></span>Güvenli ödeme</span><span><span data-motif="starlet"></span>DAR kataloğundan parçalar</span><span><a class="thread" href="index.html#corp">Kurumunuz için mi sipariş veriyorsunuz?</a></span></p>
+      </aside>
+    </div>
+
+    <div class="cart-empty" id="cart-empty" hidden>
+      <span data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
+      <h2>Sepetiniz boş</h2>
+      <p>DAR'daki her parça bir motif ve bir hikâye taşır. Buradan başlayın.</p>
+      <a class="btn btn--lg" href="shop.html">Mağazayı gezin <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+    </div>
+  </div>
+
+  <section class="wrap related" id="suggest-sec" aria-labelledby="suggest-h">
+    <div class="sec-head"><div><span class="eyebrow up"><span data-motif="starlet"></span>Beğenebilirsiniz</span><h2 id="suggest-h" class="rise">DAR'dan başka parçalar</h2></div><a class="thread" href="shop.html">Tüm parçalar</a></div>
+    <div class="products" id="suggest"></div>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=5"></script>
+<script src="../assets/js/site.js?v=17"></script>
+<script src="../assets/js/cart-page.js?v=5"></script>
+</body>
+</html>

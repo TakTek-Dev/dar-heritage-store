@@ -71,6 +71,15 @@
   --stitch-delay: 4ms;  /* per stitch when a motif embroiders itself */
 }
 
+/* Thmanyah has no ğ Ğ ş Ş İ (nor ₺). Turkish pages load just those letters from Google Fonts
+   (one <link> with &text=, in the head of every tr/ page) in the faces closest to each cut,
+   so a Turkish word never mixes in a system font. Arabic and English pages load nothing extra. */
+:root:lang(tr) {
+  --font-display: "Thmanyah Serif Display", "Noto Serif Display", "Times New Roman", serif;
+  --font-text:    "Thmanyah Serif Text", "Noto Serif", "Times New Roman", serif;
+  --font-ui:      "Thmanyah Sans", "IBM Plex Sans", system-ui, sans-serif;
+}
+
 /* Stepped corner, two notches, the same stair as the logo petals */
 .stepped {
   --n: var(--step);

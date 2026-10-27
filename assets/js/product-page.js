@@ -12,12 +12,12 @@
   }
 
   const cat = DAR_CATS.find(c => c.id === p.cat);
-  const craftName = k => L(DAR_CRAFT[k], DAR_CRAFT_EN[k]);
-  const colorName = k => L(DAR_COLORS[k].name, DAR_COLORS[k].name_en);
-  const name = L(p.name, p.name_en), catLabel = L(cat.name, cat.name_en);
-  const vName = v => L(v.name, v.name_en);
-  document.title = L(`${p.name}، دار`, `${name}, DAR`);
-  document.querySelector('meta[name="description"]').content = L(p.desc, p.desc_en);
+  const craftName = k => L(DAR_CRAFT[k], DAR_CRAFT_EN[k], (window.DAR_CRAFT_TR || {})[k]);
+  const colorName = k => L(DAR_COLORS[k].name, DAR_COLORS[k].name_en, DAR_COLORS[k].name_tr);
+  const name = L(p.name, p.name_en, p.name_tr), catLabel = L(cat.name, cat.name_en, cat.name_tr);
+  const vName = v => L(v.name, v.name_en, v.name_tr);
+  document.title = L(`${p.name}، دار`, `${name}, DAR`, `${name}, DAR`);
+  document.querySelector('meta[name="description"]').content = L(p.desc, p.desc_en, p.desc_tr);
   $("crumbs").insertAdjacentHTML("beforeend", `<span aria-hidden="true">/</span><a href="shop.html?cat=${cat.id}">${catLabel}</a><span aria-hidden="true">/</span><span aria-current="page">${name}</span>`);
   $("pdp").hidden = false;
 
@@ -25,30 +25,31 @@
   $("p-cat").href = `shop.html?cat=${cat.id}`;
   $("p-name").textContent = name;
   $("p-code").innerHTML = [
-    p.code ? `<span class="num">${L("كود", "Code")} ${p.code}</span>` : "",
+    p.code ? `<span class="num">${L("كود", "Code", "Kod")} ${p.code}</span>` : "",
     p.craft ? `<span class="tag${p.craft === "hand" ? " tag--henna" : ""}"><span data-motif="amulet"></span>${craftName(p.craft)}</span>` : ""
   ].join("");
-  $("p-desc").textContent = L(p.desc, p.desc_en);
+  $("p-desc").textContent = L(p.desc, p.desc_en, p.desc_tr);
   if (p.story || p.motif || p.origin) {
-    $("p-desc").insertAdjacentHTML("afterend", `<p style="margin-block-start:var(--s2)"><b style="color:var(--zaytoun)">${L("حكاية النقشة", "The story of the motif")}${p.motif ? `${L("، ", ": ")}${L(p.motif, p.motif_en)}` : ""}</b>${p.origin ? ` ${L("من", "from")} ${L(p.origin, p.origin_en)}` : ""}<br>${(L(p.story, p.story_en) || "").replace(/[<>]/g, "")}</p>`);
+    // Turkish puts the place after a dot ("Servi · Nablus") instead of a suffix it cannot build here
+    $("p-desc").insertAdjacentHTML("afterend", `<p style="margin-block-start:var(--s2)"><b style="color:var(--zaytoun)">${L("حكاية النقشة", "The story of the motif", "Motifin hikâyesi")}${p.motif ? `${L("، ", ": ", ": ")}${L(p.motif, p.motif_en, p.motif_tr)}` : ""}</b>${p.origin ? ` ${L("من", "from", "·")} ${L(p.origin, p.origin_en, p.origin_tr)}` : ""}<br>${(L(p.story, p.story_en, p.story_tr) || "").replace(/[<>]/g, "")}</p>`);
   }
   if (+p.price > 0) {
     document.querySelector(".info__price").innerHTML = `<span class="num">${Site.money(p.price)}</span>`;
     $("bb-name").nextElementSibling.textContent = Site.money(p.price);
   }
 
-  const ask = encodeURIComponent(L(`مرحبا دار، أود السؤال عن: ${p.name}${p.code ? ` (كود ${p.code})` : ""}`, `Hello DAR, I would like to ask about: ${name}${p.code ? ` (code ${p.code})` : ""}`));
+  const ask = encodeURIComponent(L(`مرحبا دار، أود السؤال عن: ${p.name}${p.code ? ` (كود ${p.code})` : ""}`, `Hello DAR, I would like to ask about: ${name}${p.code ? ` (code ${p.code})` : ""}`, `Merhaba DAR, şu parça hakkında bilgi almak istiyorum: ${name}${p.code ? ` (kod ${p.code})` : ""}`));
   $("p-ask").href = `${Site.WA}?text=${ask}`;
   const askPrice = $("p-ask-price");
   if (askPrice) askPrice.href = $("p-ask").href;
 
   const colors = (p.colors || []).map(c => `<i style="--c:${DAR_COLORS[c].hex}" title="${colorName(c)}"></i>`).join("");
   $("p-details").innerHTML = [
-    p.code ? `<dt>${L("الكود", "Code")}</dt><dd class="num">${p.code}</dd>` : "",
-    `<dt>${L("المجموعة", "Collection")}</dt><dd>${catLabel}</dd>`,
-    p.craft ? `<dt>${L("الصنعة", "Craft")}</dt><dd>${craftName(p.craft)}</dd>` : "",
-    colors ? `<dt>${L("الألوان", "Colours")}</dt><dd><span class="dots">${colors}</span> ${p.colors.map(colorName).join(L("، ", ", "))}</dd>` : "",
-    `<dt>${L("المصدر", "Source")}</dt><dd>${L("كتالوج دار 2026", "DAR 2026 catalogue")}</dd>`
+    p.code ? `<dt>${L("الكود", "Code", "Kod")}</dt><dd class="num">${p.code}</dd>` : "",
+    `<dt>${L("المجموعة", "Collection", "Koleksiyon")}</dt><dd>${catLabel}</dd>`,
+    p.craft ? `<dt>${L("الصنعة", "Craft", "İşçilik")}</dt><dd>${craftName(p.craft)}</dd>` : "",
+    colors ? `<dt>${L("الألوان", "Colours", "Renkler")}</dt><dd><span class="dots">${colors}</span> ${p.colors.map(colorName).join(L("، ", ", ", ", "))}</dd>` : "",
+    `<dt>${L("المصدر", "Source", "Kaynak")}</dt><dd>${L("كتالوج دار 2026", "DAR 2026 catalogue", "DAR 2026 kataloğu")}</dd>`
   ].join("");
 
   /* ---------- Gallery ---------- */
@@ -59,7 +60,7 @@
   if (shots.length < 2) document.querySelector(".gallery").classList.add("gallery--single");
   const fav = $("p-fav");
   fav.dataset.fav = p.id;
-  fav.setAttribute("aria-label", L(`حفظ ${p.name} في المفضلة`, `Save ${name} to favourites`));
+  fav.setAttribute("aria-label", L(`حفظ ${p.name} في المفضلة`, `Save ${name} to favourites`, `${name} parçasını favorilere ekle`));
   fav.setAttribute("aria-pressed", Site.favs.has(p.id));
   function show(img, alt) {
     if (photo.getAttribute("src") === IMG(img)) return;
@@ -70,7 +71,7 @@
     thumbs.querySelectorAll("button").forEach(b => b.setAttribute("aria-current", b.dataset.img === img));
   }
   thumbs.innerHTML = shots.length > 1 ? shots.map((s, i) =>
-    `<button type="button" data-img="${s}" aria-current="${i === 0}" aria-label="${L(`الصورة ${i + 1} من ${shots.length}`, `Picture ${i + 1} of ${shots.length}`)}"><img src="${Site.SM(s)}" alt="" width="84" height="105"></button>`).join("") : "";
+    `<button type="button" data-img="${s}" aria-current="${i === 0}" aria-label="${L(`الصورة ${i + 1} من ${shots.length}`, `Picture ${i + 1} of ${shots.length}`, `Fotoğraf ${i + 1} / ${shots.length}`)}"><img src="${Site.SM(s)}" alt="" width="84" height="105"></button>`).join("") : "";
   thumbs.addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
     show(b.dataset.img, name);
@@ -99,9 +100,9 @@
     const pick = i => {
       const v = p.variants[i];
       label.textContent = vName(v);
-      add.dataset.variant = v.color; add.dataset.add = `${name}${L("، ", ", ")}${vName(v)}`;
+      add.dataset.variant = v.color; add.dataset.add = `${name}${L("، ", ", ", ", ")}${vName(v)}`;
       $("variants").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.i === i));
-      show(v.img, `${name}${L("، ", ", ")}${vName(v)}`);
+      show(v.img, `${name}${L("، ", ", ", ", ")}${vName(v)}`);
     };
     $("variants").addEventListener("click", e => { const b = e.target.closest("button"); if (b) pick(+b.dataset.i); });
     pick(0);

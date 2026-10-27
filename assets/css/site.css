@@ -386,7 +386,18 @@
 /* The menu button sits at the start of the header, so the drawer comes in from that side */
 [dir="ltr"] .drawer { transform: translateX(-100%); }
 [dir="ltr"] .drawer.is-open { transform: none; }
-:lang(en) .rise .w { padding-block: .06em; margin-block: -.06em; }
+:is(:lang(en), :lang(tr)) .rise .w { padding-block: .06em; margin-block: -.06em; }
 @media (prefers-reduced-motion: reduce) { [dir="ltr"] .ribbon__track { animation: none; } }/* English names run longer than the Arabic ones; "Price coming soon" goes under the name instead of squeezing it */
-:lang(en) .product__meta { flex-direction: column; gap: 4px; }
-:lang(en) .product__price--soon { text-align: start; }
+:is(:lang(en), :lang(tr)) .product__meta { flex-direction: column; gap: 4px; }
+:is(:lang(en), :lang(tr)) .product__price--soon { text-align: start; }
+/* Turkish nav labels run longest ("Kurumsal hediyeler"): they never wrap, tighten below 1340px,
+   and the header switches to the menu button below 1260px, before they would crowd the logo */
+:lang(tr) .main-nav a { white-space: nowrap; }
+@media (max-width: 1340px) { :lang(tr) .main-nav { gap: var(--s2); font-size: .875rem; } }
+@media (max-width: 1259px) {
+  :lang(tr) .main-nav, :lang(tr) .site-head .lang { display: none; }
+  :lang(tr) .menu-btn { display: inline-grid; }
+  :lang(tr) .site-head .wrap { grid-template-columns: auto minmax(0, 1fr) auto; min-height: 68px; }
+  :lang(tr) .brand { justify-self: start; }
+  :lang(tr) .brand img, :lang(tr) .site-head.is-scrolled .brand img { height: 44px; }
+}

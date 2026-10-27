@@ -20,13 +20,13 @@
 
   const SHIP_TR = +(DAR_SETTINGS.shipTr || 120);    // demo default until DAR sets the rate in the dashboard
   const form = $("co-form");
-  const view = i => { const p = byId[i.pid]; const v = (p.variants || []).find(x => x.color === i.variant); return { p, v, unit: price(p), img: v ? v.img : p.img, name: L(p.name, p.name_en), vName: v ? L(v.name, v.name_en) : "" }; };
+  const view = i => { const p = byId[i.pid]; const v = (p.variants || []).find(x => x.color === i.variant); return { p, v, unit: price(p), img: v ? v.img : p.img, name: L(p.name, p.name_en, p.name_tr), vName: v ? L(v.name, v.name_en, v.name_tr) : "" }; };
   const subtotal = items.reduce((s, i) => s + view(i).unit * i.qty, 0);
 
   /* ---------- Summary ---------- */
   $("mini").innerHTML = items.map(i => {
     const { p, v, unit, img, name, vName } = view(i);
-    return `<li><span class="thumb${p.dark ? " is-dark" : ""}"><img src="${Site.SM(img)}" alt="" width="56" height="70"><span class="q num" aria-label="${L("الكمية", "Quantity")}">${i.qty}</span></span><span><b>${name}</b>${v ? vName : ""}</span><span class="num">${money(unit * i.qty)}</span></li>`;
+    return `<li><span class="thumb${p.dark ? " is-dark" : ""}"><img src="${Site.SM(img)}" alt="" width="56" height="70"><span class="q num" aria-label="${L("الكمية", "Quantity", "Adet")}">${i.qty}</span></span><span><b>${name}</b>${v ? vName : ""}</span><span class="num">${money(unit * i.qty)}</span></li>`;
   }).join("");
   document.querySelector('[data-cost="tr"]').textContent = money(SHIP_TR);
   $("co-gift-dt").hidden = $("co-gift-dd").hidden = !extras.gift;
@@ -35,8 +35,8 @@
     const ship = form.ship.value;
     const shipCost = ship === "tr" ? SHIP_TR : 0;
     $("co-sub").textContent = money(subtotal);
-    $("co-ship").textContent = ship === "intl" ? L("يحدد لاحقا", "Set later") : ship === "pickup" ? L("مجاني", "Free") : money(shipCost);
-    const total = money(subtotal + shipCost) + (ship === "intl" ? L(" + الشحن", " + shipping") : "");
+    $("co-ship").textContent = ship === "intl" ? L("يحدد لاحقا", "Set later", "Sonra belirlenir") : ship === "pickup" ? L("مجاني", "Free", "Ücretsiz") : money(shipCost);
+    const total = money(subtotal + shipCost) + (ship === "intl" ? L(" + الشحن", " + shipping", " + kargo") : "");
     $("co-total").textContent = total;
     $("co-toggle-total").textContent = total;
     // Pickup needs no address
@@ -68,10 +68,10 @@
 
   /* ---------- Validation: say what is wrong and how to fix it ---------- */
   const messages = {
-    "f-name": L("اكتب الاسم الكامل كما سيظهر على الطرد.", "Write your full name as it should appear on the parcel."),
-    "f-phone": L("اكتب رقم جوال صحيحا مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.", "Write a valid mobile number with the country code, like +90 5xx xxx xx xx."),
-    "f-city": L("اكتب المدينة.", "Write your city."),
-    "f-address": L("اكتب العنوان كاملا: الحي والشارع ورقم البناء.", "Write the full address: neighbourhood, street and building number.")
+    "f-name": L("اكتب الاسم الكامل كما سيظهر على الطرد.", "Write your full name as it should appear on the parcel.", "Adınızı ve soyadınızı paketin üzerinde yazacağı gibi girin."),
+    "f-phone": L("اكتب رقم جوال صحيحا مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.", "Write a valid mobile number with the country code, like +90 5xx xxx xx xx.", "Ülke koduyla geçerli bir cep telefonu numarası girin, örneğin +90 5xx xxx xx xx."),
+    "f-city": L("اكتب المدينة.", "Write your city.", "Şehrinizi girin."),
+    "f-address": L("اكتب العنوان كاملا: الحي والشارع ورقم البناء.", "Write the full address: neighbourhood, street and building number.", "Açık adresinizi girin: mahalle, sokak ve bina numarası.")
   };
   const phoneOk = v => v.replace(/[\s()-]/g, "").match(/^\+?\d{9,15}$/);
   function check(input) {
@@ -84,7 +84,7 @@
     field.classList.toggle("is-error", !ok);
     input.setAttribute("aria-invalid", !ok);
     if (hint) {
-      hint.textContent = ok ? hint.dataset.base : (messages[input.id] || L("أكمل البريد الإلكتروني، مثل name@email.com.", "Complete the email address, like name@email.com."));
+      hint.textContent = ok ? hint.dataset.base : (messages[input.id] || L("أكمل البريد الإلكتروني، مثل name@email.com.", "Complete the email address, like name@email.com.", "E-posta adresini tamamlayın, örneğin name@email.com."));
       if (!hint.id) hint.id = `${input.id}-hint`;
       input.setAttribute("aria-describedby", hint.id);
     }
@@ -102,7 +102,7 @@
     const id = `DAR-${new Date().getFullYear()}-${next}`;
     const val = f => $(f).value.trim();
     list.unshift({
-      id, name: val("f-name"), city: ship === "pickup" ? L("إسطنبول", "Istanbul") : val("f-city"), phone: val("f-phone"),
+      id, name: val("f-name"), city: ship === "pickup" ? L("إسطنبول", "Istanbul", "İstanbul") : val("f-city"), phone: val("f-phone"),
       lines: items.map(i => ({ pid: i.pid, qty: i.qty, variant: i.variant })),
       channel: "web", pay, ship, status: "new", date: new Date().toISOString(), local: true
     });
@@ -124,7 +124,7 @@
     const err = $("co-error");
     if (bad.length || !terms.checked) {
       err.hidden = false;
-      err.textContent = bad.length ? L(`${bad.length === 1 ? "حقل واحد يحتاج" : `${bad.length} حقول تحتاج`} تصحيحا. الملاحظة مكتوبة تحت كل حقل.`, `${bad.length === 1 ? "One field needs" : `${bad.length} fields need`} fixing. The note is under each field.`) : L("وافق على شروط البيع لإتمام الطلب.", "Agree to the terms of sale to place your order.");
+      err.textContent = bad.length ? L(`${bad.length === 1 ? "حقل واحد يحتاج" : `${bad.length} حقول تحتاج`} تصحيحا. الملاحظة مكتوبة تحت كل حقل.`, `${bad.length === 1 ? "One field needs" : `${bad.length} fields need`} fixing. The note is under each field.`, `${bad.length === 1 ? "Bir alanın" : `${bad.length} alanın`} düzeltilmesi gerekiyor. Açıklama her alanın altında.`) : L("وافق على شروط البيع لإتمام الطلب.", "Agree to the terms of sale to place your order.", "Siparişi tamamlamak için satış koşullarını onaylayın.");
       (bad[0] || terms).focus();
       return;
     }
@@ -141,8 +141,8 @@
       $("order-no").textContent = no;
       $("done-track").href = `track.html?no=${encodeURIComponent(no)}`;
       $("done-text").textContent = pay === "card"
-        ? L("في الموقع الحقيقي تنتقل الآن إلى صفحة الدفع الآمنة. هذه معاينة: حفظنا الطلب في هذا المتصفح فقط، ولم يخصم أي مبلغ.", "On the live site you would now go to the secure payment page. This is a preview: we saved the order in this browser only, and nothing was charged.")
-        : L("في الموقع الحقيقي نرسل لك بيانات التحويل على واتساب. هذه معاينة: حفظنا الطلب في هذا المتصفح فقط.", "On the live site we would send you the bank details on WhatsApp. This is a preview: we saved the order in this browser only.");
+        ? L("في الموقع الحقيقي تنتقل الآن إلى صفحة الدفع الآمنة. هذه معاينة: حفظنا الطلب في هذا المتصفح فقط، ولم يخصم أي مبلغ.", "On the live site you would now go to the secure payment page. This is a preview: we saved the order in this browser only, and nothing was charged.", "Gerçek sitede şimdi güvenli ödeme sayfasına geçersiniz. Bu bir önizleme: siparişi yalnızca bu tarayıcıda kaydettik, hiçbir ücret alınmadı.")
+        : L("في الموقع الحقيقي نرسل لك بيانات التحويل على واتساب. هذه معاينة: حفظنا الطلب في هذا المتصفح فقط.", "On the live site we would send you the bank details on WhatsApp. This is a preview: we saved the order in this browser only.", "Gerçek sitede havale bilgilerini size WhatsApp'tan göndeririz. Bu bir önizleme: siparişi yalnızca bu tarayıcıda kaydettik.");
       const star = $("done-star");
       Dar.mount($("done"));
       if (!reduce) { star.classList.add("stitch-go"); }

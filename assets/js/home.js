@@ -4,7 +4,7 @@
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   // Dashboard content overrides the defaults written in the page.
-  // It is written in Arabic, so the English page keeps its own text (the featured list still applies)
+  // It is written in Arabic, so the English and Turkish pages keep their own text (the featured list still applies)
   const saved = window.DAR_CONTENT || {};
   const C = DAR_LANG === "ar" ? saved : { featured: saved.featured };
   if (C.hero1 || C.hero2) {
@@ -16,7 +16,7 @@
   if (C.quiz && C.quiz.q) {
     const qh = document.getElementById("quiz-h");
     qh.textContent = C.quiz.q; Site.splitWords(qh);
-    document.querySelector(".quiz__hint").textContent = C.quiz.hint ? `${L("تلميح", "Hint")}: ${C.quiz.hint}` : "";
+    document.querySelector(".quiz__hint").textContent = C.quiz.hint ? `${L("تلميح", "Hint", "İpucu")}: ${C.quiz.hint}` : "";
     document.querySelectorAll(".quiz__opt").forEach((b, i) => {
       b.dataset.answer = i === C.quiz.right ? "1" : "0";
       b.firstElementChild.textContent = C.quiz.opts[i] || "";
@@ -111,7 +111,7 @@
   pauseBtn.addEventListener("click", () => {
     const paused = ribbon.classList.toggle("is-paused");
     pauseBtn.setAttribute("aria-pressed", paused);
-    if (DAR_LANG === "en") pauseBtn.setAttribute("aria-label", paused ? "Play the moving ribbon" : "Pause the moving ribbon");
+    if (DAR_LTR) pauseBtn.setAttribute("aria-label", paused ? L("تشغيل الشريط المتحرك", "Play the moving ribbon", "Kayan şeridi oynat") : L("إيقاف الشريط المتحرك", "Pause the moving ribbon", "Kayan şeridi durdur"));
     pauseBtn.innerHTML = `<span data-motif="${paused ? "i-play" : "i-pause"}" data-mono="1"></span>`;
     Dar.mount(pauseBtn);
   });
@@ -130,12 +130,12 @@
     right.classList.add("is-right");
     right.querySelector(".key").outerHTML = '<span class="mark" data-motif="starlet" data-mode="cross" data-order="radial" data-stitch></span>';
     Dar.mount(right);
-    const more = `<a class="thread" href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener">${L("سؤال جديد كل أسبوع", "A new question every week")}</a>`;
+    const more = `<a class="thread" href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener">${L("سؤال جديد كل أسبوع", "A new question every week", "Her hafta yeni bir soru")}</a>`;
     const answer = right.firstElementChild.textContent;
     const custom = C.quiz && C.quiz.q;
     result.innerHTML = pick === right
-      ? `${L("صحيح.", "Correct.")} ${custom ? answer : L("نابلس مدينة الكنافة والصابون النابلسي", "Nablus, the city of knafeh and Nablus soap")}. ${more}`
-      : `${L("الجواب", "The answer is")} ${custom ? answer : L("نابلس، مدينة الكنافة والصابون النابلسي", "Nablus, the city of knafeh and Nablus soap")}. ${more}`;
+      ? `${L("صحيح.", "Correct.", "Doğru.")} ${custom ? answer : L("نابلس مدينة الكنافة والصابون النابلسي", "Nablus, the city of knafeh and Nablus soap", "Nablus, künefenin ve Nablus sabununun şehri")}. ${more}`
+      : `${L("الجواب", "The answer is", "Doğru cevap:")} ${custom ? answer : L("نابلس، مدينة الكنافة والصابون النابلسي", "Nablus, the city of knafeh and Nablus soap", "Nablus, künefenin ve Nablus sabununun şehri")}. ${more}`;
     // The options are now disabled, so focus moves to the answer instead of falling to the page
     result.focus();
   });
@@ -143,7 +143,7 @@
   /* ---------- Newsletter ---------- */
   document.getElementById("join-form").addEventListener("submit", e => {
     e.preventDefault();
-    Site.showToast(L("سجلنا بريدك، نراك مع القطع الجديدة.", "You're on the list. See you when the new pieces arrive."));
+    Site.showToast(L("سجلنا بريدك، نراك مع القطع الجديدة.", "You're on the list. See you when the new pieces arrive.", "Listeye eklendiniz. Yeni parçalar geldiğinde görüşmek üzere."));
     e.target.reset();
   });
 

@@ -12,7 +12,7 @@
   function view(item) {
     const p = byId[item.pid];
     const v = (p.variants || []).find(x => x.color === item.variant);
-    return { p, v, img: v ? v.img : p.img, unit: price(p), name: L(p.name, p.name_en), vName: v ? L(v.name, v.name_en) : "" };
+    return { p, v, img: v ? v.img : p.img, unit: price(p), name: L(p.name, p.name_en, p.name_tr), vName: v ? L(v.name, v.name_en, v.name_tr) : "" };
   }
 
   function render() {
@@ -20,7 +20,7 @@
     const n = items.reduce((s, i) => s + i.qty, 0);
     $("cart").hidden = !items.length;
     $("cart-empty").hidden = !!items.length;
-    $("cart-sub").textContent = items.length ? L(`${n} ${n === 1 ? "قطعة" : "قطع"} في سلتك`, `${n} ${n === 1 ? "piece" : "pieces"} in your cart`) : "";
+    $("cart-sub").textContent = items.length ? L(`${n} ${n === 1 ? "قطعة" : "قطع"} في سلتك`, `${n} ${n === 1 ? "piece" : "pieces"} in your cart`, `Sepetinizde ${n} parça var`) : "";
     if (!items.length) { Dar.mount($("cart-empty")); return; }
 
     $("lines").innerHTML = items.map((item, i) => {
@@ -29,13 +29,13 @@
         <a class="line__img${p.dark ? " is-dark" : ""}" href="product.html?id=${p.id}" tabindex="-1" aria-hidden="true"><img src="${Site.SM(img)}" alt="" width="112" height="140" style="--pos:${p.pos || "50% 50%"}"></a>
         <div class="line__body">
           <a class="line__name" href="product.html?id=${p.id}">${name}</a>
-          <p class="line__meta">${v ? `<span><i class="dot" style="--c:${DAR_COLORS[v.color].hex}"></i>${vName}</span>` : ""}${p.code ? `<span class="num">${L("كود", "Code")} ${p.code}</span>` : ""}</p>
+          <p class="line__meta">${v ? `<span><i class="dot" style="--c:${DAR_COLORS[v.color].hex}"></i>${vName}</span>` : ""}${p.code ? `<span class="num">${L("كود", "Code", "Kod")} ${p.code}</span>` : ""}</p>
           <div class="line__actions">
-            <div class="qty"><button type="button" data-step="-1" aria-label="${L(`إنقاص ${p.name}`, `One less ${name}`)}"${item.qty === 1 ? " disabled" : ""}><span data-motif="i-minus"></span></button><output class="num" aria-label="${L("الكمية", "Quantity")}">${item.qty}</output><button type="button" data-step="1" aria-label="${L(`زيادة ${p.name}`, `One more ${name}`)}"${item.qty === 9 ? " disabled" : ""}><span data-motif="i-plus"></span></button></div>
-            <button class="line__remove" type="button" data-remove aria-label="${L(`إزالة ${p.name} من السلة`, `Remove ${name} from the cart`)}">${L("إزالة", "Remove")}</button>
+            <div class="qty"><button type="button" data-step="-1" aria-label="${L(`إنقاص ${p.name}`, `One less ${name}`, `${name}: bir azalt`)}"${item.qty === 1 ? " disabled" : ""}><span data-motif="i-minus"></span></button><output class="num" aria-label="${L("الكمية", "Quantity", "Adet")}">${item.qty}</output><button type="button" data-step="1" aria-label="${L(`زيادة ${p.name}`, `One more ${name}`, `${name}: bir artır`)}"${item.qty === 9 ? " disabled" : ""}><span data-motif="i-plus"></span></button></div>
+            <button class="line__remove" type="button" data-remove aria-label="${L(`إزالة ${p.name} من السلة`, `Remove ${name} from the cart`, `${name} parçasını sepetten çıkar`)}">${L("إزالة", "Remove", "Çıkar")}</button>
           </div>
         </div>
-        <p class="line__price num">${money(unit * item.qty)}${item.qty > 1 ? `<small>${money(unit)} ${L("للقطعة", "each")}</small>` : ""}</p>
+        <p class="line__price num">${money(unit * item.qty)}${item.qty > 1 ? `<small>${money(unit)} ${L("للقطعة", "each", "/ adet")}</small>` : ""}</p>
       </li>`;
     }).join("");
     Dar.mount($("lines"));
@@ -46,8 +46,8 @@
 
     // WhatsApp order: the same list DAR would get from the checkout
     const ex = extras.get();
-    const lines = items.map(i => { const { p, v, name, vName } = view(i); return `- ${name}${v ? `${L("، ", ", ")}${vName}` : ""}${p.code ? ` (${L("كود", "code")} ${p.code})` : ""} × ${i.qty}`; });
-    const msg = [L("مرحبا دار، أود طلب:", "Hello DAR, I would like to order:"), ...lines, ex.gift ? `${L("تغليف هدية", "Gift wrap")}${ex.note ? `: ${ex.note}` : ""}` : ""].filter(Boolean).join("\n");
+    const lines = items.map(i => { const { p, v, name, vName } = view(i); return `- ${name}${v ? `${L("، ", ", ", ", ")}${vName}` : ""}${p.code ? ` (${L("كود", "code", "kod")} ${p.code})` : ""} × ${i.qty}`; });
+    const msg = [L("مرحبا دار، أود طلب:", "Hello DAR, I would like to order:", "Merhaba DAR, şunları sipariş etmek istiyorum:"), ...lines, ex.gift ? `${L("تغليف هدية", "Gift wrap", "Hediye paketi")}${ex.note ? `: ${ex.note}` : ""}` : ""].filter(Boolean).join("\n");
     $("wa-order").href = `${Site.WA}?text=${encodeURIComponent(msg)}`;
   }
 
@@ -61,7 +61,7 @@
     if (step) {
       items[i].qty = Math.min(9, Math.max(1, items[i].qty + +step.dataset.step));
       cart.set(items); render();
-      live.textContent = `${name}: ${L("الكمية", "quantity")} ${items[i].qty}`;
+      live.textContent = `${name}: ${L("الكمية", "quantity", "adet")} ${items[i].qty}`;
       // Keep focus on the same control, or on its partner if it just became disabled
       const line = $("lines").querySelector(`[data-i="${i}"]`);
       const same = line.querySelector(`[data-step="${step.dataset.step}"]`);
@@ -74,13 +74,13 @@
         // Focus moves to the next piece, or to the heading once the cart is empty
         const next = $("lines").querySelector(`[data-i="${Math.min(i, items.length - 1)}"] .line__name`);
         (items.length && next ? next : $("cart-heading")).focus();
-        const undo = Site.showToast(L(`أزيلت ${name} من السلة.`, `${name} removed from the cart.`), L("تراجع", "Undo"), "#undo");
+        const undo = Site.showToast(L(`أزيلت ${name} من السلة.`, `${name} removed from the cart.`, `${name} sepetten çıkarıldı.`), L("تراجع", "Undo", "Geri al"), "#undo");
         undo?.addEventListener("click", ev => {
           ev.preventDefault();
           const now = cart.get(); now.splice(i, 0, gone); cart.set(now); render();
           Site.hideToast();
           $("lines").querySelector(`[data-i="${i}"] .line__name`)?.focus();
-          live.textContent = L(`أعيدت ${name} إلى السلة.`, `${name} is back in the cart.`);
+          live.textContent = L(`أعيدت ${name} إلى السلة.`, `${name} is back in the cart.`, `${name} yeniden sepette.`);
         }, { once: true });
       };
       if (reduce) return finish();
