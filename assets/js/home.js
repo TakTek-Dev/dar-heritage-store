@@ -68,49 +68,40 @@
 
   /* ---------- Scroll-linked: hero windows, reels, story star ---------- */
   const windows = [...document.querySelectorAll("#windows .window")];
-  const pin = document.getElementById("reels-pin");
   const track = document.getElementById("reels-track");
   const star = document.getElementById("scroll-star");
   const storyText = document.getElementById("story-text");
   const starCells = [...star.querySelectorAll(".c")];
   if (!reduce) star.classList.add("scroll-stitch");
   let shown = -1;
-  const wide = matchMedia("(min-width: 901px)");
-
-  function sizeReels() {
-    if (!wide.matches || reduce) { pin.style.height = ""; track.style.transform = ""; return; }
-    pin.style.height = `${innerHeight + Math.max(0, track.scrollWidth - innerWidth)}px`;
-  }
 
   Site.onScroll((y, vh) => {
     if (reduce) return;
     // Hero windows drift at different speeds
     windows.forEach(w => { w.style.transform = `translateY(${(y * +w.dataset.speed).toFixed(1)}px)`; });
-    // Reels: vertical scroll becomes sideways travel (RTL, so the strip moves right)
-    if (wide.matches) {
-      const r = pin.getBoundingClientRect();
-      const travel = Math.max(0, track.scrollWidth - innerWidth);
-      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - vh)));
-      track.style.transform = `translateX(${(p * travel).toFixed(1)}px)`;
-    }
     // Story star: one stitch per step of reading
     const r = storyText.getBoundingClientRect();
     const p = Math.min(1, Math.max(0, (vh * .85 - r.top) / (r.height * .75)));
     const n = Math.round(p * starCells.length);
     if (n !== shown) { starCells.forEach((c, i) => c.classList.toggle("on", i < n)); shown = n; }
   });
-  addEventListener("resize", sizeReels);
 
-  // Keyboard users move through the reels by focus; scroll the page so the focused reel is on screen
-  track.addEventListener("focusin", e => {
-    if (!wide.matches || reduce) return;
-    const reels = [...track.querySelectorAll(".reel")];
-    const i = reels.indexOf(e.target.closest(".reel"));
-    if (i < 0) return;
-    const top = pin.getBoundingClientRect().top + scrollY;
-    const room = pin.offsetHeight - innerHeight;
-    scrollTo({ top: top + room * (i / Math.max(1, reels.length - 1)), behavior: "auto" });
-  });
+  /* ---------- Reels strip: arrows move it one reel at a time ---------- */
+  const reelBtns = [...document.querySelectorAll("[data-reels]")];
+  const rtl = getComputedStyle(track).direction === "rtl";
+  function reelEdges() {
+    // scrollLeft runs from 0 to negative in RTL, so compare distances from each end
+    const max = track.scrollWidth - track.clientWidth;
+    const done = Math.abs(track.scrollLeft);
+    reelBtns.forEach(b => { b.disabled = b.dataset.reels === "-1" ? done < 4 : done > max - 4; });
+  }
+  reelBtns.forEach(b => b.addEventListener("click", () => {
+    const step = track.querySelector(".reel").offsetWidth + parseFloat(getComputedStyle(track).columnGap || 0);
+    track.scrollBy({ left: +b.dataset.reels * step * (rtl ? -1 : 1), behavior: reduce ? "auto" : "smooth" });
+  }));
+  track.addEventListener("scroll", reelEdges, { passive: true });
+  addEventListener("resize", reelEdges);
+  reelEdges();
 
   /* ---------- Ribbon pause ---------- */
   const ribbon = document.querySelector(".ribbon");
@@ -122,8 +113,8 @@
     Dar.mount(pauseBtn);
   });
   if (reduce) pauseBtn.hidden = true;
-  addEventListener("load", () => { sizeReels(); Site.refresh(); });
-  sizeReels(); Site.refresh();
+  addEventListener("load", () => Site.refresh());
+  Site.refresh();
 
   /* ---------- Weekly question ---------- */
   const quiz = document.getElementById("quiz");

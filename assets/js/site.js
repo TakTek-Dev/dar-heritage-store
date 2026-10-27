@@ -116,6 +116,7 @@
   }
   function veil(host) {
     const img = veilImg(host);
+    if (img && img.loading === "lazy") img.loading = "eager";
     let started = false, ended = false;
     // Back to the element's own styles (hover zoom, gallery zoom) once the picture has settled
     const finish = () => {
@@ -127,10 +128,10 @@
       if (started) return; started = true;
       requestAnimationFrame(() => host.classList.add("is-shown"));
       img.addEventListener("transitionend", e => { if (e.target === img && e.propertyName === "transform") finish(); });
-      setTimeout(finish, 3200);
+      setTimeout(finish, 1800);
     };
     if (!img || (img.complete && img.naturalWidth)) go();
-    else { img.addEventListener("load", go, { once: true }); img.addEventListener("error", go, { once: true }); setTimeout(go, 2500); }
+    else { img.addEventListener("load", go, { once: true }); img.addEventListener("error", go, { once: true }); setTimeout(go, 1200); }
   }
 
   /* ---------- Reveal on enter ---------- */
@@ -139,10 +140,17 @@
     if (e.target.hasAttribute("data-veil")) veil(e.target); else e.target.classList.add("is-in");
     io.unobserve(e.target);
   }), { threshold: .2, rootMargin: "0px 0px -6% 0px" });
+  // Pictures start their reveal (and their download) a little before they scroll in,
+  // so the reader never waits on an empty frame
+  const ioVeil = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    veil(e.target);
+    ioVeil.unobserve(e.target);
+  }), { threshold: 0, rootMargin: "0px 0px 25% 0px" });
 
   function observe(root = document) {
     root.querySelectorAll(".rise:not(.is-in), .up:not(.is-in), [data-veil]").forEach(el => {
-      if (el.hasAttribute("data-veil")) { if (!reduce && prepVeil(el)) io.observe(el); return; }
+      if (el.hasAttribute("data-veil")) { if (!reduce && prepVeil(el)) ioVeil.observe(el); return; }
       if (reduce) el.classList.add("is-in"); else io.observe(el);
     });
   }
