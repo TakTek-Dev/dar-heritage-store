@@ -235,5 +235,5 @@ button, input, select { font: inherit; color: inherit; }
    transforms (hover nudges) keep working. The reels buttons set their own direction in site.css. */
 [dir="ltr"] :not(.reels-btn) > [data-motif="i-arrow"] svg { transform: scaleX(-1); }
 /* Thmanyah's Latin is narrower and has no Arabic dots and tails to clear: tighter lines read better */
-:lang(en) body { line-height: 1.6; }
-:lang(en) h1, :lang(en) h2, :lang(en) h3 { line-height: 1.2; }
+:is(:lang(en), :lang(tr)) body { line-height: 1.6; }
+:is(:lang(en), :lang(tr)) :is(h1, h2, h3) { line-height: 1.2; }

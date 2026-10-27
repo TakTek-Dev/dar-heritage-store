@@ -3,10 +3,10 @@
   const { reduce } = Site;
   const params = new URLSearchParams(location.search);
   const catOf = id => DAR_CATS.find(c => c.id === id);
-  const catName = id => { const c = catOf(id); return c && L(c.name, c.name_en); };
-  const craftName = k => L(DAR_CRAFT[k], DAR_CRAFT_EN[k]);
-  const colorName = k => L(DAR_COLORS[k].name, DAR_COLORS[k].name_en);
-  const pName = p => L(p.name, p.name_en);
+  const catName = id => { const c = catOf(id); return c && L(c.name, c.name_en, c.name_tr); };
+  const craftName = k => L(DAR_CRAFT[k], DAR_CRAFT_EN[k], (window.DAR_CRAFT_TR || {})[k]);
+  const colorName = k => L(DAR_COLORS[k].name, DAR_COLORS[k].name_en, DAR_COLORS[k].name_tr);
+  const pName = p => L(p.name, p.name_en, p.name_tr);
   const state = {
     cat: catName(params.get("cat")) ? params.get("cat") : "",
     q: params.get("q") || "",
@@ -29,10 +29,10 @@
   const covers = { wear: "thob-red", bags: "minibag-red", kufiya: "rug-kufiya", wall: "hoop-hand", jewel: "earrings-map", home: "cups-olive" };
   const loom = document.getElementById("loom");
   loom.innerHTML =
-    `<button type="button" data-cat="" aria-pressed="${!state.cat}"><span class="loom__img loom__img--all"><span data-motif="star" data-mono="1" style="color:#F4EEE4"></span></span><b>${L("الكل", "All")}</b><small class="num">${DAR_PRODUCTS.length} ${L("قطعة", "pieces")}</small></button>` +
+    `<button type="button" data-cat="" aria-pressed="${!state.cat}"><span class="loom__img loom__img--all"><span data-motif="star" data-mono="1" style="color:#F4EEE4"></span></span><b>${L("الكل", "All", "Tümü")}</b><small class="num">${DAR_PRODUCTS.length} ${L("قطعة", "pieces", "parça")}</small></button>` +
     DAR_CATS.map(c => {
       const n = DAR_PRODUCTS.filter(p => p.cat === c.id).length;
-      return `<button type="button" data-cat="${c.id}" aria-pressed="${state.cat === c.id}"><span class="loom__img"><img src="${Site.SM(covers[c.id])}" alt="" width="160" height="160"></span><b>${L(c.name, c.name_en)}</b><small class="num">${n} ${L("قطع", n === 1 ? "piece" : "pieces")}</small></button>`;
+      return `<button type="button" data-cat="${c.id}" aria-pressed="${state.cat === c.id}"><span class="loom__img"><img src="${Site.SM(covers[c.id])}" alt="" width="160" height="160"></span><b>${catName(c.id)}</b><small class="num">${n} ${L("قطع", n === 1 ? "piece" : "pieces", "parça")}</small></button>`;
     }).join("");
   Dar.mount(loom);
 
@@ -46,24 +46,26 @@
     `<button class="swatch" type="button" data-color="${k}" style="--c:${c.hex}" aria-pressed="false" aria-label="${colorName(k)}" title="${colorName(k)}"></button>`).join("");
 
   /* ---------- Filtering ---------- */
-  const norm = s => s.replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي").toLowerCase();
+  // Turkish letters fold to plain Latin, so "canta" finds "çanta" and "IPEK" finds "ipek"
+  const TR_FOLD = { ı: "i", ç: "c", ş: "s", ğ: "g", ö: "o", ü: "u", â: "a", î: "i", û: "u" };
+  const norm = s => s.replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي").toLowerCase().replace(/̇/g, "").replace(/[ıçşğöüâîû]/g, ch => TR_FOLD[ch]);
   // The collection (and the favourites view) set the scope that every count is taken from
   const scope = () => DAR_PRODUCTS.filter(p => (!state.cat || p.cat === state.cat) && (!state.fav || Site.favs.has(p.id)));
   function results() {
     const term = norm(state.q.trim());
     let list = scope().filter(p =>
-      (!term || norm(p.name + " " + (p.name_en || "") + " " + (p.code || "") + " " + catOf(p.cat).name + " " + (catOf(p.cat).name_en || "")).includes(term)) &&
+      (!term || norm(p.name + " " + (p.name_en || "") + " " + (p.name_tr || "") + " " + (p.code || "") + " " + catOf(p.cat).name + " " + (catOf(p.cat).name_en || "") + " " + (catOf(p.cat).name_tr || "")).includes(term)) &&
       (!state.craft.size || state.craft.has(p.craft)) &&
       (!state.color.size || (p.colors || []).some(c => state.color.has(c))));
-    if (state.sort === "name") list = [...list].sort((a, b) => pName(a).localeCompare(pName(b), L("ar", "en")));
+    if (state.sort === "name") list = [...list].sort((a, b) => pName(a).localeCompare(pName(b), DAR_LOCALE));
     if (state.sort === "code") list = [...list].sort((a, b) => (a.code || "99999").localeCompare(b.code || "99999"));
     return list;
   }
 
   const note = `<a class="shop-note up" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DcyQEX1M7gn/" target="_blank" rel="noopener">
       <span data-motif="cypress" data-mono="1" style="color:#fff;width:40px"></span>
-      <span><b>${L("هل تعرف نقشة السرو؟", "Do you know the cypress motif?")}</b><br><small>${L("مقطع قصير من دار عن معنى النقشة", "A short clip from DAR on what the motif means")}</small></span>
-      <span class="thread" style="justify-self:start">${L("شاهد على إنستغرام", "Watch on Instagram")}</span></a>`;
+      <span><b>${L("هل تعرف نقشة السرو؟", "Do you know the cypress motif?", "Servi motifini biliyor musunuz?")}</b><br><small>${L("مقطع قصير من دار عن معنى النقشة", "A short clip from DAR on what the motif means", "Motifin anlamını anlatan kısa bir DAR videosu")}</small></span>
+      <span class="thread" style="justify-self:start">${L("شاهد على إنستغرام", "Watch on Instagram", "Instagram'da izleyin")}</span></a>`;
 
   function render() {
     const list = results();
@@ -74,12 +76,12 @@
     grid.innerHTML = cards.join("");
     empty.hidden = list.length > 0;
     grid.hidden = !list.length;
-    countEl.textContent = L(`${list.length} من ${base.length} قطعة`, `${list.length} of ${base.length} pieces`);
-    title.textContent = state.fav ? L("المفضلة", "Favourites") : state.cat ? catName(state.cat) : L("كل القطع", "All pieces");
-    sub.textContent = state.fav ? L("القطع التي حفظتها في هذا المتصفح.", "The pieces you saved in this browser.") : state.cat ? L("من كتالوج دار 2026.", "From the DAR 2026 catalogue.") : L("أزياء وحقائب وكوفيات وتطريز وإكسسوارات من كتالوج دار 2026.", "Clothing, bags, keffiyehs, embroidery and accessories from the DAR 2026 catalogue.");
+    countEl.textContent = L(`${list.length} من ${base.length} قطعة`, `${list.length} of ${base.length} pieces`, `${base.length} parçadan ${list.length} parça`);
+    title.textContent = state.fav ? L("المفضلة", "Favourites", "Favoriler") : state.cat ? catName(state.cat) : L("كل القطع", "All pieces", "Tüm parçalar");
+    sub.textContent = state.fav ? L("القطع التي حفظتها في هذا المتصفح.", "The pieces you saved in this browser.", "Bu tarayıcıda kaydettiğiniz parçalar.") : state.cat ? L("من كتالوج دار 2026.", "From the DAR 2026 catalogue.", "DAR 2026 kataloğundan.") : L("أزياء وحقائب وكوفيات وتطريز وإكسسوارات من كتالوج دار 2026.", "Clothing, bags, keffiyehs, embroidery and accessories from the DAR 2026 catalogue.", "DAR 2026 kataloğundan giyim, çanta, puşi, nakış ve aksesuarlar.");
     craftBox.querySelectorAll("[data-craft-n]").forEach(n => { n.textContent = base.filter(p => p.craft === n.dataset.craftN).length; });
-    empty.querySelector("b").textContent = state.fav && !base.length ? L("لم تحفظ قطعا بعد", "No saved pieces yet") : L("لا قطع تطابق هذا البحث", "No pieces match this search");
-    empty.querySelector("p").textContent = state.fav && !base.length ? L("اضغط القلب على أي قطعة لتجدها هنا.", "Tap the heart on any piece to find it here.") : L("جرب كلمة أخرى أو امسح التصفية.", "Try another word or clear the filters.");
+    empty.querySelector("b").textContent = state.fav && !base.length ? L("لم تحفظ قطعا بعد", "No saved pieces yet", "Henüz kaydettiğiniz bir parça yok") : L("لا قطع تطابق هذا البحث", "No pieces match this search", "Bu aramaya uyan parça yok");
+    empty.querySelector("p").textContent = state.fav && !base.length ? L("اضغط القلب على أي قطعة لتجدها هنا.", "Tap the heart on any piece to find it here.", "Bir parçadaki kalbe dokunun, burada bulun.") : L("جرب كلمة أخرى أو امسح التصفية.", "Try another word or clear the filters.", "Başka bir kelime deneyin ya da filtreleri temizleyin.");
     loom.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.cat === state.cat));
     const active = state.craft.size + state.color.size;
     document.getElementById("filter-n").textContent = active ? `(${active})` : "";

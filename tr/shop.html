@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="tr" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Mağaza, DAR</title>
+<meta name="description" content="DAR 2026 kataloğundan Filistin elbiseleri, çantalar, puşiler, nakış işleri ve aksesuarlar.">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;700&amp;family=Noto+Serif+Display:wght@400;500;700;900&amp;family=Noto+Serif:wght@400;500&amp;text=%C4%9F%C4%9E%C5%9F%C5%9E%C4%B0%E2%82%BA&amp;display=swap">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=6">
+<link rel="stylesheet" href="../assets/css/base.css?v=13">
+<link rel="stylesheet" href="../assets/css/site.css?v=21">
+<link rel="stylesheet" href="../assets/css/shop.css?v=8">
+</head>
+<body data-page="shop">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Sayfa yolu"><a href="index.html">Ana sayfa</a><span aria-hidden="true">/</span><span aria-current="page">Mağaza</span></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>Tasarım önizlemesi: fiyatlar açılıştan önce eklenecek.</p>
+
+    <div class="shop-head">
+      <div>
+        <span class="eyebrow up"><span data-motif="starlet"></span>DAR kataloğu 2026</span>
+        <h1 class="rise" id="shop-title">Tüm parçalar</h1>
+        <p class="up" id="shop-sub"></p>
+      </div>
+      <span class="shop-head__star" data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
+    </div>
+
+    <div class="loom up" id="loom" role="group" aria-label="Koleksiyonlar"></div>
+
+    <div class="shop">
+      <aside class="filters" id="filters" aria-labelledby="filters-h">
+        <h2 id="filters-h">Filtrele</h2>
+        <button class="icon-btn filters__close" type="button" aria-label="Filtreleri kapat" data-close-filters><span data-motif="i-close"></span></button>
+        <fieldset id="f-craft"><legend>İşçilik</legend></fieldset>
+        <fieldset><legend>Renk</legend><div class="swatches-f" id="f-color"></div></fieldset>
+        <button class="btn btn--quiet filters__reset" type="button" id="reset">Filtreleri temizle</button>
+        <button class="btn filter-apply" type="button" data-close-filters>Sonuçları göster</button>
+      </aside>
+
+      <section aria-labelledby="shop-title">
+        <div class="toolbar">
+          <div class="field"><label for="q">Parçalarda arayın</label><input id="q" type="search" placeholder="Ceket, puşi, bileklik" autocomplete="off"></div>
+          <div class="toolbar__end">
+            <div class="field" style="min-width:0;flex:none"><label for="sort">Sırala</label>
+              <select id="sort"><option value="">Öne çıkanlar</option><option value="name">Ada göre</option><option value="code">Koda göre</option></select>
+            </div>
+            <button class="btn btn--quiet filter-btn" type="button" id="filter-btn" aria-controls="filters" aria-expanded="false">Filtrele <span class="num" id="filter-n"></span></button>
+          </div>
+        </div>
+        <p class="toolbar__count" id="count" role="status" aria-live="polite"></p>
+        <h2 class="sr-only">Parçalar</h2>
+        <div class="products" id="grid" style="margin-block-start:var(--s3)"></div>
+        <div class="empty" id="empty" hidden>
+          <span data-motif="starlet" data-mode="cross"></span>
+          <b>Bu aramaya uyan parça yok</b>
+          <p>Başka bir kelime deneyin ya da filtreleri temizleyin.</p>
+          <button class="btn" type="button" data-reset>Filtreleri temizle</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div class="sheet-backdrop" id="backdrop" data-close-filters></div>
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=5"></script>
+<script src="../assets/js/site.js?v=17"></script>
+<script src="../assets/js/shop-page.js?v=7"></script>
+</body>
+</html>

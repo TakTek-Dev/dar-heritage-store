@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="tr" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Ödeme, DAR</title>
+<meta name="robots" content="noindex">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;700&amp;family=Noto+Serif+Display:wght@400;500;700;900&amp;family=Noto+Serif:wght@400;500&amp;text=%C4%9F%C4%9E%C5%9F%C5%9E%C4%B0%E2%82%BA&amp;display=swap">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=6">
+<link rel="stylesheet" href="../assets/css/base.css?v=13">
+<link rel="stylesheet" href="../assets/css/site.css?v=21">
+<link rel="stylesheet" href="../assets/css/shop.css?v=8">
+<link rel="stylesheet" href="../assets/css/cart.css?v=7">
+</head>
+<body data-page="checkout">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap" id="checkout-wrap">
+    <nav class="crumbs" aria-label="Sayfa yolu"><a href="index.html">Ana sayfa</a><span aria-hidden="true">/</span><a href="cart.html">Sepet</a><span aria-hidden="true">/</span><span aria-current="page">Ödeme</span></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>Tasarım önizlemesi: sipariş gönderilmez; fiyatlar ve kargo ücreti DAR belirleyene kadar örnek değerlerdir.</p>
+
+    <div class="page-head"><div><h1 class="rise">Ödeme</h1></div><a class="thread" href="cart.html">Sepete dön</a></div>
+
+    <div class="cart" id="checkout">
+      <aside class="summary co-summary" id="co-summary" aria-labelledby="co-sum-h">
+        <button class="summary-toggle" type="button" aria-expanded="false" aria-controls="co-sum-body"><span>Sipariş özeti <span class="num" id="co-toggle-total"></span></span><span data-motif="i-plus"></span></button>
+        <h2 id="co-sum-h">Sipariş özeti</h2>
+        <ul class="mini-lines" id="mini"></ul>
+        <div class="summary-body" id="co-sum-body">
+          <dl>
+            <dt>Ara toplam</dt><dd class="num" id="co-sub"></dd>
+            <dt>Kargo</dt><dd class="num" id="co-ship"></dd>
+            <dt id="co-gift-dt" hidden>Hediye paketi</dt><dd id="co-gift-dd" hidden>Eklendi</dd>
+            <dt class="total">Toplam</dt><dd class="total num" id="co-total"></dd>
+          </dl>
+        </div>
+      </aside>
+      <form id="co-form" novalidate aria-describedby="co-error">
+        <ol class="steps" aria-label="Sipariş adımları">
+          <li class="is-on" data-step="1">İletişim</li>
+          <li data-step="2">Teslimat</li>
+          <li data-step="3">Ödeme</li>
+        </ol>
+        <p class="form-error" id="co-error" role="alert" hidden></p>
+
+        <fieldset class="co-step" data-step="1" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">01</span>İletişim bilgileri</h2></div>
+          <div class="co-grid">
+            <div class="field full"><label for="f-name">Ad soyad <span class="req" aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required placeholder="Paketin üzerinde yazacağı gibi" aria-describedby="f-name-hint"><span class="hint" id="f-name-hint" data-hint></span></div>
+            <div class="field"><label for="f-phone">Cep telefonu <span class="req" aria-hidden="true">*</span></label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required placeholder="+90 5xx xxx xx xx" aria-describedby="f-phone-hint"><span class="hint" id="f-phone-hint" data-hint>Sipariş için size WhatsApp'tan ulaşırız</span></div>
+            <div class="field"><label for="f-email">E-posta</label><input id="f-email" name="email" type="email" autocomplete="email" dir="ltr" placeholder="name@email.com" aria-describedby="f-email-hint"><span class="hint" id="f-email-hint" data-hint>Sipariş onayı için, isteğe bağlı</span></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step" data-step="2" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">02</span>Teslimat</h2></div>
+          <div class="choices" role="radiogroup" aria-label="Siparişi nasıl teslim alacağınız">
+            <label class="choice"><input class="radio" type="radio" name="ship" value="tr" checked><span><b>Türkiye içi teslimat</b><small>Kuryeyle kapınıza</small></span><span class="cost num" data-cost="tr"></span></label>
+            <label class="choice"><input class="radio" type="radio" name="ship" value="intl"><span><b>Yurt dışı kargo</b><small>Ücret ülkeye göre değişir; DAR ödemeden önce size bildirir</small></span><span class="cost">Ülkeye göre</span></label>
+            <label class="choice"><input class="radio" type="radio" name="ship" value="pickup"><span><b>Merkezden teslim alın</b><small>Altın Sk. No:11/A, Bahçelievler, İstanbul</small></span><span class="cost">Ücretsiz</span></label>
+          </div>
+          <div class="co-grid" id="address" style="margin-block-start:var(--s4)">
+            <div class="field"><label for="f-country">Ülke</label>
+              <select id="f-country" name="country" autocomplete="country-name"><option>Türkiye</option><option>Suudi Arabistan</option><option>Birleşik Arap Emirlikleri</option><option>Katar</option><option>Kuveyt</option><option>Ürdün</option><option>Almanya</option><option>Birleşik Krallık</option><option>Başka bir ülke</option></select></div>
+            <div class="field"><label for="f-city">Şehir <span class="req" aria-hidden="true">*</span></label><input id="f-city" name="city" autocomplete="address-level2" required aria-describedby="f-city-hint"><span class="hint" id="f-city-hint" data-hint></span></div>
+            <div class="field full"><label for="f-address">Adres <span class="req" aria-hidden="true">*</span></label><input id="f-address" name="address" autocomplete="street-address" required placeholder="Mahalle, sokak, bina ve daire numarası" aria-describedby="f-address-hint"><span class="hint" id="f-address-hint" data-hint></span></div>
+            <div class="field"><label for="f-zip">Posta kodu</label><input id="f-zip" name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr"></div>
+            <div class="field"><label for="f-note">Teslimat notu</label><input id="f-note" name="note" placeholder="Örneğin: gelmeden önce arayın"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step" data-step="3" style="border:0;margin:0;padding-inline:0">
+          <div class="co-step__head"><h2><span class="n num">03</span>Ödeme</h2></div>
+          <div class="choices" role="radiogroup" aria-label="Ödeme yöntemi">
+            <label class="choice"><input class="radio" type="radio" name="pay" value="card" checked><span><b>Banka kartı</b><small>Kart bilgilerinizi girmek için güvenli bir ödeme sayfasına geçersiniz. DAR kart numaranızı hiçbir zaman görmez.</small><span class="ico"><span>VISA</span><span>Mastercard</span><span>Troy</span></span></span><span class="cost"></span></label>
+            <label class="choice"><input class="radio" type="radio" name="pay" value="bank"><span><b>Havale / EFT</b><small>Hesap bilgilerini size WhatsApp'tan göndeririz; ödeme ulaşınca siparişinizi hazırlarız.</small></span><span class="cost"></span></label>
+          </div>
+          <label class="co-terms"><input class="box" type="checkbox" id="f-terms" required><span><a class="thread" href="policies.html#terms" target="_blank" rel="noopener">Satış koşullarını</a> ve <a class="thread" href="policies.html#returns" target="_blank" rel="noopener">iade politikasını</a> okudum, kabul ediyorum.</span></label>
+          <button class="btn btn--lg btn--henna" type="submit" id="co-submit" style="width:100%">Siparişi onayla ve ödemeye geç</button>
+          <p class="trust" style="margin-block-start:var(--s2)"><span><span data-motif="starlet"></span>Onaylı ödeme altyapısıyla şifreli ödeme</span><span><span data-motif="starlet"></span>Siparişiniz Gazze'deki projelere destek olur</span></p>
+        </fieldset>
+      </form>
+
+    </div>
+
+    <section class="done" id="done" hidden aria-live="polite">
+      <span data-motif="star" data-mode="cross" data-order="radial" aria-hidden="true" id="done-star"></span>
+      <h1 tabindex="-1" id="done-h">Teşekkür ederiz</h1>
+      <p id="done-text"></p>
+      <p class="order-no num" id="order-no"></p>
+      <div class="row" style="justify-content:center"><a class="btn btn--lg" id="done-track" href="track.html">Siparişinizi takip edin</a><a class="btn btn--lg btn--quiet" href="shop.html">Alışverişe devam edin</a><a class="btn btn--lg btn--wa" href="https://wa.me/905538286235" target="_blank" rel="noopener"><span data-motif="i-chat"></span>DAR'a yazın</a></div>
+    </section>
+  </div>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=5"></script>
+<script src="../assets/js/site.js?v=17"></script>
+<script src="../assets/js/checkout-page.js?v=8"></script>
+</body>
+</html>

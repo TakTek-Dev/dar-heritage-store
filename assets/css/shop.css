@@ -197,4 +197,4 @@
 
 /* ---------- English (LTR) ---------- */
 [dir="ltr"] .loom button::after { transform-origin: left; }
-:lang(en) .info h1 { line-height: 1.15; }
+:is(:lang(en), :lang(tr)) .info h1 { line-height: 1.15; }

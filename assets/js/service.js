@@ -17,19 +17,20 @@
     return ok;
   }
   const errorSummary = n => L(`${n === 1 ? "حقل واحد يحتاج" : `${n} حقول تحتاج`} تصحيحا. الملاحظة مكتوبة تحت كل حقل.`,
-    `${n === 1 ? "One field needs" : `${n} fields need`} fixing. The note is under each field.`);
+    `${n === 1 ? "One field needs" : `${n} fields need`} fixing. The note is under each field.`,
+    `${n === 1 ? "Bir alanın" : `${n} alanın`} düzeltilmesi gerekiyor. Açıklama her alanın altında.`);
 
   /* ---------- Contact: the message is composed here and sent from WhatsApp ---------- */
   const contact = $("contact-form");
   if (contact) {
     const orderField = $("order-field");
-    const ORDER_TOPIC = L("طلب قائم", "Existing order");
+    const ORDER_TOPIC = L("طلب قائم", "Existing order", "Mevcut sipariş");
     contact.addEventListener("change", e => {
       if (e.target.name === "topic") orderField.hidden = e.target.value !== ORDER_TOPIC;
     });
     const rules = {
-      "c-name": [v => v.trim().length > 1, L("اكتب اسمك.", "Write your name.")],
-      "c-msg": [v => v.trim().length > 4, L("اكتب سؤالك في سطر على الأقل.", "Write your question in at least one line.")]
+      "c-name": [v => v.trim().length > 1, L("اكتب اسمك.", "Write your name.", "Adınızı yazın.")],
+      "c-msg": [v => v.trim().length > 4, L("اكتب سؤالك في سطر على الأقل.", "Write your question in at least one line.", "Sorunuzu en az bir satırla yazın.")]
     };
     const check = input => mark(input, rules[input.id][0](input.value), rules[input.id][1]);
     contact.addEventListener("input", e => { if (rules[e.target.id] && e.target.closest(".is-error")) check(e.target); });
@@ -42,10 +43,10 @@
       const topic = contact.topic.value;
       const order = $("c-order").value.trim();
       const lines = [
-        L("مرحبا دار،", "Hello DAR,"),
-        `${L("الموضوع", "Topic")}: ${topic}`,
-        `${L("الاسم", "Name")}: ${$("c-name").value.trim()}`,
-        topic === ORDER_TOPIC && order && `${L("رقم الطلب", "Order number")}: ${order}`,
+        L("مرحبا دار،", "Hello DAR,", "Merhaba DAR,"),
+        `${L("الموضوع", "Topic", "Konu")}: ${topic}`,
+        `${L("الاسم", "Name", "Ad")}: ${$("c-name").value.trim()}`,
+        topic === ORDER_TOPIC && order && `${L("رقم الطلب", "Order number", "Sipariş numarası")}: ${order}`,
         "",
         $("c-msg").value.trim()
       ].filter(l => l !== false && l !== undefined);
@@ -60,19 +61,23 @@
   /* ---------- Help: one search box filters every answer ---------- */
   const helpQ = $("help-q");
   if (helpQ) {
+    // Turkish search lowercases the Turkish way (İ to i, I to ı) and ignores letter marks, so "yikama" finds "yıkama"
+    const normTr = s => s.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ı/g, "i");
     // Arabic search ignores diacritics and the usual spelling variants of alef, ta marbuta and ya
     const norm = s => s.toLowerCase().replace(/[\u064B-\u0652\u0640]/g, "")
       .replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي").replace(/ؤ/g, "و").replace(/ئ/g, "ي");
     const sections = [...document.querySelectorAll("#help-list .faq-sec")];
     // data-k adds the words people search with but the answer does not use (غسيل for اغسلها)
-    const items = sections.flatMap(sec => [...sec.querySelectorAll("details, .care > div")].map(el => ({ el, sec, text: norm(`${el.textContent} ${el.dataset.k || ""}`) })));
+    const items = sections.flatMap(sec => [...sec.querySelectorAll("details, .care > div")].map(el => ({ el, sec, text: (DAR_LANG === "tr" ? normTr : norm)(`${el.textContent} ${el.dataset.k || ""}`) })));
     const count = $("help-count"), empty = $("help-empty"), nav = document.querySelector(".topics-nav");
-    const plural = n => DAR_LANG === "en"
+    const plural = n => DAR_LANG === "tr"
+      ? (n === 0 ? "Sonuç yok" : `${n} yanıt`)
+      : DAR_LANG === "en"
       ? (n === 0 ? "No results" : n === 1 ? "1 answer" : `${n} answers`)
       : n === 0 ? "لا نتيجة" : n === 1 ? "إجابة واحدة" : n === 2 ? "إجابتان" : n <= 10 ? `${n} إجابات` : `${n} إجابة`;
     let timer;
     function filter() {
-      const q = norm(helpQ.value.trim());
+      const q = (DAR_LANG === "tr" ? normTr : norm)(helpQ.value.trim());
       const words = q.split(/\s+/).filter(Boolean);
       let hits = 0;
       items.forEach(it => {
@@ -114,10 +119,10 @@
   if (track) {
     const orders = () => { try { return JSON.parse(localStorage.getItem("dar-admin") || "{}").orders || []; } catch (e) { return []; } };
     const all = Object.fromEntries((window.DAR_ALL_PRODUCTS || []).map(p => [p.id, p]));
-    const fmt = iso => new Date(iso).toLocaleDateString(L("ar-EG-u-nu-latn", "en-GB"), { day: "numeric", month: "long" });
-    const SHIP = { tr: L("توصيل داخل تركيا", "Delivery within Turkey"), intl: L("شحن دولي", "International shipping"), pickup: L("استلام من المركز", "Pickup from the centre") };
-    const PAY = { card: L("بطاقة بنكية", "Bank card"), bank: L("تحويل بنكي", "Bank transfer") };
-    const STATUS = { new: L("استلمنا طلبك", "Order received"), prep: L("قيد التجهيز", "Being prepared"), ship: L("تم الشحن", "Shipped"), done: L("تم التسليم", "Delivered"), cancel: L("ملغي", "Cancelled") };
+    const fmt = iso => new Date(iso).toLocaleDateString(L("ar-EG-u-nu-latn", "en-GB", "tr-TR"), { day: "numeric", month: "long" });
+    const SHIP = { tr: L("توصيل داخل تركيا", "Delivery within Turkey", "Türkiye içi teslimat"), intl: L("شحن دولي", "International shipping", "Uluslararası kargo"), pickup: L("استلام من المركز", "Pickup from the centre", "Merkezden teslim alma") };
+    const PAY = { card: L("بطاقة بنكية", "Bank card", "Banka kartı"), bank: L("تحويل بنكي", "Bank transfer", "Banka havalesi") };
+    const STATUS = { new: L("استلمنا طلبك", "Order received", "Sipariş alındı"), prep: L("قيد التجهيز", "Being prepared", "Hazırlanıyor"), ship: L("تم الشحن", "Shipped", "Kargoya verildi"), done: L("تم التسليم", "Delivered", "Teslim edildi"), cancel: L("ملغي", "Cancelled", "İptal edildi") };
     const no = $("t-no"), phone = $("t-phone"), err = $("track-error"), miss = $("track-miss"), out = $("track-result");
     const legend = out.innerHTML;   // the journey of an order, shown until one is found
 
@@ -131,10 +136,10 @@
     function render(o) {
       const pickup = o.ship === "pickup";
       const stops = [
-        [L("استلمنا طلبك", "Order received"), fmt(o.date)],
-        [L("نجهز القطع", "Preparing your pieces"), L("نطويها ونغلفها بعناية", "Folded and wrapped with care")],
-        [pickup ? L("جاهز للاستلام", "Ready for pickup") : L("في الطريق إليك", "On its way to you"), pickup ? L("في المركز، إسطنبول", "At the centre, Istanbul") : L("رقم الشحنة يصلك على واتساب", "Tracking number sent on WhatsApp")],
-        [pickup ? L("تم الاستلام", "Picked up") : L("وصل", "Delivered"), ""]
+        [L("استلمنا طلبك", "Order received", "Siparişiniz alındı"), fmt(o.date)],
+        [L("نجهز القطع", "Preparing your pieces", "Parçalarınızı hazırlıyoruz"), L("نطويها ونغلفها بعناية", "Folded and wrapped with care", "Özenle katlanıp paketleniyor")],
+        [pickup ? L("جاهز للاستلام", "Ready for pickup", "Teslim almaya hazır") : L("في الطريق إليك", "On its way to you", "Size doğru yolda"), pickup ? L("في المركز، إسطنبول", "At the centre, Istanbul", "Merkezde, İstanbul") : L("رقم الشحنة يصلك على واتساب", "Tracking number sent on WhatsApp", "Kargo takip numarası WhatsApp’tan gelir")],
+        [pickup ? L("تم الاستلام", "Picked up", "Teslim alındı") : L("وصل", "Delivered", "Teslim edildi"), ""]
       ];
       const at = { new: 0, prep: 1, ship: 2, done: 3 }[o.status] ?? -1;
       const steps = stops.map(([t, s], i) => {
@@ -144,23 +149,23 @@
       const lines = o.lines.map(l => {
         const p = all[l.pid]; if (!p) return "";
         const v = (p.variants || []).find(x => x.color === l.variant);
-        return `<li><img src="${Site.SM(v ? v.img : p.img)}" alt="" width="56" height="70" loading="lazy"><span><b>${esc(L(p.name, p.name_en))}</b>${v ? `<span>${esc(L(v.name, v.name_en))}</span>` : ""}</span><span class="num">× ${l.qty}</span></li>`;
+        return `<li><img src="${Site.SM(v ? v.img : p.img)}" alt="" width="56" height="70" loading="lazy"><span><b>${esc(L(p.name, p.name_en, p.name_tr))}</b>${v ? `<span>${esc(L(v.name, v.name_en, v.name_tr))}</span>` : ""}</span><span class="num">× ${l.qty}</span></li>`;
       }).join("");
-      const ask = `${WA}?text=${encodeURIComponent(L(`مرحبا دار، أسأل عن طلبي رقم ${o.id}.`, `Hello DAR, I have a question about my order ${o.id}.`))}`;
+      const ask = `${WA}?text=${encodeURIComponent(L(`مرحبا دار، أسأل عن طلبي رقم ${o.id}.`, `Hello DAR, I have a question about my order ${o.id}.`, `Merhaba DAR, ${o.id} numaralı siparişim hakkında bir sorum var.`))}`;
       out.innerHTML = `
         <article class="tr-card">
           <header class="tr-card__head">
-            <div><span class="eyebrow">${o.local ? L("طلب", "Order") : L("طلب تجريبي من لوحة التحكم", "Demo order from the dashboard")}</span><h2 id="tr-h" tabindex="-1"><bdi>${esc(o.id)}</bdi></h2><p>${L("بتاريخ", "Placed")} ${fmt(o.date)}${L("، ", ", ")}${SHIP[o.ship] || ""}${o.ship !== "pickup" && o.city ? `${L(" إلى ", " to ")}${esc(o.city)}` : ""}</p></div>
+            <div><span class="eyebrow">${o.local ? L("طلب", "Order", "Sipariş") : L("طلب تجريبي من لوحة التحكم", "Demo order from the dashboard", "Yönetim panelinden örnek sipariş")}</span><h2 id="tr-h" tabindex="-1"><bdi>${esc(o.id)}</bdi></h2><p>${L("بتاريخ", "Placed", "Tarih:")} ${fmt(o.date)}${L("، ", ", ", ", ")}${SHIP[o.ship] || ""}${o.ship !== "pickup" && o.city ? `${L(" إلى ", " to ", " · ")}${esc(o.city)}` : ""}</p></div>
             <span class="st st--${o.status}">${STATUS[o.status] || ""}</span>
           </header>
           ${o.status === "cancel"
-            ? `<p class="tr-note tr-note--cancel">${L("ألغي هذا الطلب. وإن كنت دفعت، يعود المبلغ بطريقة الدفع نفسها.", "This order was cancelled. If you paid, the money goes back by the same payment method.")}</p>`
-            : `<ol class="tr-steps is-cold" aria-label="${L("مراحل الطلب", "Order stages")}">${steps}</ol>`}
+            ? `<p class="tr-note tr-note--cancel">${L("ألغي هذا الطلب. وإن كنت دفعت، يعود المبلغ بطريقة الدفع نفسها.", "This order was cancelled. If you paid, the money goes back by the same payment method.", "Bu sipariş iptal edildi. Ödeme yaptıysanız tutar aynı ödeme yöntemiyle iade edilir.")}</p>`
+            : `<ol class="tr-steps is-cold" aria-label="${L("مراحل الطلب", "Order stages", "Sipariş aşamaları")}">${steps}</ol>`}
           <div class="tr-body">
-            <div><h3>${L("القطع", "Pieces")}</h3><ul class="tr-lines">${lines}</ul></div>
-            <div><h3>${L("التفاصيل", "Details")}</h3><dl class="tr-facts"><dt>${L("الاستلام", "Delivery")}</dt><dd>${SHIP[o.ship] || ""}</dd><dt>${L("الدفع", "Payment")}</dt><dd>${PAY[o.pay] || ""}</dd><dt>${L("الطلب عبر", "Ordered via")}</dt><dd>${o.channel === "wa" ? L("واتساب", "WhatsApp") : L("الموقع", "The website")}</dd></dl></div>
+            <div><h3>${L("القطع", "Pieces", "Parçalar")}</h3><ul class="tr-lines">${lines}</ul></div>
+            <div><h3>${L("التفاصيل", "Details", "Ayrıntılar")}</h3><dl class="tr-facts"><dt>${L("الاستلام", "Delivery", "Teslimat")}</dt><dd>${SHIP[o.ship] || ""}</dd><dt>${L("الدفع", "Payment", "Ödeme")}</dt><dd>${PAY[o.pay] || ""}</dd><dt>${L("الطلب عبر", "Ordered via", "Sipariş kanalı")}</dt><dd>${o.channel === "wa" ? L("واتساب", "WhatsApp", "WhatsApp") : L("الموقع", "The website", "Web sitesi")}</dd></dl></div>
           </div>
-          <footer class="tr-help"><p>${L("سؤال عن طلبك؟ اذكر رقمه في رسالتك.", "A question about your order? Mention its number in your message.")}</p><a class="btn btn--wa" href="${ask}" target="_blank" rel="noopener"><span data-motif="i-chat"></span>${L("اسأل عن طلبك", "Ask about your order")}</a></footer>
+          <footer class="tr-help"><p>${L("سؤال عن طلبك؟ اذكر رقمه في رسالتك.", "A question about your order? Mention its number in your message.", "Siparişinizle ilgili bir sorunuz mu var? Mesajınızda sipariş numarasını belirtin.")}</p><a class="btn btn--wa" href="${ask}" target="_blank" rel="noopener"><span data-motif="i-chat"></span>${L("اسأل عن طلبك", "Ask about your order", "Siparişinizi sorun")}</a></footer>
         </article>`;
       Dar.mount(out);
       const stepsEl = out.querySelector(".tr-steps");
@@ -172,8 +177,8 @@
     }
 
     function lookup() {
-      const okNo = mark(no, no.value.trim().length >= 4, L("اكتب رقم الطلب كما في رسالة التأكيد، مثل DAR-2026-1052.", "Write the order number as it appears in your confirmation, like DAR-2026-1052."));
-      const okPhone = mark(phone, phoneOk(phone.value), L("اكتب رقم الجوال مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.", "Write your mobile number with the country code, like +90 5xx xxx xx xx."));
+      const okNo = mark(no, no.value.trim().length >= 4, L("اكتب رقم الطلب كما في رسالة التأكيد، مثل DAR-2026-1052.", "Write the order number as it appears in your confirmation, like DAR-2026-1052.", "Sipariş numarasını onay mesajındaki gibi yazın, örneğin DAR-2026-1052."));
+      const okPhone = mark(phone, phoneOk(phone.value), L("اكتب رقم الجوال مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.", "Write your mobile number with the country code, like +90 5xx xxx xx xx.", "Cep telefonu numaranızı ülke koduyla yazın, örneğin +90 5xx xxx xx xx."));
       const bad = [[no, okNo], [phone, okPhone]].filter(([, ok]) => !ok).map(([el]) => el);
       if (bad.length) { err.hidden = false; err.textContent = errorSummary(bad.length); bad[0].focus(); return; }
       err.hidden = true;
@@ -225,7 +230,7 @@
     mend.addEventListener("click", () => {
       star.classList.add("is-mended");
       mend.disabled = true;
-      Site.showToast(L("اكتملت النجمة. أما الصفحة فما زالت ضائعة.", "The star is whole again. The page, though, is still lost."), L("اذهب إلى المتجر", "Go to the shop"), "shop.html");
+      Site.showToast(L("اكتملت النجمة. أما الصفحة فما زالت ضائعة.", "The star is whole again. The page, though, is still lost.", "Yıldız yeniden tamamlandı. Sayfa ise hâlâ kayıp."), L("اذهب إلى المتجر", "Go to the shop", "Mağazaya git"), "shop.html");
     });
   }
 
