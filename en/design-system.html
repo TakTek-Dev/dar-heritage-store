@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>DAR Visual System</title>
+<meta name="description" content="The DAR visual identity system: the 8px stitch unit, colour, type, motifs, icons, components, motion and rules for the Palestinian Heritage Centre in Istanbul.">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=12">
+<style>
+  /* Page-only layout for the system document */
+  .ds-top {
+    position: sticky; top: 0; z-index: 20; background: var(--paper); border-block-end: 1px solid var(--paper-3);
+  }
+  .ds-top .wrap { display: flex; align-items: center; gap: var(--s3); min-height: 64px; }
+  .ds-top .mark { width: 28px; }
+  .ds-top b { font: 700 1.0625rem/1 var(--font-display); }
+  .ds-top nav { margin-inline-start: auto; display: flex; gap: var(--s3); overflow-x: auto; scrollbar-width: none; font-size: var(--fs-small); }
+  .ds-top nav a { text-decoration: none; color: var(--muted); white-space: nowrap; padding-block: var(--s1); }
+  .ds-top nav a:hover { color: var(--zaytoun); }
+
+  .spine { position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 10; --band-w: 28px; width: 28px; border-inline-end: 1px solid var(--paper-3); }
+  main, .ds-top, footer { padding-inline-start: 28px; }
+
+  .cover { padding-block: var(--s12) var(--s16); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s8); align-items: center; }
+  .cover > * { min-width: 0; }
+  .cover h1 { font-size: var(--fs-hero); font-weight: 900; line-height: 1.55; }
+  .cover h1 em { font-style: normal; color: var(--henna); }
+  .cover p { font: 400 var(--fs-lead)/1.8 var(--font-text); max-width: 34em; margin-block-start: var(--s4); color: var(--muted); }
+  .cover .star { width: min(100%, 460px); justify-self: center; position: relative; }
+  .cover .star > [data-motif] { display: block; width: 100%; }
+  .cover .star figcaption { font-size: var(--fs-micro); color: var(--muted); text-align: center; margin-block-start: var(--s2); }
+  .zoom { position: absolute; inset-block-start: -2%; inset-inline-start: -4%; width: 24%; aspect-ratio: 1; background: var(--paper); border: 1px solid var(--paper-3); padding: 10px; }
+  .zoom span { font-size: 11px; color: var(--muted); position: absolute; inset-block-end: -22px; inset-inline: 0; text-align: center; }
+
+  section.ds { padding-block: var(--s12); border-block-start: 1px solid var(--paper-3); }
+  .ds-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s6); margin-block-end: var(--s8); align-items: end; }
+  .ds-head > * { min-width: 0; }
+  .ds-head h2 { font-size: var(--fs-h1); }
+  .ds-head p { font: 400 var(--fs-lead)/1.8 var(--font-text); color: var(--muted); max-width: 40em; }
+  .idx { font: 500 var(--fs-small)/1 var(--font-ui); color: var(--henna-ink); display: block; margin-block-end: var(--s2); }
+
+  /* principles */
+  .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); }
+  .principles article { padding-block-start: var(--s3); border-block-start: 2px solid var(--zaytoun); }
+  .principles h3 { font-size: var(--fs-h3); margin-block: var(--s2) var(--s1); }
+  .principles p { color: var(--muted); }
+  .principles [data-motif] { width: 40px; }
+
+  /* grid demo */
+  .grid-demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s6); align-items: center; }
+  .grid-demo > * { min-width: 0; }
+  .sheet {
+    aspect-ratio: 1; background:
+      linear-gradient(var(--paper-3) 1px, transparent 1px) 0 0 / 8px 8px,
+      linear-gradient(90deg, var(--paper-3) 1px, transparent 1px) 0 0 / 8px 8px, var(--paper);
+    display: grid; place-items: center; border: 1px solid var(--paper-3);
+  }
+  .sheet [data-motif] { width: 60%; }
+  .scale { display: grid; gap: 10px; }
+  .scale div { display: grid; grid-template-columns: 56px 64px minmax(0, 1fr); align-items: center; gap: var(--s2); font-size: var(--fs-small); }
+  .scale i { display: block; height: 16px; background: var(--henna); }
+  .scale code { font: 500 var(--fs-micro)/1 var(--font-ui); color: var(--muted); }
+
+  /* color */
+  .swatches { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s2); }
+  .sw { min-height: 220px; padding: var(--s3); display: flex; flex-direction: column; justify-content: space-between; gap: var(--s2); }
+  .sw h3 { font-size: var(--fs-h3); }
+  .sw dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px var(--s2); font-size: var(--fs-micro); }
+  .sw dd { margin: 0; }
+  .sw--paper { grid-column: span 4; background: var(--paper); border: 1px solid var(--paper-3); }
+  .sw--zaytoun { grid-column: span 4; background: var(--zaytoun); color: var(--paper); }
+  .sw--henna { grid-column: span 4; background: var(--henna); color: #fff; }
+  .sw--sm { grid-column: span 3; min-height: 140px; }
+  .ratio { display: flex; height: 40px; margin-block-start: var(--s3); }
+  .ratio i { display: block; }
+  .ratio-note { font-size: var(--fs-micro); color: var(--muted); margin-block-start: var(--s1); }
+  .st-demo { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; font: 500 var(--fs-micro)/1 var(--font-ui); }
+  .st-demo::before { content: ""; width: 8px; height: 8px; background: currentColor; }
+
+  /* type */
+  .type-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4); border-block-end: 1px solid var(--paper-3); align-items: baseline; }
+  .type-row > * { min-width: 0; }
+  .type-row .meta { font-size: var(--fs-micro); color: var(--muted); line-height: 1.6; }
+  .type-row .meta b { display: block; color: var(--zaytoun); font-size: var(--fs-small); }
+  .t-hero { font: 900 var(--fs-hero)/1.55 var(--font-display); }
+  .t-h1 { font: 700 var(--fs-h1)/1.5 var(--font-display); }
+  .t-h2 { font: 700 var(--fs-h2)/1.5 var(--font-display); }
+  .t-h3 { font: 700 var(--fs-h3)/1.45 var(--font-display); }
+  .t-lead { font: 400 var(--fs-lead)/1.85 var(--font-text); max-width: 38em; }
+  .t-body { font: 400 var(--fs-body)/1.75 var(--font-ui); max-width: 38em; }
+  .t-ui { font: 500 1rem/1.4 var(--font-ui); }
+  .trilingual { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-block-start: var(--s6); }
+  .trilingual div { background: var(--paper-2); padding: var(--s4); }
+  .trilingual small { display: block; font-size: var(--fs-micro); color: var(--muted); margin-block-end: var(--s2); }
+  .trilingual p { font: 700 clamp(1.5rem, 1rem + 1.5vw, 2.25rem)/1.25 var(--font-display); }
+
+  /* motifs */
+  .motifs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s2); }
+  .motif-card { background: var(--paper-2); padding: var(--s4) var(--s3) var(--s3); display: grid; gap: var(--s3); align-content: space-between; }
+  .motif-card .art { aspect-ratio: 1; display: grid; place-items: center; }
+  .motif-card .art [data-motif] { width: 58%; }
+  .motif-card h3 { font-size: 1.25rem; }
+  .motif-card p { font-size: var(--fs-small); color: var(--muted); line-height: 1.6; }
+  .bands { display: grid; gap: var(--s4); margin-block-start: var(--s8); }
+  .bands figure { margin: 0; display: grid; gap: var(--s1); }
+  .bands figcaption { font-size: var(--fs-small); color: var(--muted); }
+  .bands .night { background-color: var(--zaytoun-deep); padding-block: var(--s2); }
+
+  /* icons */
+  .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--s2); }
+  .icons figure { margin: 0; background: var(--paper-2); padding: var(--s3) var(--s2); display: grid; justify-items: center; gap: var(--s2); }
+  .icons [data-motif] { width: 32px; }
+  .icons figcaption { font-size: var(--fs-micro); color: var(--muted); }
+
+  /* components */
+  .comp { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s4); padding-block: var(--s5); border-block-end: 1px solid var(--paper-3); }
+  .comp > * { min-width: 0; }
+  .comp h3 { font: 700 1.25rem/1.45 var(--font-display); }
+  .comp .note { font-size: var(--fs-small); color: var(--muted); margin-block-start: var(--s1); line-height: 1.6; }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); }
+  .form-demo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) var(--s4); max-width: 640px; }
+
+  /* motion */
+  .motion { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s6); align-items: center; }
+  .motion > * { min-width: 0; }
+  .motion .stage { background: var(--zaytoun-deep); aspect-ratio: 4 / 3; display: grid; place-items: center; }
+  .motion .stage [data-motif] { width: 46%; }
+  .tokens-table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+  .tokens-table td { padding: 10px 0; border-block-end: 1px solid var(--paper-3); vertical-align: top; }
+  .tokens-table td:first-child { color: var(--muted); width: 40%; }
+
+  /* rules */
+  .rules { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s4); }
+  .rules ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+  .rules li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--s2); align-items: start; }
+  .rules li [data-motif] { width: 14px; margin-block-start: 8px; }
+  .rules h3 { font-size: var(--fs-h3); margin-block-end: var(--s3); }
+  .rules .no li { color: var(--muted); }
+
+  footer { background: var(--zaytoun-deep); color: var(--paper); padding-block: var(--s10); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: var(--s4); justify-content: space-between; align-items: center; }
+  footer img { width: 140px; filter: brightness(0) invert(.94) sepia(.2); }
+  footer p { color: var(--muted-night); font-size: var(--fs-small); }
+
+  @media (max-width: 960px) {
+    .cover, .ds-head, .grid-demo, .motion, .rules { grid-template-columns: minmax(0, 1fr); }
+    .principles, .cards, .trilingual { grid-template-columns: minmax(0, 1fr); }
+    .motifs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sw--paper, .sw--zaytoun, .sw--henna { grid-column: span 12; min-height: 180px; }
+    .sw--sm { grid-column: span 6; }
+    .type-row, .comp { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+    .cover { padding-block: var(--s8); }
+  }
+  @media (max-width: 600px) {
+    .spine { display: none; }
+    main, .ds-top, footer { padding-inline-start: 0; }
+    .ds-top nav { display: none; }
+    .form-demo { grid-template-columns: minmax(0, 1fr); }
+    .zoom { display: none; }
+  }
+</style>
+<style>
+  /* English (LTR) adjustments for this page only */
+  .cover h1 { font-size: clamp(2.75rem, 1.5rem + 3.5vw, 4.75rem); line-height: 1.1; letter-spacing: -0.01em; }
+  .t-hero { line-height: 1.1; }
+  .t-h1 { line-height: 1.15; }
+  .t-h2 { line-height: 1.2; }
+  .t-h3 { line-height: 1.3; }
+  .ds-head h2 { line-height: 1.15; }
+  /* The stitched arrow is drawn pointing left (forward in Arabic); point it right in English */
+  [dir="ltr"] [data-motif="i-arrow"] svg { transform: scaleX(-1); }
+  [dir="ltr"] .btn:hover [data-motif].go { transform: translateX(4px); }
+  .trilingual [lang="ar"] p { line-height: 1.5; }
+  footer a { color: var(--paper); }
+</style>
+</head>
+<body>
+
+<div class="spine band band--y" data-band="chain" data-cell="4" aria-hidden="true"></div>
+
+<header class="ds-top">
+  <div class="wrap">
+    <span class="mark" data-motif="star" data-label="DAR"></span>
+    <b>DAR Visual System</b>
+    <nav aria-label="System sections">
+      <a href="#grid">Stitch</a><a href="#color">Colour</a><a href="#type">Type</a>
+      <a href="#motifs">Motifs</a><a href="#icons">Icons</a><a href="#components">Components</a>
+      <a href="#motion">Motion</a><a href="#rules">Rules</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap cover">
+    <div>
+      <span class="eyebrow"><span data-motif="starlet"></span>Palestinian Heritage Centre, Istanbul</span>
+      <h1 style="margin-block-start: var(--s3)">Everything here<br>starts with <em>a&nbsp;stitch</em></h1>
+      <p>The DAR logo is embroidered on a grid of 44 stitches. This system takes that same grid and builds the whole site with it: spacing, corners, icons and motion. So when the logo is absent, the stitch still speaks the name of the house.</p>
+      <div class="row" style="margin-block-start: var(--s5)">
+        <a class="btn btn--lg" href="#grid">Start with the stitch <span class="go" data-motif="i-arrow"></span></a>
+        <button class="btn btn--lg btn--quiet" type="button" data-replay="#cover-star">Stitch the star again</button>
+      </div>
+    </div>
+    <figure class="star" style="margin:0">
+      <span id="cover-star" data-motif="star" data-mode="cross" data-order="radial" data-stitch data-label="The DAR star, embroidered stitch by stitch"></span>
+      <div class="zoom" aria-hidden="true"><span data-motif="starlet" data-mode="cross" style="width:100%"></span></div>
+      <figcaption>The logo star, drawn stitch by stitch from the original file</figcaption>
+    </figure>
+  </div>
+
+  <!-- Principles -->
+  <section class="ds wrap" aria-labelledby="p-h">
+    <div class="ds-head">
+      <div><span class="idx">01</span><h2 id="p-h">Three principles</h2></div>
+      <p>Every decision in the interface goes back to one of them. If an element serves none of them, we remove it.</p>
+    </div>
+    <div class="principles">
+      <article>
+        <span data-motif="starlet" data-mode="cross"></span>
+        <h3>The thobe is the page</h3>
+        <p>The background is linen cloth, and the embroidery sits where it sits on a thobe (the traditional embroidered dress): the chest panel (<i>qabbeh</i>) at the top, the side panel (<i>bnayqa</i>) along the edge, and the hem (<i>dhayyal</i>) at the bottom.</p>
+      </article>
+      <article>
+        <span data-motif="cypress" data-mode="cross" style="width:30px"></span>
+        <h3>The stitch is the unit</h3>
+        <p>Every space is a multiple of 8 pixels, and every corner is stepped two stitches deep, like the petals of the star. There are no rounded corners in DAR.</p>
+      </article>
+      <article>
+        <span data-motif="amulet" data-mode="cross" style="width:34px"></span>
+        <h3>The product is the hero</h3>
+        <p>Ornament is a frame, not a painting. When a photo or video of a handmade piece appears, the embroidery steps back and gives it the space.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Stitch grid -->
+  <section class="ds wrap" id="grid" aria-labelledby="g-h">
+    <div class="ds-head">
+      <div><span class="idx">02</span><h2 id="g-h">The stitch</h2></div>
+      <p>One stitch equals 8 pixels. The star is 44 stitches wide, icons are 12 stitches, and bands repeat every 6 or 7 stitches. That is why every part looks as if it came off the same loom.</p>
+    </div>
+    <div class="grid-demo">
+      <div class="sheet"><span data-motif="star" data-label="The star on the stitch grid"></span></div>
+      <div>
+        <div class="scale">
+          <div><b>s1</b><code>8px</code><i style="width:8px"></i></div>
+          <div><b>s2</b><code>16px</code><i style="width:16px"></i></div>
+          <div><b>s3</b><code>24px</code><i style="width:24px"></i></div>
+          <div><b>s4</b><code>32px</code><i style="width:32px"></i></div>
+          <div><b>s6</b><code>48px</code><i style="width:48px"></i></div>
+          <div><b>s8</b><code>64px</code><i style="width:64px"></i></div>
+          <div><b>s12</b><code>96px</code><i style="width:96px"></i></div>
+          <div><b>s16</b><code>128px</code><i style="width:128px"></i></div>
+        </div>
+        <div class="comp" style="border:0;padding-block-end:0">
+          <div><h3>The stepped corner</h3><p class="note">Two 4-pixel steps, taken from the edge of the petal in the logo.</p></div>
+          <div class="row">
+            <div class="stepped" style="width:120px;height:120px;background:var(--zaytoun)"></div>
+            <div class="stepped" style="width:120px;height:120px;background:var(--henna);--step:8px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color -->
+  <section class="ds wrap" id="color" aria-labelledby="c-h">
+    <div class="ds-head">
+      <div><span class="idx">03</span><h2 id="c-h">Colour</h2></div>
+      <p>Two colours from the logo and no third: Zaytoun (olive) green and Henna red, on the linen of the thobe. Every other shade is derived from them, and no new colour enters the site.</p>
+    </div>
+    <div class="swatches">
+      <div class="sw sw--paper">
+        <h3>Linen</h3>
+        <dl><dt>HEX</dt><dd class="latin">#F4EEE4</dd><dt>Role</dt><dd>Page background</dd></dl>
+      </div>
+      <div class="sw sw--zaytoun">
+        <h3>Zaytoun <small style="font:400 var(--fs-micro)/1 var(--font-ui)">(olive)</small></h3>
+        <dl><dt>HEX</dt><dd class="latin">#364639</dd><dt>Role</dt><dd>Text and primary buttons</dd><dt>On linen</dt><dd class="num">8.7 : 1</dd></dl>
+      </div>
+      <div class="sw sw--henna">
+        <h3>Henna</h3>
+        <dl><dt>HEX</dt><dd class="latin">#B25426</dd><dt>Role</dt><dd>Stitches and large headings, and buttons with white text</dd><dt>On linen</dt><dd class="num">4.3 : 1, large text only</dd></dl>
+      </div>
+      <div class="sw sw--sm" style="background:var(--zaytoun-deep);color:var(--paper)"><b>Night</b><dl><dt>HEX</dt><dd class="latin">#1E2A21</dd><dt>Role</dt><dd>Night sections and the footer</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--henna-ink);color:var(--paper)"><b>Dark henna</b><dl><dt>HEX</dt><dd class="latin">#9A4520</dd><dt>Role</dt><dd>Small henna text, and hover on henna buttons</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--paper-2)"><b>Linen 2</b><dl><dt>HEX</dt><dd class="latin">#EAE1D2</dd><dt>Role</dt><dd>Surfaces and empty images</dd></dl></div>
+      <div class="sw sw--sm" style="background:var(--line)"><b>Wool</b><dl><dt>HEX</dt><dd class="latin">#C9BBA3</dd><dt>Role</dt><dd>Decorative threads, never for text</dd></dl></div>
+    </div>
+    <div class="ratio" aria-hidden="true">
+      <i style="flex:70;background:var(--paper-2)"></i><i style="flex:20;background:var(--zaytoun)"></i><i style="flex:7;background:var(--zaytoun-deep)"></i><i style="flex:3;background:var(--henna)"></i>
+    </div>
+    <div class="row" style="margin-block-start:var(--s4)" aria-label="Status colours" role="group">
+      <span class="st-demo" style="color:var(--henna-ink);background:var(--danger-soft)">New</span>
+      <span class="st-demo" style="color:var(--warn);background:var(--warn-soft)">Preparing</span>
+      <span class="st-demo" style="color:var(--info);background:var(--info-soft)">Shipped</span>
+      <span class="st-demo" style="color:var(--ok);background:var(--ok-soft)">Delivered</span>
+      <span style="font-size:var(--fs-micro);color:var(--muted)">Status colours in the dashboard, always paired with a word</span>
+    </div>
+    <p class="ratio-note">The ratio on any screen: Linen 70, Zaytoun 20, Night 7, Henna 3. Henna is a stitch, and becomes the background of only one section per page, such as the question of the week.</p>
+  </section>
+
+  <!-- Type -->
+  <section class="ds wrap" id="type" aria-labelledby="t-h">
+    <div class="ds-head">
+      <div><span class="idx">04</span><h2 id="t-h">Type</h2></div>
+      <p>The complete Thmanyah family, free for commercial use, supporting Arabic, Turkish and English in one spirit. The display cut for headings, the text cut for stories, and the sans for the interface.</p>
+    </div>
+    <div class="type-row"><div class="meta"><b>Hero</b>Thmanyah Serif Display Black 900<br>56 to 144</div><div class="t-hero">A thobe that tells</div></div>
+    <div class="type-row"><div class="meta"><b>H1</b>Thmanyah Serif Display Bold 700<br>40 to 80</div><div class="t-h1">From the motifs of the Palestinian thobe</div></div>
+    <div class="type-row"><div class="meta"><b>H2</b>Thmanyah Serif Display Bold 700<br>32 to 52</div><div class="t-h2">Handmade pieces, from home to home</div></div>
+    <div class="type-row"><div class="meta"><b>H3</b>Thmanyah Serif Display Bold 700<br>22 to 28</div><div class="t-h3">Shawl embroidered with the Star of Bethlehem</div></div>
+    <div class="type-row"><div class="meta"><b>Lead</b>Thmanyah Serif Text 400<br>18 to 22, line height 1.85</div><p class="t-lead">Every piece at DAR came from the hands of a Palestinian woman. It carries a stitch she learned from her mother, and the name of the village the motif came from.</p></div>
+    <div class="type-row"><div class="meta"><b>Body</b>Thmanyah Sans 400<br>17px, line height 1.75</div><p class="t-body">Shipping within Türkiye takes three working days, and one to two weeks to other countries. You can return a piece within 14 days of delivery.</p></div>
+    <div class="type-row"><div class="meta"><b>UI</b>Thmanyah Sans 500<br>16px</div><div class="t-ui row" style="gap:var(--s4)"><span>Add to cart</span><span class="num">450 ₺</span><span class="num latin">450 ₺</span></div></div>
+    <div class="trilingual">
+      <div lang="ar" dir="rtl"><small>العربية</small><p>مركز التراث الفلسطيني</p></div>
+      <div lang="tr" dir="ltr"><small>Türkçe</small><p>Filistin Miras Merkezi</p></div>
+      <div lang="en" dir="ltr"><small>English</small><p>Palestinian Heritage Centre</p></div>
+    </div>
+  </section>
+
+  <!-- Motifs -->
+  <section class="ds wrap" id="motifs" aria-labelledby="m-h">
+    <div class="ds-head">
+      <div><span class="idx">05</span><h2 id="m-h">Motifs</h2></div>
+      <p>A small library drawn as real embroidery charts, one character per stitch. The same chart comes out as clean squares at small sizes and as cross-stitches at large sizes. DAR reviews the names and meanings of the motifs before publishing.</p>
+    </div>
+    <div class="motifs">
+      <article class="motif-card"><div class="art"><span data-motif="star" data-mode="cross" data-order="radial" data-stitch></span></div><div><h3>The DAR star</h3><p>From the logo. For big moments only: the opening, loading, and order confirmation.</p></div></article>
+      <article class="motif-card"><div class="art"><span data-motif="cypress" data-mode="cross" data-stitch style="width:42%"></span></div><div><h3>Cypress</h3><p>A vertical divider between sections, and a marker for categories.</p></div></article>
+      <article class="motif-card"><div class="art"><span data-motif="amulet" data-mode="cross" data-stitch style="width:46%"></span></div><div><h3>Amulet</h3><p>The mark of guarantee and authenticity, next to the words “Handmade”.</p></div></article>
+      <article class="motif-card"><div class="art"><span data-motif="starlet" data-mode="cross" data-stitch style="width:40%"></span></div><div><h3>Starlet</h3><p>The rhythm dot: before small headings, in lists, and between words.</p></div></article>
+    </div>
+    <div class="bands">
+      <figure><div class="band" data-band="chain" data-cell="4"></div><figcaption>Chain: the site’s side panel, the band that follows you as you scroll</figcaption></figure>
+      <figure><div class="band" data-band="saw" data-cell="4"></div><figcaption>Teeth: the section hem, closing large sections from below</figcaption></figure>
+      <figure><div class="band" data-band="wheat" data-cell="5"></div><figcaption>Wheat: a light band above the footer and around offer badges</figcaption></figure>
+      <figure><div class="band night" data-band="chain" data-cell="4" data-night="1"></div><figcaption>On night: the green turns to linen, and the henna stays as it is</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- Icons -->
+  <section class="ds wrap" id="icons" aria-labelledby="i-h">
+    <div class="ds-head">
+      <div><span class="idx">06</span><h2 id="i-h">Icons</h2></div>
+      <p>Icons embroidered on a 12-stitch grid, always in the text colour. A ready-made icon library would have broken the site’s single voice.</p>
+    </div>
+    <div class="icons">
+      <figure><span data-motif="i-bag"></span><figcaption>Cart</figcaption></figure>
+      <figure><span data-motif="i-search"></span><figcaption>Search</figcaption></figure>
+      <figure><span data-motif="i-heart"></span><figcaption>Favourites</figcaption></figure>
+      <figure><span data-motif="i-user"></span><figcaption>Account</figcaption></figure>
+      <figure><span data-motif="i-menu"></span><figcaption>Menu</figcaption></figure>
+      <figure><span data-motif="i-arrow"></span><figcaption>Next</figcaption></figure>
+      <figure><span data-motif="i-plus"></span><figcaption>Increase</figcaption></figure>
+      <figure><span data-motif="i-minus"></span><figcaption>Decrease</figcaption></figure>
+      <figure><span data-motif="i-close"></span><figcaption>Close</figcaption></figure>
+      <figure><span data-motif="i-play"></span><figcaption>Play</figcaption></figure>
+      <figure><span data-motif="i-globe"></span><figcaption>Language</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section class="ds wrap" id="components" aria-labelledby="k-h">
+    <div class="ds-head">
+      <div><span class="idx">07</span><h2 id="k-h">Components</h2></div>
+      <p>Live and clickable. Hover over them, and press Tab to see the dashed focus ring, like a running stitch.</p>
+    </div>
+
+    <div class="comp">
+      <div><h3>Buttons</h3><p class="note">Zaytoun for the primary action, Henna for only one action per page, such as buying. Height 48 or 56.</p></div>
+      <div class="row">
+        <button class="btn btn--lg" type="button">Shop the collection <span class="go" data-motif="i-arrow"></span></button>
+        <button class="btn btn--lg btn--henna" type="button">Place order</button>
+        <button class="btn btn--quiet" type="button">Save for later</button>
+        <button class="btn" type="button" aria-disabled="true">Sold out</button>
+        <button class="btn is-loading" type="button" aria-label="Adding">Add</button>
+        <button class="btn btn--icon" type="button" aria-label="Add to favourites"><span data-motif="i-heart"></span></button>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div><h3>Thread link</h3><p class="note">A dashed running stitch that joins into one thread on hover.</p></div>
+      <p class="t-lead">Read <a class="thread" href="#">the story of the cypress motif</a> or browse <a class="thread" href="#">all shawls</a>.</p>
+    </div>
+
+    <div class="comp">
+      <div><h3>Icon buttons and tabs</h3><p class="note">A touch target of at least 44 pixels.</p></div>
+      <div style="display:grid;gap:var(--s4)">
+        <div class="row">
+          <button class="icon-btn" type="button" aria-label="Search"><span data-motif="i-search"></span></button>
+          <button class="icon-btn" type="button" aria-label="Favourites"><span data-motif="i-heart"></span></button>
+          <button class="icon-btn" type="button" aria-label="Cart, 2 items"><span data-motif="i-bag"></span><span class="count num">2</span></button>
+          <button class="icon-btn" type="button" aria-label="Language"><span data-motif="i-globe"></span></button>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Categories">
+          <button role="tab" aria-selected="true" type="button">All</button>
+          <button role="tab" aria-selected="false" type="button">Thobes</button>
+          <button role="tab" aria-selected="false" type="button">Shawls</button>
+          <button role="tab" aria-selected="false" type="button">Bags</button>
+          <button role="tab" aria-selected="false" type="button">Accessories</button>
+          <button role="tab" aria-selected="false" type="button">Home decor</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div><h3>Product card</h3><p class="note">No border and no shadow. The image is 4:5, and the add button appears on hover and stays visible on touch. Prices and names here are design examples only.</p></div>
+      <div class="cards">
+        <article class="product">
+          <div class="product__frame">
+            <div class="product__media"><div class="ph" data-ph><strong>Product photo</strong>4:5 on a linen background</div><span class="tag"><span data-motif="amulet"></span>Handmade</span></div>
+            <button class="btn product__add" type="button">Add to cart</button>
+          </div>
+          <div class="product__meta"><div><h3 class="product__name"><a href="#components">Star of Bethlehem shawl</a></h3><p class="product__origin">Hand embroidered, Hebron</p></div><p class="product__price num">850 ₺</p></div>
+        </article>
+        <article class="product">
+          <div class="product__frame">
+            <div class="product__media"><div class="ph" data-ph><strong>Product photo</strong>4:5 on a linen background</div><span class="tag tag--henna">Last piece</span></div>
+            <button class="btn product__add" type="button">Add to cart</button>
+          </div>
+          <div class="product__meta"><div><h3 class="product__name"><a href="#components">Cypress bag</a></h3><p class="product__origin">Hand embroidered, Gaza</p></div><p class="product__price num">620 ₺<s>740 ₺</s></p></div>
+        </article>
+        <article class="product">
+          <div class="product__frame">
+            <div class="product__media"><div class="ph" data-ph><strong>Product photo</strong>4:5 on a linen background</div></div>
+            <button class="btn product__add" type="button" aria-disabled="true">Sold out</button>
+          </div>
+          <div class="product__meta"><div><h3 class="product__name"><a href="#components">Qabbeh cushion</a></h3><p class="product__origin">Hand embroidered, Ramallah</p></div><p class="product__price num">450 ₺</p></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div><h3>Fields</h3><p class="note">A dashed underline that becomes solid on focus. An error says what happened and how to fix it.</p></div>
+      <form class="form-demo" onsubmit="return false">
+        <div class="field"><label for="f1">Full name</label><input id="f1" autocomplete="name" placeholder="As it appears on the parcel"></div>
+        <div class="field"><label for="f2">Mobile number</label><input id="f2" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="+90 5xx xxx xx xx"><span class="hint">We only call you if delivery fails</span></div>
+        <div class="field is-error"><label for="f3">Email</label><input id="f3" type="email" value="sara@" aria-invalid="true" aria-describedby="f3h" dir="ltr"><span class="hint" id="f3h">The email is incomplete; add what comes after the @ sign</span></div>
+        <div class="field"><label for="f4">Quantity</label><div class="qty"><button type="button" aria-label="Decrease"><span data-motif="i-minus"></span></button><output id="f4" class="num">1</output><button type="button" aria-label="Increase"><span data-motif="i-plus"></span></button></div></div>
+      </form>
+    </div>
+
+    <div class="comp">
+      <div><h3>Notification</h3><p class="note">Appears at the bottom of the screen for 4 seconds, with one action.</p></div>
+      <div class="toast" role="status"><span data-motif="starlet" data-mode="cross"></span>Star of Bethlehem shawl added to your cart. <a class="thread" href="#">View cart</a></div>
+    </div>
+  </section>
+
+  <!-- Motion -->
+  <section class="ds wrap" id="motion" aria-labelledby="mo-h">
+    <div class="ds-head">
+      <div><span class="idx">08</span><h2 id="mo-h">Motion</h2></div>
+      <p>Motion at DAR is the motion of the needle: stitch after stitch, from the centre outwards or along the line. No bounce and no shine. Anyone who asks for reduced motion sees everything ready at once.</p>
+    </div>
+    <div class="motion">
+      <div class="stage"><span id="night-star" data-night="1" data-motif="star" data-mode="cross" data-order="rows" data-stitch data-label="The DAR star, embroidered row by row"></span></div>
+      <div>
+        <table class="tokens-table">
+          <tr><td>Thread curve</td><td class="latin">cubic-bezier(0.23, 1, 0.32, 1)</td></tr>
+          <tr><td>Pull curve</td><td class="latin">cubic-bezier(0.77, 0, 0.175, 1)</td></tr>
+          <tr><td>Fast, for hover and press</td><td class="num">140ms</td></tr>
+          <tr><td>Base, for reveals and menus</td><td class="num">260ms</td></tr>
+          <tr><td>Slow, for images and links</td><td class="num">520ms</td></tr>
+          <tr><td>Stitch delay</td><td class="num">4ms per stitch</td></tr>
+        </table>
+        <div class="row" style="margin-block-start:var(--s4)">
+          <button class="btn" type="button" data-replay="#night-star">Stitch row by row</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rules -->
+  <section class="ds wrap" id="rules" aria-labelledby="r-h">
+    <div class="ds-head">
+      <div><span class="idx">09</span><h2 id="r-h">Rules</h2></div>
+      <p>What protects the signature as the site grows and new pages and a dashboard are added.</p>
+    </div>
+    <div class="rules">
+      <div><h3>We do</h3><ul>
+        <li><span data-motif="starlet"></span>Build every space, corner and icon on the 8-pixel stitch</li>
+        <li><span data-motif="starlet"></span>Place embroidery where it sits on a thobe: top, side and bottom</li>
+        <li><span data-motif="starlet"></span>Photograph products on linen, in daylight, with a hand or a stitch close by</li>
+        <li><span data-motif="starlet"></span>Name the village or city the motif came from</li>
+        <li><span data-motif="starlet"></span>Keep Henna for stitches, large headings, one buy button and one section</li>
+      </ul></div>
+      <div class="no"><h3>We don’t</h3><ul>
+        <li><span data-motif="i-close"></span>Rounded corners, soft shadows, gradients, glass</li>
+        <li><span data-motif="i-close"></span>Colours from outside the palette, even for offers and sales</li>
+        <li><span data-motif="i-close"></span>Motifs drawn with curved lines; embroidery is squares only</li>
+        <li><span data-motif="i-close"></span>Embroidery over a product photo or behind long text</li>
+        <li><span data-motif="i-close"></span>Icons from ready-made libraries, or emoji</li>
+      </ul></div>
+    </div>
+  </section>
+</main>
+
+<div class="band" data-band="saw" data-cell="4" aria-hidden="true" style="transform:scaleY(-1)"></div>
+<footer>
+  <div class="wrap">
+    <img src="../assets/brand/dar-logo-full.svg" alt="DAR, Palestinian Heritage Centre">
+    <p>DAR visual system, version 0.1, for review with the client. English translation of the <a href="../design-system.html" hreflang="ar">Arabic original</a>.</p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script>
+  // Placeholder tiles use the starlet so empty images still feel woven
+  const ph = Dar.tile("starlet", { R: "#DDD1BD", G: "#DDD1BD" }, 2);
+  document.querySelectorAll("[data-ph]").forEach(el => el.style.setProperty("--ph-tile", ph.url));
+
+  document.querySelectorAll("[data-replay]").forEach(btn => btn.addEventListener("click", () => {
+    const el = document.querySelector(btn.dataset.replay);
+    el.classList.remove("stitch-go"); void el.offsetWidth; el.classList.add("stitch-go");
+  }));
+
+  document.querySelectorAll(".qty").forEach(q => {
+    const out = q.querySelector("output");
+    const [minus, plus] = q.querySelectorAll("button");
+    minus.onclick = () => out.value = Math.max(1, +out.value - 1);
+    plus.onclick = () => out.value = Math.min(9, +out.value + 1);
+  });
+
+  document.querySelectorAll('[role="tablist"]').forEach(list => list.addEventListener("click", e => {
+    const tab = e.target.closest('[role="tab"]'); if (!tab) return;
+    list.querySelectorAll('[role="tab"]').forEach(t => t.setAttribute("aria-selected", t === tab));
+  }));
+</script>
+</body>
+</html>

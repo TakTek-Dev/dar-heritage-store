@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>DAR, Palestinian Heritage Centre in Istanbul</title>
+<meta name="description" content="Embroidered pieces, traditional dress and Palestinian heritage gifts from DAR in Istanbul. What each piece earns supports projects in Gaza.">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=12">
+<link rel="stylesheet" href="../assets/css/site.css?v=20">
+<script src="../assets/js/i18n.js?v=1"></script>
+<script>
+  // Intro plays once per visit and never for reduced motion
+  try {
+    if (sessionStorage.getItem("dar-intro") || matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("no-intro");
+  } catch (e) { document.documentElement.classList.add("no-intro"); }
+</script>
+<style>
+  .no-intro .intro { display: none; }
+</style>
+</head>
+<body data-page="home" data-wait-intro>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__mark">
+    <span class="intro__star" id="intro-star" data-motif="star" data-mode="cross" data-order="radial"></span>
+    <img class="intro__word" id="intro-word" src="../assets/brand/dar-logo-mark.svg" alt="">
+  </div>
+  <p class="intro__line" id="intro-line">A homeland's story, told through craft</p>
+</div>
+
+
+
+<div data-site="header"></div>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero woven" aria-labelledby="hero-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow up"><span data-motif="starlet"></span>Palestinian Heritage Centre, Istanbul</span>
+        <h1 id="hero-h" class="rise" style="margin-block-start:var(--s2)">A homeland's story<br><em>told through craft</em></h1>
+        <p class="hero__sub up" style="--i:6">Offered with care, and lived in the present. Embroidered pieces, traditional dress and heritage gifts, with what they earn going to projects in Gaza, especially for women and children.</p>
+        <div class="row up" style="--i:8">
+          <a class="btn btn--lg btn--henna" href="#shop">Shop the pieces <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+          <a class="btn btn--lg btn--quiet" href="#corp">Corporate gifts</a>
+        </div>
+        <div class="hero__meta up" style="--i:10">
+          <span><b>Authentic motifs</b>from the villages and cities of Palestine</span>
+          <span><b>Real impact</b>proceeds go to projects in Gaza</span>
+          <span><b>For everyone</b>individuals, families and organisations</span>
+        </div>
+      </div>
+      <div class="windows" id="windows">
+        <span class="windows__star" data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
+        <figure class="window arch" data-veil data-speed="0.04"><img src="../assets/img/dar/thob-white.webp" alt="A white thob with red embroidery in a stone courtyard" fetchpriority="high"><figcaption>Embroidered thob</figcaption></figure>
+        <figure class="window arch" data-veil data-speed="-0.06"><img src="../assets/img/dar/jacket-red.webp" alt="A black jacket with red embroidery"><figcaption>Black jacket with red embroidery</figcaption></figure>
+        <figure class="window arch" data-veil data-speed="0.08"><img src="../assets/img/dar/thob-green.webp" alt="A black thob with green embroidery"><figcaption>Thob with green embroidery</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ribbon -->
+  <div class="ribbon">
+    <button class="ribbon__pause" type="button" aria-pressed="false" aria-label="Pause the moving ribbon"><span data-motif="i-pause" data-mono="1"></span></button>
+    <div class="ribbon__track" aria-hidden="true">
+      <span class="ribbon__item">The beating heart of Palestinian heritage<span data-motif="starlet" data-mono="1"></span>Every piece supports projects in Gaza<span data-motif="starlet" data-mono="1"></span>Motifs from the villages and cities of Palestine<span data-motif="starlet" data-mono="1"></span>Gifts for individuals, families and organisations<span data-motif="starlet" data-mono="1"></span></span>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <section class="sec wrap" id="cats" aria-labelledby="cats-h">
+    <div class="sec-head">
+      <div><span class="eyebrow up"><span data-motif="starlet"></span>Collections</span><h2 id="cats-h" class="rise">From the thob to the wall</h2></div>
+      <a class="thread up" href="shop.html">Shop all pieces</a>
+    </div>
+    <div class="cats">
+      <a class="cat cat--a" href="shop.html?cat=wear" data-veil><img src="../assets/img/dar/thob-orange-480.webp" srcset="../assets/img/dar/thob-orange-480.webp 480w, ../assets/img/dar/thob-orange.webp 960w" sizes="(max-width: 900px) 50vw, 42vw" alt="An embroidered Palestinian thob" loading="lazy" style="--pos:50% 22%"><span class="cat__label"><span><b>Thobs &amp; clothing</b><small>Embroidered thobs, jackets and shoulder shawls</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--b" href="shop.html?cat=bags" data-veil><img src="../assets/img/dar/bag-woman-480.webp" srcset="../assets/img/dar/bag-woman-480.webp 480w, ../assets/img/dar/bag-woman.webp 960w" sizes="(max-width: 900px) 50vw, 42vw" alt="A woman carrying an embroidered bag" loading="lazy" style="--pos:50% 40%"><span class="cat__label"><span><b>Bags &amp; wallets</b><small>Embroidered, velvet and leather</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--c" href="shop.html?cat=kufiya" data-veil><img src="../assets/img/dar/kufiya-woman-480.webp" srcset="../assets/img/dar/kufiya-woman-480.webp 480w, ../assets/img/dar/kufiya-woman.webp 960w" sizes="(max-width: 900px) 50vw, 42vw" alt="A woman wearing a Palestinian keffiyeh" loading="lazy" style="--pos:50% 30%"><span class="cat__label"><span><b>Keffiyehs &amp; rugs</b><small>Traditional keffiyehs and prayer rugs</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--d" href="shop.html?cat=wall" data-veil><img src="../assets/img/dar/hoop-thob-480.webp" srcset="../assets/img/dar/hoop-thob-480.webp 480w, ../assets/img/dar/hoop-thob.webp 960w" sizes="(max-width: 900px) 50vw, 42vw" alt="An embroidery hoop hanging on a wall" loading="lazy" style="--pos:50% 40%"><span class="cat__label"><span><b>Embroidery &amp; decor</b><small>Hoops, frames and models</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--e" href="shop.html?cat=jewel" data-veil><img src="../assets/img/dar/necklace-woman-480.webp" srcset="../assets/img/dar/necklace-woman-480.webp 480w, ../assets/img/dar/necklace-woman.webp 960w" sizes="(max-width: 900px) 50vw, 42vw" alt="A necklace in the shape of the map of Palestine" loading="lazy" style="--pos:50% 50%"><span class="cat__label"><span><b>Accessories</b><small>Necklaces, bracelets, rings and earrings</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+      <a class="cat cat--f" href="shop.html?cat=home" data-veil><img src="../assets/img/dar/cups-olive-480.webp" srcset="../assets/img/dar/cups-olive-480.webp 480w, ../assets/img/dar/cups-olive.webp 960w" sizes="(max-width: 900px) 50vw, 42vw" alt="A pair of cups with olive and keffiyeh patterns" loading="lazy" style="--pos:50% 55%"><span class="cat__label"><span><b>Cups &amp; gifts</b><small>Cups, flasks and small gifts</small></span><span data-motif="i-arrow" data-mono="1"></span></span></a>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="sec wrap" id="shop" aria-labelledby="shop-h" style="padding-block-start:0">
+    <div class="sec-head">
+      <div><span class="eyebrow up"><span data-motif="starlet"></span>From the catalogue</span><h2 id="shop-h" class="rise">Pieces from DAR</h2><p class="up">A selection from the DAR 2026 catalogue.</p></div>
+      <a class="btn btn--quiet up" href="shop.html">All pieces <span class="go" data-motif="i-arrow"></span></a>
+    </div>
+    <div class="products" data-featured="jacket-blue,velvet-wallet,earrings-map,shoulder-miras,kufiya,cups-olive,hoop-hand,minibag"></div>
+  </section>
+
+  <!-- Reels -->
+  <section class="reels-sec" id="reels" aria-labelledby="reels-h">
+    <div class="reels-pin" id="reels-pin">
+      <div class="reels-stage">
+        <div class="reels-intro">
+          <div class="sec-head">
+            <div><span class="eyebrow" style="color:var(--henna-glow)"><span data-motif="starlet"></span>On DAR's Instagram</span><h2 id="reels-h" class="rise">Short stories from the centre</h2><p>The motifs of our dresses and what they mean, our exhibitions, and new pieces. Tap to watch on Instagram.</p></div>
+            <div class="reels-nav"><a class="thread" href="https://www.instagram.com/filistinmirasmerkezi_dar/" target="_blank" rel="noopener" style="color:#fff">Follow DAR</a><button class="icon-btn reels-btn" type="button" data-reels="-1" aria-label="Previous story" aria-controls="reels-track"><span data-motif="i-arrow" data-mono="1"></span></button><button class="icon-btn reels-btn reels-btn--next" type="button" data-reels="1" aria-label="Next story" aria-controls="reels-track"><span data-motif="i-arrow" data-mono="1"></span></button></div>
+          </div>
+        </div>
+        <div class="reels-track" id="reels-track">
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DcTs4qwsw-d/" target="_blank" rel="noopener"><img src="../assets/img/dar/jacket-green-480.webp" srcset="../assets/img/dar/jacket-green-480.webp 480w, ../assets/img/dar/jacket-green.webp 960w" sizes="(max-width: 900px) 64vw, 300px" alt="" loading="lazy" style="--pos:50% 30%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>What do the motifs on Palestinian women's dresses tell?</b><small>21 August 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DcyQEX1M7gn/" target="_blank" rel="noopener"><img src="../assets/img/dar/thob-white-480.webp" srcset="../assets/img/dar/thob-white-480.webp 480w, ../assets/img/dar/thob-white.webp 960w" sizes="(max-width: 900px) 64vw, 300px" alt="" loading="lazy" style="--pos:50% 30%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>Do you know the Cypress motif?</b><small>2 September 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/Dcq8WY3s4kC/" target="_blank" rel="noopener"><img src="../assets/img/dar/bag-arch-480.webp" srcset="../assets/img/dar/bag-arch-480.webp 480w, ../assets/img/dar/bag-arch.webp 960w" sizes="(max-width: 900px) 64vw, 300px" alt="" loading="lazy" style="--pos:50% 40%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>DAR at the Istanbul Arabic Book Fair</b><small>30 August 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/Dc_fcEYMuNh/" target="_blank" rel="noopener"><img src="../assets/img/dar/cups-olive-480.webp" srcset="../assets/img/dar/cups-olive-480.webp 480w, ../assets/img/dar/cups-olive.webp 960w" sizes="(max-width: 900px) 64vw, 300px" alt="" loading="lazy" style="--pos:60% 50%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>The olive is part of life</b><small>7 September 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DceAhC0ssWl/" target="_blank" rel="noopener"><img src="../assets/img/dar/kufiya-jerusalem-480.webp" srcset="../assets/img/dar/kufiya-jerusalem-480.webp 480w, ../assets/img/dar/kufiya-jerusalem.webp 960w" sizes="(max-width: 900px) 64vw, 300px" alt="" loading="lazy" style="--pos:45% 50%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>Palestine in one word?</b><small>25 August 2026</small></span></a>
+          <a class="reel" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DeCcGWxMob8/" target="_blank" rel="noopener"><img src="../assets/img/dar/necklace-woman-480.webp" srcset="../assets/img/dar/necklace-woman-480.webp 480w, ../assets/img/dar/necklace-woman.webp 960w" sizes="(max-width: 900px) 64vw, 300px" alt="" loading="lazy" style="--pos:50% 40%"><span class="reel__play"><span data-motif="i-play" data-mono="1"></span></span><span class="reel__cap"><b>New in at DAR</b><small>3 October 2026</small></span></a>
+        </div>
+      </div>
+    </div>
+    <div class="band" data-band="saw" data-cell="4" data-night="1" aria-hidden="true"></div>
+  </section>
+
+  <!-- Story -->
+  <section class="sec wrap" id="story" aria-labelledby="story-h">
+    <div class="story">
+      <div class="story__pin">
+        <div class="story__media arch" data-veil><img src="../assets/img/dar/hoop-hand-480.webp" srcset="../assets/img/dar/hoop-hand-480.webp 480w, ../assets/img/dar/hoop-hand.webp 960w" sizes="(max-width: 900px) 100vw, 50vw" alt="A hand-embroidered hoop hanging on a stone wall" loading="lazy"></div>
+        <div class="story__star" id="scroll-star" data-motif="star" data-mode="cross" data-order="radial" aria-hidden="true"></div>
+      </div>
+      <div class="story__text" id="story-text">
+        <span class="eyebrow up"><span data-motif="starlet"></span>About us</span>
+        <h2 id="story-h" class="rise">Dâr means home</h2>
+        <p class="up">In Palestinian Arabic, dâr is the home. That is where our name comes from: a space in Istanbul that keeps Palestinian culture and traditions alive, builds bridges between cultures, and supports the economic independence of Palestinian women.</p>
+        <p class="up">Here we show handmade pieces, traditional dress, embroidery and cultural symbols, many of them made by women in conflict areas, especially Gaza.</p>
+        <ol class="mission">
+          <li class="up"><span class="n num">01</span><p><b>Supporting Palestinian craftswomen and craftsmen</b><span>Handwork that reaches people who value it</span></p></li>
+          <li class="up" style="--i:1"><span class="n num">02</span><p><b>Heritage made to today's standards</b><span>Traditional pieces that fit life today</span></p></li>
+          <li class="up" style="--i:2"><span class="n num">03</span><p><b>Keeping cultural memory alive by making</b><span>Every piece carries a motif and a story</span></p></li>
+          <li class="up" style="--i:3"><span class="n num">04</span><p><b>Heritage lived by people and organisations</b><span>For the home, as a gift, or for a formal occasion</span></p></li>
+        </ol>
+        <a class="btn btn--lg up" href="about.html">Read DAR's story <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weekly question -->
+  <section class="quiz" aria-labelledby="quiz-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><span data-motif="starlet" data-mono="1"></span>DAR's question of the week</span>
+        <h2 id="quiz-h" class="rise">Which city is called the economic capital of Palestine?</h2>
+        <p class="quiz__hint">Hint: it is famous for knafeh and soap making.</p>
+        <p class="quiz__result" id="quiz-result" role="status" aria-live="polite" tabindex="-1"></p>
+      </div>
+      <div class="quiz__opts" id="quiz">
+        <button class="quiz__opt" type="button" data-answer="0"><span>Gaza</span><span class="key">A</span></button>
+        <button class="quiz__opt" type="button" data-answer="1"><span>Nablus</span><span class="key">B</span></button>
+        <button class="quiz__opt" type="button" data-answer="0"><span>Acre</span><span class="key">C</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Corporate gifts -->
+  <section class="sec wrap" id="corp" aria-labelledby="corp-h">
+    <div class="corp">
+      <div class="corp__media" data-veil><img src="../assets/img/dar/plaque-corporate-480.webp" srcset="../assets/img/dar/plaque-corporate-480.webp 480w, ../assets/img/dar/plaque-corporate.webp 960w" sizes="(max-width: 900px) 100vw, 50vw" alt="A carved wooden plaque in a velvet box" loading="lazy"></div>
+      <div class="corp__body">
+        <span class="eyebrow up"><span data-motif="starlet"></span>Corporate gifts</span>
+        <h2 id="corp-h" class="rise">Heritage, given in your name</h2>
+        <p class="up">Pieces made especially for organisations, associations, events and conferences, carrying a heritage touch and a distinct cultural message.</p>
+        <ul class="corp__list up">
+          <li><span data-motif="starlet"></span>Heritage models and symbols</li>
+          <li><span data-motif="starlet"></span>Traditional frames, custom designed</li>
+          <li><span data-motif="starlet"></span>Custom design</li>
+          <li><span data-motif="starlet"></span>Logo printing</li>
+          <li><span data-motif="starlet"></span>Formal gift wrapping</li>
+          <li><span data-motif="starlet"></span>Any quantity you need</li>
+        </ul>
+        <div class="row up"><a class="btn btn--lg" href="corporate.html">Explore corporate gifts <span class="go" data-motif="i-arrow" data-mono="1"></span></a><a class="btn btn--lg btn--quiet" href="corporate.html#quote">Request a quote</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visit -->
+  <section class="wrap" id="visit" aria-labelledby="visit-h">
+    <div class="visit">
+      <div class="visit__media" data-veil><img src="../assets/img/dar/cover-jerusalem-480.webp" srcset="../assets/img/dar/cover-jerusalem-480.webp 480w, ../assets/img/dar/cover-jerusalem.webp 960w" sizes="(max-width: 900px) 100vw, 50vw" alt="The DAR logo on a stone wall facing Jerusalem" loading="lazy"></div>
+      <div class="visit__body">
+        <span class="eyebrow up"><span data-motif="starlet"></span>Visit us</span>
+        <h2 id="visit-h" class="rise">Come and feel the fabric</h2>
+        <address class="up">Altın Sk. No:11/A<br>Bahçelievler, Istanbul</address>
+        <p class="up">You will also find us at exhibitions across Türkiye, most recently the Istanbul Arabic Book Fair.</p>
+        <div class="row up">
+          <a class="btn" href="https://maps.google.com/?q=Altın+Sk.+No:11/A+Bahçelievler+İstanbul" target="_blank" rel="noopener">Open the map <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+          <a class="btn btn--quiet" href="https://wa.me/905538286235" target="_blank" rel="noopener">Message us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join -->
+  <section class="wrap join" aria-labelledby="join-h">
+    <div><h2 id="join-h" class="rise">Be the first to see new pieces</h2><p class="up">A note when new pieces arrive at DAR. Nothing more.</p></div>
+    <form id="join-form">
+      <div class="field"><label for="join-mail">Email</label><input id="join-mail" type="email" autocomplete="email" dir="ltr" placeholder="name@email.com" required></div>
+      <button class="btn btn--lg" type="submit">Subscribe</button>
+    </form>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=4"></script>
+<script src="../assets/js/site.js?v=16"></script>
+<script src="../assets/js/home.js?v=9"></script>
+</body>
+</html>

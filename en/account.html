@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>My account, DAR</title>
+<meta name="robots" content="noindex">
+<script>
+  // Signed out visitors go to sign in first, before anything paints
+  try { if (!localStorage.getItem("dar-session")) location.replace("login.html?next=" + encodeURIComponent("account.html" + location.hash)); } catch (e) {}
+</script>
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=12">
+<link rel="stylesheet" href="../assets/css/site.css?v=20">
+<link rel="stylesheet" href="../assets/css/shop.css?v=7">
+<link rel="stylesheet" href="../assets/css/pages.css?v=6">
+<link rel="stylesheet" href="../assets/css/service.css?v=4">
+<link rel="stylesheet" href="../assets/css/account.css?v=2">
+</head>
+<body data-page="account">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">My account</span></nav>
+
+    <header class="acct-head">
+      <div>
+        <span class="eyebrow"><span data-motif="starlet"></span>My account</span>
+        <h1 id="acct-h"></h1>
+        <p id="acct-since"></p>
+      </div>
+      <a class="btn btn--quiet" href="shop.html">Keep shopping</a>
+    </header>
+    <p class="demo-note" id="acct-demo" hidden><span data-motif="starlet"></span><span>Demo account: its orders and addresses are examples, kept in this browser only.</span></p>
+
+    <div class="acct">
+      <nav class="acct-nav" aria-label="Account sections">
+        <a href="#overview" data-tab="overview"><span data-motif="i-home"></span><span>Overview</span><span class="n"></span></a>
+        <a href="#orders" data-tab="orders"><span data-motif="i-box"></span><span>My orders</span><span class="n num" id="n-orders"></span></a>
+        <a href="#addresses" data-tab="addresses"><span data-motif="i-pin"></span><span>Addresses</span><span class="n num" id="n-addresses"></span></a>
+        <a href="#favorites" data-tab="favorites"><span data-motif="i-heart"></span><span>Favourites</span><span class="n num" id="n-favorites"></span></a>
+        <a href="#profile" data-tab="profile"><span data-motif="i-user"></span><span>My details</span><span class="n"></span></a>
+        <div class="out"><button type="button" id="sign-out">Sign out</button></div>
+      </nav>
+
+      <div>
+        <section class="panel" id="overview" aria-labelledby="overview-h" hidden>
+          <header><h2 id="overview-h" tabindex="-1">Overview</h2></header>
+          <div id="ov-latest"></div>
+          <div class="tiles" id="ov-tiles"></div>
+        </section>
+
+        <section class="panel" id="orders" aria-labelledby="orders-h" hidden>
+          <header><h2 id="orders-h" tabindex="-1">My orders</h2><p>The orders you placed with your phone number.</p></header>
+          <div class="orders" id="orders-list"></div>
+        </section>
+
+        <section class="panel" id="addresses" aria-labelledby="addresses-h" hidden>
+          <header><h2 id="addresses-h" tabindex="-1">Addresses</h2><p>Your default address fills in the checkout page for you.</p></header>
+          <div class="addrs" id="addr-list"></div>
+        </section>
+
+        <section class="panel" id="favorites" aria-labelledby="favorites-h" hidden>
+          <header><h2 id="favorites-h" tabindex="-1">Favourites</h2><p>The pieces you saved with the heart.</p></header>
+          <div id="fav-list"></div>
+        </section>
+
+        <section class="panel" id="profile" aria-labelledby="profile-h" hidden>
+          <header><h2 id="profile-h" tabindex="-1">My details</h2></header>
+          <form class="profile" id="profile-form" novalidate>
+            <p class="form-error" id="profile-error" role="alert" hidden></p>
+            <div class="grid">
+              <div class="field"><label for="p-name">Name <span class="req" aria-hidden="true">*</span></label><input id="p-name" autocomplete="name" required aria-describedby="p-name-hint"><span class="hint" id="p-name-hint" data-hint></span></div>
+              <div class="field"><label for="p-email">Email</label><input id="p-email" type="email" dir="ltr" autocomplete="email" placeholder="name@email.com" aria-describedby="p-email-hint"><span class="hint" id="p-email-hint" data-hint>Optional</span></div>
+            </div>
+            <div class="field"><span class="field-label" id="p-phone-l">Phone number</span><div class="phone-line"><bdi class="num" id="p-phone"></bdi><a class="thread" href="login.html?change=1">Change number</a></div></div>
+            <fieldset>
+              <legend>Messages</legend>
+              <label class="check"><input class="box" type="checkbox" id="p-notify-orders"><span>Order updates on WhatsApp<small>Order confirmation, tracking number and pickup time.</small></span></label>
+              <label class="check"><input class="box" type="checkbox" id="p-notify-news"><span>A message when new pieces arrive<small>About once a month, and you can stop it any time.</small></span></label>
+            </fieldset>
+            <div class="field"><label for="p-lang">Message language</label><select id="p-lang"><option value="ar" lang="ar">العربية</option><option value="en">English</option><option value="tr" disabled>Türkçe, coming soon</option></select></div>
+            <button class="btn btn--lg" type="submit">Save my details</button>
+          </form>
+          <div class="danger" id="danger">
+            <b>Delete account</b>
+            <p>We delete your details and addresses. Past orders stay in DAR's records, as the law requires.</p>
+            <div class="row" id="danger-actions"><button class="btn btn--quiet" type="button" id="del-ask">I want to delete my account</button></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=4"></script>
+<script src="../assets/js/site.js?v=16"></script>
+<script src="../assets/js/account.js?v=4"></script>
+</body>
+</html>

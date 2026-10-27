@@ -48,11 +48,12 @@
 }
 .main-nav a[aria-current="page"]::after { transform: scaleX(1); }
 @media (hover: hover) and (pointer: fine) { .main-nav a:hover::after { transform: scaleX(1); } }
+[dir="ltr"] .main-nav a::after { transform-origin: left; }
 .head-tools { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
 .lang { display: flex; font: 500 var(--fs-micro)/1 var(--font-ui); margin-inline-end: var(--s1); }
 .lang a, .lang button, .lang__on { padding: 10px 8px; min-width: 32px; text-align: center; text-decoration: none; color: var(--muted); border: 0; background: none; font: inherit; cursor: pointer; }
 .lang__on { color: var(--zaytoun); font-weight: 700; cursor: default; }
-.lang button:hover { color: var(--zaytoun); }
+.lang button:hover, .lang a:hover { color: var(--zaytoun); }
 .menu-btn { display: none; }
 
 /* ---------- Hero ---------- */
@@ -375,3 +376,17 @@
   .up { transform: none; opacity: 1; transition: opacity 200ms ease; }
   .scroll-stitch .c { opacity: 1; transform: none; }
 }
+
+/* ---------- English (LTR): motion and arrows run the other way ---------- */
+[dir="ltr"] .hero h1 { font-size: clamp(2.75rem, 1.4rem + 3.4vw, 5rem); line-height: 1.12; }
+[dir="ltr"] .windows__star { transform: translateX(-50%); }
+@keyframes ribbon-ltr { to { transform: translateX(-50%); } }
+[dir="ltr"] .ribbon__track { animation-name: ribbon-ltr; }
+@media (hover: hover) and (pointer: fine) { [dir="ltr"] .cat:hover .cat__label [data-motif] { transform: translateX(6px); } }
+/* The menu button sits at the start of the header, so the drawer comes in from that side */
+[dir="ltr"] .drawer { transform: translateX(-100%); }
+[dir="ltr"] .drawer.is-open { transform: none; }
+:lang(en) .rise .w { padding-block: .06em; margin-block: -.06em; }
+@media (prefers-reduced-motion: reduce) { [dir="ltr"] .ribbon__track { animation: none; } }/* English names run longer than the Arabic ones; "Price coming soon" goes under the name instead of squeezing it */
+:lang(en) .product__meta { flex-direction: column; gap: 4px; }
+:lang(en) .product__price--soon { text-align: start; }

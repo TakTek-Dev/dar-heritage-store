@@ -66,6 +66,7 @@ button, input, select { font: inherit; color: inherit; }
 }
 .thread:hover { background-size: 100% 2px, 100% 2px; }
 [dir="rtl"] .thread { background-position: bottom right, bottom; }
+[dir="ltr"] .thread { background-position: bottom left, bottom; }
 
 /* Buttons */
 .btn {
@@ -80,6 +81,7 @@ button, input, select { font: inherit; color: inherit; }
 .btn:active { transform: translateY(1px); }
 .btn [data-motif] { width: 18px; transition: transform var(--t-base) var(--ease-thread); }
 .btn:hover [data-motif].go { transform: translateX(-4px); }
+[dir="ltr"] .btn:hover [data-motif].go { transform: translateX(4px); }
 .btn--henna { --bg: var(--henna); --fg: #fff; }
 .btn--henna:hover { --bg: var(--henna-ink); }
 .btn--paper { --bg: var(--paper); --fg: var(--zaytoun-deep); }
@@ -203,7 +205,7 @@ button, input, select { font: inherit; color: inherit; }
 .toast-slot.is-on { transform: none; }
 .toast {
   --focus: var(--henna-glow);
-  display: flex; align-items: center; gap: var(--s2); padding: var(--s1) var(--s1) var(--s1) var(--s3);
+  display: flex; align-items: center; gap: var(--s2); padding-block: var(--s1); padding-inline: var(--s1) var(--s3);
   background: var(--zaytoun-deep); color: var(--paper); font-size: var(--fs-small); max-width: 480px; pointer-events: auto;
 }
 .toast > [data-motif] { width: 20px; flex: none; }
@@ -227,3 +229,11 @@ button, input, select { font: inherit; color: inherit; }
   *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }
 .icon-btn .count[hidden] { display: none; }
+
+/* ---------- English (LTR) ---------- */
+/* The arrow motif is drawn pointing left, the way Arabic reads. In LTR the drawing turns, so the span's own
+   transforms (hover nudges) keep working. The reels buttons set their own direction in site.css. */
+[dir="ltr"] :not(.reels-btn) > [data-motif="i-arrow"] svg { transform: scaleX(-1); }
+/* Thmanyah's Latin is narrower and has no Arabic dots and tails to clear: tighter lines read better */
+:lang(en) body { line-height: 1.6; }
+:lang(en) h1, :lang(en) h2, :lang(en) h3 { line-height: 1.2; }

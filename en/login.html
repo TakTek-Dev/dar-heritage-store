@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Sign in to your account, DAR</title>
+<meta name="description" content="Sign in to your DAR account with your phone number to follow your orders, addresses and the pieces you love.">
+<meta name="robots" content="noindex">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=12">
+<link rel="stylesheet" href="../assets/css/site.css?v=20">
+<link rel="stylesheet" href="../assets/css/shop.css?v=7">
+<link rel="stylesheet" href="../assets/css/pages.css?v=6">
+<link rel="stylesheet" href="../assets/css/service.css?v=4">
+<link rel="stylesheet" href="../assets/css/account.css?v=2">
+</head>
+<body data-page="login">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">My account</span></nav>
+  </div>
+
+  <section class="auth wrap" aria-labelledby="auth-h">
+    <div class="auth__form">
+      <span class="eyebrow up"><span data-motif="starlet"></span>My account</span>
+      <h1 id="auth-h" class="svc-title" tabindex="-1">Sign in with your phone</h1>
+      <p class="svc-lead" id="auth-lead">We send you a code on WhatsApp, so there is no password to remember. Your account keeps your orders, your addresses and the pieces you love.</p>
+      <ol class="auth-steps" id="auth-steps" aria-label="Sign-in steps">
+        <li class="is-on" aria-current="step">Phone number</li>
+        <li>Code</li>
+        <li>Your details</li>
+      </ol>
+      <p class="form-error" id="auth-error" role="alert" hidden></p>
+
+      <form id="step-phone" novalidate aria-labelledby="auth-h">
+        <div class="field"><label for="a-phone">Phone number</label><input id="a-phone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" required placeholder="+90 5xx xxx xx xx" aria-describedby="a-phone-hint"><span class="hint" id="a-phone-hint" data-hint>With the country code, on the number you use for WhatsApp</span></div>
+        <button class="btn btn--lg btn--henna" type="submit">Send the code</button>
+      </form>
+
+      <form id="step-code" novalidate hidden aria-labelledby="auth-h">
+        <p class="code-to">We sent a 6-digit code to <bdi id="code-to" class="num"></bdi>. <button class="link-btn" type="button" id="change-phone">Change number</button></p>
+        <p class="demo-code" id="demo-code"><span>Preview: on the real site the code comes on WhatsApp. Your test code is</span><b id="demo-code-value"></b></p>
+        <div class="field"><label for="a-code">Code</label><input class="otp" id="a-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required aria-describedby="a-code-hint"><span class="hint" id="a-code-hint" data-hint>It checks itself once you type all six digits</span></div>
+        <button class="btn btn--lg btn--henna" type="submit">Confirm the code</button>
+        <p class="resend"><span id="resend-wait">You can ask for a new code in <span class="num" id="resend-n">30</span> seconds.</span><button class="link-btn" type="button" id="resend" hidden>Send a new code</button></p>
+      </form>
+
+      <form id="step-profile" novalidate hidden aria-labelledby="auth-h">
+        <div class="field"><label for="a-name">Name <span class="req" aria-hidden="true">*</span></label><input id="a-name" autocomplete="name" required aria-describedby="a-name-hint"><span class="hint" id="a-name-hint" data-hint>What you would like us to call you</span></div>
+        <div class="field"><label for="a-email">Email</label><input id="a-email" type="email" dir="ltr" autocomplete="email" placeholder="name@email.com" aria-describedby="a-email-hint"><span class="hint" id="a-email-hint" data-hint>Optional, for a copy of the invoice with each order</span></div>
+        <label class="check"><input class="box" type="checkbox" id="a-news"><span>Send me a WhatsApp message when new pieces arrive</span></label>
+        <button class="btn btn--lg btn--henna" type="submit">Create my account</button>
+      </form>
+
+      <p class="small-note">By continuing you agree to the <a class="thread" href="policies.html#terms">terms of sale</a> and the <a class="thread" href="policies.html#privacy">privacy policy</a>.</p>
+      <p class="demo-note"><span data-motif="starlet"></span><span>Preview: your account is kept in this browser only until the server is ready. <button class="link-btn" type="button" id="demo-acct">Try a demo account</button></span></p>
+      <p class="auth-guest">Rather not have an account? <a class="thread" href="shop.html">Shop as a guest</a>. You can order without one.</p>
+    </div>
+
+    <figure class="auth__art">
+      <div class="auth__window arch" data-veil><img src="../assets/img/dar/kufiya-woman.webp" alt="A woman wearing a keffiyeh shawl with red embroidery in front of a stone arch and an olive tree" width="425" height="450"></div>
+      <ul class="perks">
+        <li><span data-motif="i-box"></span><span><b>Your orders in one place</b>The status of each order, its tracking, and ordering it again in one tap.</span></li>
+        <li><span data-motif="i-pin"></span><span><b>Your addresses, saved</b>They fill in the checkout page for you next time.</span></li>
+        <li><span data-motif="i-heart"></span><span><b>The pieces you love</b>All waiting here when you come back.</span></li>
+      </ul>
+    </figure>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=4"></script>
+<script src="../assets/js/site.js?v=16"></script>
+<script src="../assets/js/account.js?v=4"></script>
+</body>
+</html>

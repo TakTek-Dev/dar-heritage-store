@@ -2,7 +2,11 @@
 (function () {
   const { reduce } = Site;
   const params = new URLSearchParams(location.search);
-  const catName = id => (DAR_CATS.find(c => c.id === id) || {}).name;
+  const catOf = id => DAR_CATS.find(c => c.id === id);
+  const catName = id => { const c = catOf(id); return c && L(c.name, c.name_en); };
+  const craftName = k => L(DAR_CRAFT[k], DAR_CRAFT_EN[k]);
+  const colorName = k => L(DAR_COLORS[k].name, DAR_COLORS[k].name_en);
+  const pName = p => L(p.name, p.name_en);
   const state = {
     cat: catName(params.get("cat")) ? params.get("cat") : "",
     q: params.get("q") || "",
@@ -25,10 +29,10 @@
   const covers = { wear: "thob-red", bags: "minibag-red", kufiya: "rug-kufiya", wall: "hoop-hand", jewel: "earrings-map", home: "cups-olive" };
   const loom = document.getElementById("loom");
   loom.innerHTML =
-    `<button type="button" data-cat="" aria-pressed="${!state.cat}"><span class="loom__img loom__img--all"><span data-motif="star" data-mono="1" style="color:#F4EEE4"></span></span><b>الكل</b><small class="num">${DAR_PRODUCTS.length} قطعة</small></button>` +
+    `<button type="button" data-cat="" aria-pressed="${!state.cat}"><span class="loom__img loom__img--all"><span data-motif="star" data-mono="1" style="color:#F4EEE4"></span></span><b>${L("الكل", "All")}</b><small class="num">${DAR_PRODUCTS.length} ${L("قطعة", "pieces")}</small></button>` +
     DAR_CATS.map(c => {
       const n = DAR_PRODUCTS.filter(p => p.cat === c.id).length;
-      return `<button type="button" data-cat="${c.id}" aria-pressed="${state.cat === c.id}"><span class="loom__img"><img src="${Site.SM(covers[c.id])}" alt="" width="160" height="160"></span><b>${c.name}</b><small class="num">${n} قطع</small></button>`;
+      return `<button type="button" data-cat="${c.id}" aria-pressed="${state.cat === c.id}"><span class="loom__img"><img src="${Site.SM(covers[c.id])}" alt="" width="160" height="160"></span><b>${L(c.name, c.name_en)}</b><small class="num">${n} ${L("قطع", n === 1 ? "piece" : "pieces")}</small></button>`;
     }).join("");
   Dar.mount(loom);
 
@@ -36,10 +40,10 @@
   const craftBox = document.getElementById("f-craft");
   const crafts = Object.keys(DAR_CRAFT).filter(k => DAR_PRODUCTS.some(p => p.craft === k));
   craftBox.insertAdjacentHTML("beforeend", crafts.map(k =>
-    `<label class="check"><input class="box" type="checkbox" value="${k}"><span>${DAR_CRAFT[k]}</span><span class="n num" data-craft-n="${k}"></span></label>`).join(""));
+    `<label class="check"><input class="box" type="checkbox" value="${k}"><span>${craftName(k)}</span><span class="n num" data-craft-n="${k}"></span></label>`).join(""));
   const colorBox = document.getElementById("f-color");
   colorBox.innerHTML = Object.entries(DAR_COLORS).map(([k, c]) =>
-    `<button class="swatch" type="button" data-color="${k}" style="--c:${c.hex}" aria-pressed="false" aria-label="${c.name}" title="${c.name}"></button>`).join("");
+    `<button class="swatch" type="button" data-color="${k}" style="--c:${c.hex}" aria-pressed="false" aria-label="${colorName(k)}" title="${colorName(k)}"></button>`).join("");
 
   /* ---------- Filtering ---------- */
   const norm = s => s.replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي").toLowerCase();
@@ -48,18 +52,18 @@
   function results() {
     const term = norm(state.q.trim());
     let list = scope().filter(p =>
-      (!term || norm(p.name + " " + (p.code || "") + " " + catName(p.cat)).includes(term)) &&
+      (!term || norm(p.name + " " + (p.name_en || "") + " " + (p.code || "") + " " + catOf(p.cat).name + " " + (catOf(p.cat).name_en || "")).includes(term)) &&
       (!state.craft.size || state.craft.has(p.craft)) &&
       (!state.color.size || (p.colors || []).some(c => state.color.has(c))));
-    if (state.sort === "name") list = [...list].sort((a, b) => a.name.localeCompare(b.name, "ar"));
+    if (state.sort === "name") list = [...list].sort((a, b) => pName(a).localeCompare(pName(b), L("ar", "en")));
     if (state.sort === "code") list = [...list].sort((a, b) => (a.code || "99999").localeCompare(b.code || "99999"));
     return list;
   }
 
   const note = `<a class="shop-note up" href="https://www.instagram.com/filistinmirasmerkezi_dar/reel/DcyQEX1M7gn/" target="_blank" rel="noopener">
       <span data-motif="cypress" data-mono="1" style="color:#fff;width:40px"></span>
-      <span><b>هل تعرف نقشة السرو؟</b><br><small>مقطع قصير من دار عن معنى النقشة</small></span>
-      <span class="thread" style="justify-self:start">شاهد على إنستغرام</span></a>`;
+      <span><b>${L("هل تعرف نقشة السرو؟", "Do you know the cypress motif?")}</b><br><small>${L("مقطع قصير من دار عن معنى النقشة", "A short clip from DAR on what the motif means")}</small></span>
+      <span class="thread" style="justify-self:start">${L("شاهد على إنستغرام", "Watch on Instagram")}</span></a>`;
 
   function render() {
     const list = results();
@@ -70,12 +74,12 @@
     grid.innerHTML = cards.join("");
     empty.hidden = list.length > 0;
     grid.hidden = !list.length;
-    countEl.textContent = `${list.length} من ${base.length} قطعة`;
-    title.textContent = state.fav ? "المفضلة" : state.cat ? catName(state.cat) : "كل القطع";
-    sub.textContent = state.fav ? "القطع التي حفظتها في هذا المتصفح." : state.cat ? "من كتالوج دار 2026." : "أزياء وحقائب وكوفيات وتطريز وإكسسوارات من كتالوج دار 2026.";
+    countEl.textContent = L(`${list.length} من ${base.length} قطعة`, `${list.length} of ${base.length} pieces`);
+    title.textContent = state.fav ? L("المفضلة", "Favourites") : state.cat ? catName(state.cat) : L("كل القطع", "All pieces");
+    sub.textContent = state.fav ? L("القطع التي حفظتها في هذا المتصفح.", "The pieces you saved in this browser.") : state.cat ? L("من كتالوج دار 2026.", "From the DAR 2026 catalogue.") : L("أزياء وحقائب وكوفيات وتطريز وإكسسوارات من كتالوج دار 2026.", "Clothing, bags, keffiyehs, embroidery and accessories from the DAR 2026 catalogue.");
     craftBox.querySelectorAll("[data-craft-n]").forEach(n => { n.textContent = base.filter(p => p.craft === n.dataset.craftN).length; });
-    empty.querySelector("b").textContent = state.fav && !base.length ? "لم تحفظ قطعا بعد" : "لا قطع تطابق هذا البحث";
-    empty.querySelector("p").textContent = state.fav && !base.length ? "اضغط القلب على أي قطعة لتجدها هنا." : "جرب كلمة أخرى أو امسح التصفية.";
+    empty.querySelector("b").textContent = state.fav && !base.length ? L("لم تحفظ قطعا بعد", "No saved pieces yet") : L("لا قطع تطابق هذا البحث", "No pieces match this search");
+    empty.querySelector("p").textContent = state.fav && !base.length ? L("اضغط القلب على أي قطعة لتجدها هنا.", "Tap the heart on any piece to find it here.") : L("جرب كلمة أخرى أو امسح التصفية.", "Try another word or clear the filters.");
     loom.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.cat === state.cat));
     const active = state.craft.size + state.color.size;
     document.getElementById("filter-n").textContent = active ? `(${active})` : "";

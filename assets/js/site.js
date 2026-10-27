@@ -8,64 +8,75 @@
   const CATALOG = "https://drive.google.com/file/d/1CPTnajm8ko4JPwHOATp-Y_DdwfKiee4I/view";
 
   /* ---------- Layout ---------- */
+  const R = window.DAR_ROOT || "";
+  const EN = window.DAR_LANG === "en";
   const nav = [
-    ["shop.html", "المتجر", "shop"],
-    ["index.html#cats", "المجموعات"],
-    ["motifs.html", "النقوش", "motifs"],
-    ["corporate.html", "هدايا المؤسسات", "corporate"],
-    ["about.html", "من نحن", "about"],
-    ["contact.html", "تواصل", "contact"]
+    ["shop.html", L("المتجر", "Shop"), "shop"],
+    ["index.html#cats", L("المجموعات", "Collections")],
+    ["motifs.html", L("النقوش", "Motifs"), "motifs"],
+    ["corporate.html", L("هدايا المؤسسات", "Corporate gifts"), "corporate"],
+    ["about.html", L("من نحن", "About"), "about"],
+    ["contact.html", L("تواصل", "Contact"), "contact"]
   ];
   const navLinks = nav.map(([href, label, key]) => `<a href="${href}"${key === page ? ' aria-current="page"' : ""}>${label}</a>`).join("");
 
-  // Turkish and English are planned; until they exist the switch says so instead of linking nowhere
+  // Arabic and English link to the same page in the other language; Turkish is planned, so it says so instead of linking nowhere
+  const alt = window.DAR_ALT ? DAR_ALT() : "index.html";
+  const trSoon = L("النسخة التركية قريبا", "Turkish version coming soon");
+  const langBar = EN
+    ? `<a href="${alt}" lang="ar" hreflang="ar" title="العربية">AR</a><span class="lang__on" aria-current="true" title="English">EN</span><button type="button" data-soon="tr" aria-label="${trSoon}">TR</button>`
+    : `<span class="lang__on" aria-current="true" title="العربية">ع</span><button type="button" data-soon="tr" aria-label="${trSoon}">TR</button><a href="${alt}" lang="en" hreflang="en" title="English">EN</a>`;
+  const trDrawer = `<button type="button" data-soon="tr"><span lang="tr">Türkçe</span><span class="sr-only">${L("، قريبا", ", coming soon")}</span></button>`;
+  const langDrawer = EN
+    ? `<a href="${alt}" lang="ar" hreflang="ar">العربية</a><span class="lang__on" aria-current="true">English</span>${trDrawer}`
+    : `<span class="lang__on" aria-current="true">العربية</span>${trDrawer}<a href="${alt}" lang="en" hreflang="en">English</a>`;
   const header = `
-<a class="btn skip" href="#main">انتقل إلى المحتوى</a>
+<a class="btn skip" href="#main">${L("انتقل إلى المحتوى", "Skip to content")}</a>
 <div class="thread-progress" id="thread" aria-hidden="true"></div>
 <div class="band hem-top" data-band="chain" data-cell="2" aria-hidden="true"></div>
 <header class="site-head">
   <div class="wrap">
-    <nav class="main-nav" aria-label="القائمة الرئيسية">${navLinks}</nav>
-    <button class="icon-btn menu-btn" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="drawer"><span data-motif="i-menu"></span></button>
-    <a class="brand" href="index.html" aria-label="دار، مركز التراث الفلسطيني، الرئيسية"><img src="assets/brand/dar-logo-mark.svg" alt="دار" width="219" height="292"></a>
+    <nav class="main-nav" aria-label="${L("القائمة الرئيسية", "Main menu")}">${navLinks}</nav>
+    <button class="icon-btn menu-btn" type="button" aria-label="${L("فتح القائمة", "Open menu")}" aria-expanded="false" aria-controls="drawer"><span data-motif="i-menu"></span></button>
+    <a class="brand" href="index.html" aria-label="${L("دار، مركز التراث الفلسطيني، الرئيسية", "DAR, Palestinian Heritage Centre, home")}"><img src="${R}assets/brand/dar-logo-mark.svg" alt="${L("دار", "DAR")}" width="219" height="292"></a>
     <div class="head-tools">
-      <div class="lang" role="group" aria-label="اللغة"><span class="lang__on" aria-current="true" title="العربية">ع</span><button type="button" data-soon="tr" aria-label="النسخة التركية قريبا">TR</button><button type="button" data-soon="en" aria-label="النسخة الإنجليزية قريبا">EN</button></div>
-      <a class="icon-btn" href="shop.html" aria-label="البحث في المتجر"><span data-motif="i-search"></span></a>
-      <a class="icon-btn" href="account.html" aria-label="حسابي" id="acct-btn"${page === "account" || page === "login" ? ' aria-current="page"' : ""}><span data-motif="i-user"></span></a>
-      <a class="icon-btn" href="shop.html?fav=1" aria-label="المفضلة" id="fav-btn"><span data-motif="i-heart"></span><span class="count num" id="fav-count" hidden>0</span></a>
-      <a class="icon-btn" href="cart.html" aria-label="السلة" id="cart-btn"${page === "cart" ? ' aria-current="page"' : ""}><span data-motif="i-bag"></span><span class="count num" id="cart-count" hidden>0</span></a>
+      <div class="lang" role="group" aria-label="${L("اللغة", "Language")}">${langBar}</div>
+      <a class="icon-btn" href="shop.html" aria-label="${L("البحث في المتجر", "Search the shop")}"><span data-motif="i-search"></span></a>
+      <a class="icon-btn" href="account.html" aria-label="${L("حسابي", "My account")}" id="acct-btn"${page === "account" || page === "login" ? ' aria-current="page"' : ""}><span data-motif="i-user"></span></a>
+      <a class="icon-btn" href="shop.html?fav=1" aria-label="${L("المفضلة", "Favourites")}" id="fav-btn"><span data-motif="i-heart"></span><span class="count num" id="fav-count" hidden>0</span></a>
+      <a class="icon-btn" href="cart.html" aria-label="${L("السلة", "Cart")}" id="cart-btn"${page === "cart" ? ' aria-current="page"' : ""}><span data-motif="i-bag"></span><span class="count num" id="cart-count" hidden>0</span></a>
     </div>
   </div>
 </header>
-<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="القائمة" aria-hidden="true">
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="${L("القائمة", "Menu")}" aria-hidden="true">
   <div style="display:flex;justify-content:space-between;align-items:center">
-    <img src="assets/brand/dar-logo-mark.svg" alt="دار" width="33" height="44">
-    <button class="icon-btn" type="button" aria-label="إغلاق القائمة" data-close-drawer><span data-motif="i-close"></span></button>
+    <img src="${R}assets/brand/dar-logo-mark.svg" alt="${L("دار", "DAR")}" width="33" height="44">
+    <button class="icon-btn" type="button" aria-label="${L("إغلاق القائمة", "Close menu")}" data-close-drawer><span data-motif="i-close"></span></button>
   </div>
-  <nav aria-label="أقسام الموقع">${navLinks}</nav>
-  <div class="lang" role="group" aria-label="اللغة" style="display:flex"><span class="lang__on" aria-current="true">العربية</span><button type="button" data-soon="tr"><span lang="tr">Türkçe</span><span class="sr-only">، قريبا</span></button><button type="button" data-soon="en"><span lang="en">English</span><span class="sr-only">، قريبا</span></button></div>
+  <nav aria-label="${L("أقسام الموقع", "Site sections")}">${navLinks}</nav>
+  <div class="lang" role="group" aria-label="${L("اللغة", "Language")}" style="display:flex">${langDrawer}</div>
 </div>`;
 
-  const cats = (window.DAR_CATS || []).map(c => `<li><a href="shop.html?cat=${c.id}">${c.name}</a></li>`).join("");
+  const cats = (window.DAR_CATS || []).map(c => `<li><a href="shop.html?cat=${c.id}">${L(c.name, c.name_en)}</a></li>`).join("");
   const footer = `
 <footer class="site-foot">
   <div class="band" data-band="saw" data-cell="4" data-night="1" aria-hidden="true" style="transform:scaleY(-1)"></div>
   <div class="wrap foot-grid">
-    <div><img src="assets/brand/dar-logo-full.svg" alt="دار، مركز التراث الفلسطيني" width="140" height="137"><p>القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.</p></div>
-    <div><h2>المتجر</h2><ul>${cats}</ul></div>
-    <div><h2>دار</h2><ul><li><a href="about.html">من نحن</a></li><li><a href="motifs.html">النقوش</a></li><li><a href="corporate.html">هدايا المؤسسات</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">الكتالوج</a></li><li><a href="about.html#visit">زورونا</a></li></ul></div>
-    <div><h2>المساعدة</h2><ul><li><a href="account.html">حسابي</a></li><li><a href="track.html">تتبع طلبك</a></li><li><a href="help.html#shipping">الشحن والتوصيل</a></li><li><a href="help.html#returns">الإرجاع والاستبدال</a></li><li><a href="help.html">الأسئلة المتكررة</a></li><li><a href="policies.html">السياسات</a></li></ul></div>
-    <div><h2>تواصل</h2><ul><li><a href="contact.html">راسلنا</a></li><li><a href="${WA}" target="_blank" rel="noopener">واتساب</a></li><li><a href="${IG}" target="_blank" rel="noopener">إنستغرام</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">فيسبوك</a></li></ul></div>
+    <div><img src="${R}assets/brand/dar-logo-full.svg" alt="${L("دار، مركز التراث الفلسطيني", "DAR, Palestinian Heritage Centre")}" width="140" height="137"><p>${L("القلب النابض للتراث الفلسطيني. عائد كل قطعة يدعم مشاريع في غزة، خاصة لتمكين النساء والأطفال.", "The beating heart of Palestinian heritage. Every piece supports projects in Gaza, especially for women and children.")}</p></div>
+    <div><h2>${L("المتجر", "Shop")}</h2><ul>${cats}</ul></div>
+    <div><h2>${L("دار", "DAR")}</h2><ul><li><a href="about.html">${L("من نحن", "About us")}</a></li><li><a href="motifs.html">${L("النقوش", "Motifs")}</a></li><li><a href="corporate.html">${L("هدايا المؤسسات", "Corporate gifts")}</a></li><li><a href="${CATALOG}" target="_blank" rel="noopener">${L("الكتالوج", "Catalogue")}</a></li><li><a href="about.html#visit">${L("زورونا", "Visit us")}</a></li></ul></div>
+    <div><h2>${L("المساعدة", "Help")}</h2><ul><li><a href="account.html">${L("حسابي", "My account")}</a></li><li><a href="track.html">${L("تتبع طلبك", "Track your order")}</a></li><li><a href="help.html#shipping">${L("الشحن والتوصيل", "Shipping and delivery")}</a></li><li><a href="help.html#returns">${L("الإرجاع والاستبدال", "Returns and exchanges")}</a></li><li><a href="help.html">${L("الأسئلة المتكررة", "FAQ")}</a></li><li><a href="policies.html">${L("السياسات", "Policies")}</a></li></ul></div>
+    <div><h2>${L("تواصل", "Contact")}</h2><ul><li><a href="contact.html">${L("راسلنا", "Write to us")}</a></li><li><a href="${WA}" target="_blank" rel="noopener">${L("واتساب", "WhatsApp")}</a></li><li><a href="${IG}" target="_blank" rel="noopener">${L("إنستغرام", "Instagram")}</a></li><li><a href="https://www.facebook.com/share/16cFGdWppS/" target="_blank" rel="noopener">${L("فيسبوك", "Facebook")}</a></li></ul></div>
   </div>
-  <div class="wrap foot-base"><span>© 2026 دار، مركز التراث الفلسطيني</span><span>الصور من كتالوج دار 2026</span></div>
+  <div class="wrap foot-base"><span>${L("© 2026 دار، مركز التراث الفلسطيني", "© 2026 DAR, Palestinian Heritage Centre")}</span><span>${L("الصور من كتالوج دار 2026", "Photos from the DAR 2026 catalogue")}</span></div>
 </footer>
-<a class="wa" id="wa" href="${WA}" target="_blank" rel="noopener" aria-label="راسل دار على واتساب"><span data-motif="i-chat"></span><span class="wa__label">راسل دار</span></a>
+<a class="wa" id="wa" href="${WA}" target="_blank" rel="noopener" aria-label="${L("راسل دار على واتساب", "Message DAR on WhatsApp")}"><span data-motif="i-chat"></span><span class="wa__label">${L("راسل دار", "Message DAR")}</span></a>
 <div class="toast-slot" id="toast-slot" role="status" aria-live="polite"></div>`;
 
   // Reviewers who came from the review guide get a way back to it on every page
   let reviewing = false;
   try { reviewing = sessionStorage.getItem("dar-review") === "1"; } catch (e) {}
-  const strip = reviewing ? '<div class="review-strip"><span>نسخة للمراجعة</span><a href="review.html">العودة إلى دليل الصفحات</a></div>' : "";
+  const strip = reviewing ? `<div class="review-strip"><span>${L("نسخة للمراجعة", "Review copy")}</span><a href="${R}review.html">${L("العودة إلى دليل الصفحات", "Back to the page guide")}</a></div>` : "";
   // After the skip link, so "skip to content" stays the first stop for keyboard users
   document.querySelector('[data-site="header"]')?.insertAdjacentHTML("afterend", header.replace('<div class="thread-progress"', strip + '<div class="thread-progress"'));
   document.querySelector('[data-site="header"]')?.remove();
@@ -199,7 +210,7 @@
   // A toast with an action stays 10 s, and never leaves while it is hovered or focused
   function showToast(text, link, href = "cart.html") {
     slot.inert = false;
-    slot.innerHTML = `<div class="toast"><span data-motif="starlet" data-mode="cross"></span><span>${text}${link ? ` <a class="thread" href="${href}">${link}</a>` : ""}</span><button class="icon-btn toast__close" type="button" aria-label="إغلاق الإشعار"><span data-motif="i-close"></span></button></div>`;
+    slot.innerHTML = `<div class="toast"><span data-motif="starlet" data-mode="cross"></span><span>${text}${link ? ` <a class="thread" href="${href}">${link}</a>` : ""}</span><button class="icon-btn toast__close" type="button" aria-label="${L("إغلاق الإشعار", "Close notification")}"><span data-motif="i-close"></span></button></div>`;
     Dar.mount(slot);
     slot.classList.add("is-on");
     armToast(link ? 10000 : 4500);
@@ -241,8 +252,9 @@
     signIn(user) { try { localStorage.setItem("dar-session", phoneKey(user.phone)); } catch (e) {} },
     signOut() { try { localStorage.removeItem("dar-session"); } catch (e) {} }
   };
+  const pieces = n => n === 1 ? "1 piece" : `${n} pieces`;
   const me = account.current();
-  if (me) document.getElementById("acct-btn").setAttribute("aria-label", `حسابي، ${me.name}`);
+  if (me) document.getElementById("acct-btn").setAttribute("aria-label", L(`حسابي، ${me.name}`, `My account, ${me.name}`));
 
   /* ---------- Cart: kept in this browser until the backend exists ---------- */
   const count = document.getElementById("cart-count");
@@ -260,7 +272,7 @@
   function renderCount() {
     const n = store.get().reduce((s, i) => s + i.qty, 0);
     count.hidden = !n; count.textContent = n;
-    cartBtn.setAttribute("aria-label", n ? `السلة، ${n} قطع` : "السلة");
+    cartBtn.setAttribute("aria-label", n ? L(`السلة، ${n} قطع`, `Cart, ${pieces(n)}`) : L("السلة", "Cart"));
   }
   function addToCart(pid, variant, name, qty = 1, btn) {
     const items = store.get();
@@ -271,7 +283,7 @@
       btn?.classList.remove("is-loading");
       store.set(items);
       if (!reduce) cartBtn.animate([{ transform: "scale(1)" }, { transform: "scale(1.18)" }, { transform: "scale(1)" }], { duration: 320, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
-      showToast(`أضيف ${name} إلى سلتك.`, "عرض السلة");
+      showToast(L(`أضيف ${name} إلى سلتك.`, `Added ${name} to your cart.`), L("عرض السلة", "View cart"));
     }, 450);
   }
   renderCount();
@@ -286,7 +298,7 @@
   function renderFavs() {
     const n = favs.get().length;
     favCount.hidden = !n; favCount.textContent = n;
-    document.getElementById("fav-btn").setAttribute("aria-label", n ? `المفضلة، ${n} قطع` : "المفضلة");
+    document.getElementById("fav-btn").setAttribute("aria-label", n ? L(`المفضلة، ${n} قطع`, `Favourites, ${pieces(n)}`) : L("المفضلة", "Favourites"));
   }
   renderFavs();
 
@@ -305,10 +317,10 @@
       // Every button for this piece follows; the label stays, aria-pressed carries the state
       document.querySelectorAll(`[data-fav="${id}"]`).forEach(b => b.setAttribute("aria-pressed", on));
       if (on && !reduce) fav.animate([{ transform: "scale(.9)" }, { transform: "scale(1.12)" }, { transform: "scale(1)" }], { duration: 300, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
-      if (on) showToast("حفظت القطعة في المفضلة.", "عرض المفضلة", "shop.html?fav=1");
+      if (on) showToast(L("حفظت القطعة في المفضلة.", "Saved to your favourites."), L("عرض المفضلة", "View favourites"), "shop.html?fav=1");
     }
     const soon = e.target.closest("[data-soon]");
-    if (soon) showToast(soon.dataset.soon === "tr" ? "النسخة التركية من الموقع قريبا." : "النسخة الإنجليزية من الموقع قريبا.");
+    if (soon) showToast(soon.dataset.soon === "tr" ? L("النسخة التركية من الموقع قريبا.", "The Turkish version of the site is coming soon.") : L("النسخة الإنجليزية من الموقع قريبا.", "The English version of the site is coming soon."));
   });
 
   /* ---------- Prices: the catalogue has none yet, so the preview uses labelled demo prices ---------- */
@@ -317,19 +329,20 @@
   const money = n => `${Math.round(n).toLocaleString("en-US")} ₺`;
 
   /* ---------- Product card markup shared by home, shop and related lists ---------- */
-  const IMG = id => `assets/img/dar/${id}.webp`;
-  const SM = id => `assets/img/dar/${id}-480.webp`;
+  const IMG = id => `${R}assets/img/dar/${id}.webp`;
+  const SM = id => `${R}assets/img/dar/${id}-480.webp`;
   const SRCSET = id => `${SM(id)} 480w, ${IMG(id)} 960w`;
   function card(p, i = 0, eager = false) {
-    const tag = p.craft === "hand" ? '<span class="tag tag--henna">تطريز يدوي</span>' : "";
-    const meta = p.code ? `<p class="product__code num">كود ${p.code}</p>` : `<p class="product__origin">${(window.DAR_CATS.find(c => c.id === p.cat) || {}).name || ""}</p>`;
+    const tag = p.craft === "hand" ? `<span class="tag tag--henna">${L("تطريز يدوي", "Hand embroidery")}</span>` : "";
+    const meta = p.code ? `<p class="product__code num">${L("كود", "Code")} ${p.code}</p>` : `<p class="product__origin">${(c => c ? L(c.name, c.name_en) : "")(window.DAR_CATS.find(c => c.id === p.cat))}</p>`;
+    const name = L(p.name, p.name_en);
     return `<article class="product up" style="--i:${i % 4}">
       <div class="product__frame">
         <a class="product__media${p.dark ? " product__media--dark" : ""}" href="product.html?id=${p.id}" tabindex="-1" aria-hidden="true" data-veil><img src="${SM(p.img)}" srcset="${SRCSET(p.img)}" sizes="(max-width: 520px) 50vw, (max-width: 1100px) 33vw, 22vw" alt="" loading="${eager ? "eager" : "lazy"}" style="--pos:${p.pos || "50% 50%"}">${tag}</a>
-        <button class="icon-btn product__fav" type="button" data-fav="${p.id}" aria-label="حفظ ${p.name} في المفضلة" aria-pressed="${favs.has(p.id)}"><span data-motif="i-heart"></span></button>
-        <button class="btn product__add" type="button" data-id="${p.id}" data-add="${p.name}" aria-label="أضف ${p.name} إلى السلة">أضف إلى السلة</button>
+        <button class="icon-btn product__fav" type="button" data-fav="${p.id}" aria-label="${L(`حفظ ${name} في المفضلة`, `Save ${name} to favourites`)}" aria-pressed="${favs.has(p.id)}"><span data-motif="i-heart"></span></button>
+        <button class="btn product__add" type="button" data-id="${p.id}" data-add="${name}" aria-label="${L(`أضف ${name} إلى السلة`, `Add ${name} to cart`)}">${L("أضف إلى السلة", "Add to cart")}</button>
       </div>
-      <div class="product__meta"><div><h3 class="product__name"><a href="product.html?id=${p.id}">${p.name}</a></h3>${meta}</div>${p.price ? `<p class="product__price num">${money(p.price)}</p>` : '<p class="product__price--soon">السعر قريبا</p>'}</div>
+      <div class="product__meta"><div><h3 class="product__name"><a href="product.html?id=${p.id}">${name}</a></h3>${meta}</div>${p.price ? `<p class="product__price num">${money(p.price)}</p>` : `<p class="product__price--soon">${L("السعر قريبا", "Price coming soon")}</p>`}</div>
     </article>`;
   }
 

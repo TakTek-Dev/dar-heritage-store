@@ -194,3 +194,7 @@
 }
 /* On phones the product page has its own WhatsApp question, so the floating button steps aside */
 @media (max-width: 760px) { body:has(.buybar) .wa { display: none; } }
+
+/* ---------- English (LTR) ---------- */
+[dir="ltr"] .loom button::after { transform-origin: left; }
+:lang(en) .info h1 { line-height: 1.15; }

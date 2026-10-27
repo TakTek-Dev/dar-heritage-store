@@ -138,3 +138,6 @@ body[data-page="cart"] .wa, body[data-page="checkout"] .wa { display: none; }
 #checkout > form { grid-column: 1; grid-row: 1; }
 #checkout > .co-summary { grid-column: 2; grid-row: 1; }
 @media (max-width: 1000px) { #checkout > form, #checkout > .co-summary { grid-column: auto; grid-row: auto; } }
+
+/* English (LTR): a removed line slides out toward the start, as it does in Arabic */
+[dir="ltr"] .line.is-leaving { transform: translateX(-24px); }

@@ -12,7 +12,8 @@
     chart.style.setProperty("--h", h);
     chart.style.setProperty("--size", `${sizeOf(w, h)}px`);
     chart.classList.toggle("is-stitched", mode === "cross");
-    const label = `${mode === "cross" ? "نقشة" : "مخطط نقشة"} ${chart.dataset.name}، ${w} في ${h} غرزة`;
+    const label = L(`${mode === "cross" ? "نقشة" : "مخطط نقشة"} ${chart.dataset.name}، ${w} في ${h} غرزة`,
+      `${chart.dataset.name} ${mode === "cross" ? "motif" : "motif chart"}, ${w} by ${h} stitches`);
     chart.innerHTML = `<span data-motif="${name}"${mode === "cross" ? ' data-mode="cross"' : ""} data-order="${chart.dataset.order || "rows"}"${animate ? " data-stitch" : ""} data-label="${label}"></span>`;
     Dar.mount(chart);
     return { w, h, rows };
@@ -26,9 +27,10 @@
     // Facts come from the chart itself, so they stay true if a chart is redrawn
     const flat = rows.join("");
     const count = [...flat].filter(c => c !== ".").length;
-    const colours = [flat.includes("R") && "حناء", flat.includes("G") && "زيتون"].filter(Boolean).join(" و");
+    const colours = [flat.includes("R") && L("حناء", "Henna"), flat.includes("G") && L("زيتون", "Olive")].filter(Boolean).join(L(" و", " and "));
     sp.querySelector("[data-facts]").insertAdjacentHTML("afterbegin",
-      `<dt>على المخطط</dt><dd class="num">${w} × ${h} غرزة</dd><dt>عدد الغرز</dt><dd class="num">${count.toLocaleString("en-US")}</dd><dt>الألوان</dt><dd>${colours}</dd>`);
+      L(`<dt>على المخطط</dt><dd class="num">${w} × ${h} غرزة</dd><dt>عدد الغرز</dt><dd class="num">${count.toLocaleString("en-US")}</dd><dt>الألوان</dt><dd>${colours}</dd>`,
+        `<dt>On the chart</dt><dd class="num">${w} × ${h} stitches</dd><dt>Stitch count</dt><dd class="num">${count.toLocaleString("en-US")}</dd><dt>Colours</dt><dd>${colours}</dd>`));
 
     sp.querySelectorAll("[data-view]").forEach(btn => btn.addEventListener("click", () => {
       if (btn.dataset.view === mode) return;
@@ -52,10 +54,10 @@
   const cord = document.getElementById("couch-path");
   const tacks = document.getElementById("couch-tacks");
   if (cord && tacks && cord.getTotalLength) {
-    const L = cord.getTotalLength();
+    const len = cord.getTotalLength();
     let marks = "";
-    for (let d = 5; d < L - 2; d += 8) {
-      const p = cord.getPointAtLength(d), q = cord.getPointAtLength(Math.min(L, d + 1));
+    for (let d = 5; d < len - 2; d += 8) {
+      const p = cord.getPointAtLength(d), q = cord.getPointAtLength(Math.min(len, d + 1));
       const a = Math.atan2(q.y - p.y, q.x - p.x) + Math.PI / 2;
       const dx = (Math.cos(a) * 5).toFixed(2), dy = (Math.sin(a) * 5).toFixed(2);
       marks += `<line x1="${(p.x - dx).toFixed(2)}" y1="${(p.y - dy).toFixed(2)}" x2="${(p.x + +dx).toFixed(2)}" y2="${(p.y + +dy).toFixed(2)}"/>`;

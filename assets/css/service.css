@@ -263,3 +263,10 @@ bdi.num { white-space: nowrap; }
 
 /* The contact page is the WhatsApp entry itself, so the floating button would only cover the form */
 [data-page="contact"] .wa { display: none; }
+
+/* ---------- English (LTR): the thread and the arrows run the other way ---------- */
+@media (hover: hover) and (pointer: fine) { [dir="ltr"] .channel:hover .go { transform: translateX(4px); } }
+@media (min-width: 561px) {
+  [dir="ltr"] .tr-steps li:not(:last-child)::before { background: repeating-linear-gradient(to right, var(--line-strong) 0 7px, transparent 7px 12px); }
+  [dir="ltr"] .tr-steps li:not(:last-child)::after { background: repeating-linear-gradient(to right, var(--henna) 0 7px, transparent 7px 12px); transform-origin: left; }
+}

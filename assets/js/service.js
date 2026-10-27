@@ -16,18 +16,20 @@
     if (hint) hint.textContent = ok ? hint.dataset.base : message;
     return ok;
   }
-  const errorSummary = n => `${n === 1 ? "حقل واحد يحتاج" : `${n} حقول تحتاج`} تصحيحا. الملاحظة مكتوبة تحت كل حقل.`;
+  const errorSummary = n => L(`${n === 1 ? "حقل واحد يحتاج" : `${n} حقول تحتاج`} تصحيحا. الملاحظة مكتوبة تحت كل حقل.`,
+    `${n === 1 ? "One field needs" : `${n} fields need`} fixing. The note is under each field.`);
 
   /* ---------- Contact: the message is composed here and sent from WhatsApp ---------- */
   const contact = $("contact-form");
   if (contact) {
     const orderField = $("order-field");
+    const ORDER_TOPIC = L("طلب قائم", "Existing order");
     contact.addEventListener("change", e => {
-      if (e.target.name === "topic") orderField.hidden = e.target.value !== "طلب قائم";
+      if (e.target.name === "topic") orderField.hidden = e.target.value !== ORDER_TOPIC;
     });
     const rules = {
-      "c-name": [v => v.trim().length > 1, "اكتب اسمك."],
-      "c-msg": [v => v.trim().length > 4, "اكتب سؤالك في سطر على الأقل."]
+      "c-name": [v => v.trim().length > 1, L("اكتب اسمك.", "Write your name.")],
+      "c-msg": [v => v.trim().length > 4, L("اكتب سؤالك في سطر على الأقل.", "Write your question in at least one line.")]
     };
     const check = input => mark(input, rules[input.id][0](input.value), rules[input.id][1]);
     contact.addEventListener("input", e => { if (rules[e.target.id] && e.target.closest(".is-error")) check(e.target); });
@@ -40,10 +42,10 @@
       const topic = contact.topic.value;
       const order = $("c-order").value.trim();
       const lines = [
-        "مرحبا دار،",
-        `الموضوع: ${topic}`,
-        `الاسم: ${$("c-name").value.trim()}`,
-        topic === "طلب قائم" && order && `رقم الطلب: ${order}`,
+        L("مرحبا دار،", "Hello DAR,"),
+        `${L("الموضوع", "Topic")}: ${topic}`,
+        `${L("الاسم", "Name")}: ${$("c-name").value.trim()}`,
+        topic === ORDER_TOPIC && order && `${L("رقم الطلب", "Order number")}: ${order}`,
         "",
         $("c-msg").value.trim()
       ].filter(l => l !== false && l !== undefined);
@@ -65,7 +67,9 @@
     // data-k adds the words people search with but the answer does not use (غسيل for اغسلها)
     const items = sections.flatMap(sec => [...sec.querySelectorAll("details, .care > div")].map(el => ({ el, sec, text: norm(`${el.textContent} ${el.dataset.k || ""}`) })));
     const count = $("help-count"), empty = $("help-empty"), nav = document.querySelector(".topics-nav");
-    const plural = n => n === 0 ? "لا نتيجة" : n === 1 ? "إجابة واحدة" : n === 2 ? "إجابتان" : n <= 10 ? `${n} إجابات` : `${n} إجابة`;
+    const plural = n => DAR_LANG === "en"
+      ? (n === 0 ? "No results" : n === 1 ? "1 answer" : `${n} answers`)
+      : n === 0 ? "لا نتيجة" : n === 1 ? "إجابة واحدة" : n === 2 ? "إجابتان" : n <= 10 ? `${n} إجابات` : `${n} إجابة`;
     let timer;
     function filter() {
       const q = norm(helpQ.value.trim());
@@ -110,10 +114,10 @@
   if (track) {
     const orders = () => { try { return JSON.parse(localStorage.getItem("dar-admin") || "{}").orders || []; } catch (e) { return []; } };
     const all = Object.fromEntries((window.DAR_ALL_PRODUCTS || []).map(p => [p.id, p]));
-    const fmt = iso => new Date(iso).toLocaleDateString("ar-EG-u-nu-latn", { day: "numeric", month: "long" });
-    const SHIP = { tr: "توصيل داخل تركيا", intl: "شحن دولي", pickup: "استلام من المركز" };
-    const PAY = { card: "بطاقة بنكية", bank: "تحويل بنكي" };
-    const STATUS = { new: "استلمنا طلبك", prep: "قيد التجهيز", ship: "تم الشحن", done: "تم التسليم", cancel: "ملغي" };
+    const fmt = iso => new Date(iso).toLocaleDateString(L("ar-EG-u-nu-latn", "en-GB"), { day: "numeric", month: "long" });
+    const SHIP = { tr: L("توصيل داخل تركيا", "Delivery within Turkey"), intl: L("شحن دولي", "International shipping"), pickup: L("استلام من المركز", "Pickup from the centre") };
+    const PAY = { card: L("بطاقة بنكية", "Bank card"), bank: L("تحويل بنكي", "Bank transfer") };
+    const STATUS = { new: L("استلمنا طلبك", "Order received"), prep: L("قيد التجهيز", "Being prepared"), ship: L("تم الشحن", "Shipped"), done: L("تم التسليم", "Delivered"), cancel: L("ملغي", "Cancelled") };
     const no = $("t-no"), phone = $("t-phone"), err = $("track-error"), miss = $("track-miss"), out = $("track-result");
     const legend = out.innerHTML;   // the journey of an order, shown until one is found
 
@@ -127,10 +131,10 @@
     function render(o) {
       const pickup = o.ship === "pickup";
       const stops = [
-        ["استلمنا طلبك", fmt(o.date)],
-        ["نجهز القطع", "نطويها ونغلفها بعناية"],
-        [pickup ? "جاهز للاستلام" : "في الطريق إليك", pickup ? "في المركز، إسطنبول" : "رقم الشحنة يصلك على واتساب"],
-        [pickup ? "تم الاستلام" : "وصل", ""]
+        [L("استلمنا طلبك", "Order received"), fmt(o.date)],
+        [L("نجهز القطع", "Preparing your pieces"), L("نطويها ونغلفها بعناية", "Folded and wrapped with care")],
+        [pickup ? L("جاهز للاستلام", "Ready for pickup") : L("في الطريق إليك", "On its way to you"), pickup ? L("في المركز، إسطنبول", "At the centre, Istanbul") : L("رقم الشحنة يصلك على واتساب", "Tracking number sent on WhatsApp")],
+        [pickup ? L("تم الاستلام", "Picked up") : L("وصل", "Delivered"), ""]
       ];
       const at = { new: 0, prep: 1, ship: 2, done: 3 }[o.status] ?? -1;
       const steps = stops.map(([t, s], i) => {
@@ -140,23 +144,23 @@
       const lines = o.lines.map(l => {
         const p = all[l.pid]; if (!p) return "";
         const v = (p.variants || []).find(x => x.color === l.variant);
-        return `<li><img src="${Site.SM(v ? v.img : p.img)}" alt="" width="56" height="70" loading="lazy"><span><b>${esc(p.name)}</b>${v ? `<span>${esc(v.name)}</span>` : ""}</span><span class="num">× ${l.qty}</span></li>`;
+        return `<li><img src="${Site.SM(v ? v.img : p.img)}" alt="" width="56" height="70" loading="lazy"><span><b>${esc(L(p.name, p.name_en))}</b>${v ? `<span>${esc(L(v.name, v.name_en))}</span>` : ""}</span><span class="num">× ${l.qty}</span></li>`;
       }).join("");
-      const ask = `${WA}?text=${encodeURIComponent(`مرحبا دار، أسأل عن طلبي رقم ${o.id}.`)}`;
+      const ask = `${WA}?text=${encodeURIComponent(L(`مرحبا دار، أسأل عن طلبي رقم ${o.id}.`, `Hello DAR, I have a question about my order ${o.id}.`))}`;
       out.innerHTML = `
         <article class="tr-card">
           <header class="tr-card__head">
-            <div><span class="eyebrow">طلب${o.local ? "" : " تجريبي من لوحة التحكم"}</span><h2 id="tr-h" tabindex="-1"><bdi>${esc(o.id)}</bdi></h2><p>بتاريخ ${fmt(o.date)}، ${SHIP[o.ship] || ""}${o.ship !== "pickup" && o.city ? ` إلى ${esc(o.city)}` : ""}</p></div>
+            <div><span class="eyebrow">${o.local ? L("طلب", "Order") : L("طلب تجريبي من لوحة التحكم", "Demo order from the dashboard")}</span><h2 id="tr-h" tabindex="-1"><bdi>${esc(o.id)}</bdi></h2><p>${L("بتاريخ", "Placed")} ${fmt(o.date)}${L("، ", ", ")}${SHIP[o.ship] || ""}${o.ship !== "pickup" && o.city ? `${L(" إلى ", " to ")}${esc(o.city)}` : ""}</p></div>
             <span class="st st--${o.status}">${STATUS[o.status] || ""}</span>
           </header>
           ${o.status === "cancel"
-            ? '<p class="tr-note tr-note--cancel">ألغي هذا الطلب. وإن كنت دفعت، يعود المبلغ بطريقة الدفع نفسها.</p>'
-            : `<ol class="tr-steps is-cold" aria-label="مراحل الطلب">${steps}</ol>`}
+            ? `<p class="tr-note tr-note--cancel">${L("ألغي هذا الطلب. وإن كنت دفعت، يعود المبلغ بطريقة الدفع نفسها.", "This order was cancelled. If you paid, the money goes back by the same payment method.")}</p>`
+            : `<ol class="tr-steps is-cold" aria-label="${L("مراحل الطلب", "Order stages")}">${steps}</ol>`}
           <div class="tr-body">
-            <div><h3>القطع</h3><ul class="tr-lines">${lines}</ul></div>
-            <div><h3>التفاصيل</h3><dl class="tr-facts"><dt>الاستلام</dt><dd>${SHIP[o.ship] || ""}</dd><dt>الدفع</dt><dd>${PAY[o.pay] || ""}</dd><dt>الطلب عبر</dt><dd>${o.channel === "wa" ? "واتساب" : "الموقع"}</dd></dl></div>
+            <div><h3>${L("القطع", "Pieces")}</h3><ul class="tr-lines">${lines}</ul></div>
+            <div><h3>${L("التفاصيل", "Details")}</h3><dl class="tr-facts"><dt>${L("الاستلام", "Delivery")}</dt><dd>${SHIP[o.ship] || ""}</dd><dt>${L("الدفع", "Payment")}</dt><dd>${PAY[o.pay] || ""}</dd><dt>${L("الطلب عبر", "Ordered via")}</dt><dd>${o.channel === "wa" ? L("واتساب", "WhatsApp") : L("الموقع", "The website")}</dd></dl></div>
           </div>
-          <footer class="tr-help"><p>سؤال عن طلبك؟ اذكر رقمه في رسالتك.</p><a class="btn btn--wa" href="${ask}" target="_blank" rel="noopener"><span data-motif="i-chat"></span>اسأل عن طلبك</a></footer>
+          <footer class="tr-help"><p>${L("سؤال عن طلبك؟ اذكر رقمه في رسالتك.", "A question about your order? Mention its number in your message.")}</p><a class="btn btn--wa" href="${ask}" target="_blank" rel="noopener"><span data-motif="i-chat"></span>${L("اسأل عن طلبك", "Ask about your order")}</a></footer>
         </article>`;
       Dar.mount(out);
       const stepsEl = out.querySelector(".tr-steps");
@@ -168,8 +172,8 @@
     }
 
     function lookup() {
-      const okNo = mark(no, no.value.trim().length >= 4, "اكتب رقم الطلب كما في رسالة التأكيد، مثل DAR-2026-1052.");
-      const okPhone = mark(phone, phoneOk(phone.value), "اكتب رقم الجوال مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.");
+      const okNo = mark(no, no.value.trim().length >= 4, L("اكتب رقم الطلب كما في رسالة التأكيد، مثل DAR-2026-1052.", "Write the order number as it appears in your confirmation, like DAR-2026-1052."));
+      const okPhone = mark(phone, phoneOk(phone.value), L("اكتب رقم الجوال مع رمز الدولة، مثل ⁦+90 5xx xxx xx xx⁩.", "Write your mobile number with the country code, like +90 5xx xxx xx xx."));
       const bad = [[no, okNo], [phone, okPhone]].filter(([, ok]) => !ok).map(([el]) => el);
       if (bad.length) { err.hidden = false; err.textContent = errorSummary(bad.length); bad[0].focus(); return; }
       err.hidden = true;
@@ -221,7 +225,7 @@
     mend.addEventListener("click", () => {
       star.classList.add("is-mended");
       mend.disabled = true;
-      Site.showToast("اكتملت النجمة. أما الصفحة فما زالت ضائعة.", "اذهب إلى المتجر", "shop.html");
+      Site.showToast(L("اكتملت النجمة. أما الصفحة فما زالت ضائعة.", "The star is whole again. The page, though, is still lost."), L("اذهب إلى المتجر", "Go to the shop"), "shop.html");
     });
   }
 

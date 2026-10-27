@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<title>Cart, DAR</title>
+<meta name="robots" content="noindex">
+<link rel="preload" href="../assets/fonts/thmanyah-serif-display-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/thmanyah-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="../assets/css/base.css?v=12">
+<link rel="stylesheet" href="../assets/css/site.css?v=20">
+<link rel="stylesheet" href="../assets/css/shop.css?v=7">
+<link rel="stylesheet" href="../assets/css/cart.css?v=7">
+</head>
+<body data-page="cart">
+
+<div data-site="header"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><a href="shop.html">Shop</a><span aria-hidden="true">/</span><span aria-current="page">Cart</span></nav>
+    <p class="demo-note"><span data-motif="starlet"></span>Prices in this preview are samples until DAR adds its real prices from the dashboard.</p>
+
+    <div class="page-head">
+      <div><h1 class="rise" id="cart-heading" tabindex="-1">Your cart</h1><p id="cart-sub"></p></div>
+      <a class="thread" href="shop.html">Continue shopping</a>
+    </div>
+
+    <div class="cart" id="cart" hidden>
+      <section aria-label="Pieces in the cart">
+        <ul class="lines" id="lines"></ul>
+        <p class="sr-only" id="cart-live" role="status" aria-live="polite"></p>
+      </section>
+
+      <aside class="summary" aria-labelledby="sum-h">
+        <h2 id="sum-h">Order summary</h2>
+        <dl>
+          <dt>Subtotal</dt><dd class="num" id="subtotal"></dd>
+          <dt>Shipping</dt><dd>Worked out at checkout</dd>
+          <dt class="total">Estimated total</dt><dd class="total num" id="total"></dd>
+        </dl>
+
+        <div class="gift">
+          <label class="check"><input class="box" type="checkbox" id="gift"><span>Traditional gift wrap</span></label>
+          <div id="gift-wrap" hidden style="display:grid;gap:6px"><label for="gift-note">Message for the gift card</label><textarea id="gift-note" placeholder="DAR writes it by hand, 200 characters at most" maxlength="200"></textarea></div>
+        </div>
+
+        <a class="btn btn--lg btn--henna" href="checkout.html">Checkout <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+        <p class="or">or</p>
+        <a class="btn btn--lg btn--wa" id="wa-order" href="#" target="_blank" rel="noopener"><span data-motif="i-chat"></span>Order on WhatsApp</a>
+
+        <div class="impact"><span data-motif="amulet" data-mode="cross"></span><p><b>Your order supports projects in Gaza</b>especially for women and children.</p></div>
+        <p class="trust"><span><span data-motif="starlet"></span>Secure payment</span><span><span data-motif="starlet"></span>Pieces from the DAR catalogue</span><span><a class="thread" href="index.html#corp">Ordering for an organisation?</a></span></p>
+      </aside>
+    </div>
+
+    <div class="cart-empty" id="cart-empty" hidden>
+      <span data-motif="star" data-mode="cross" data-order="radial" data-stitch aria-hidden="true"></span>
+      <h2>Your cart is empty</h2>
+      <p>Every piece at DAR carries a motif and a story. Start here.</p>
+      <a class="btn btn--lg" href="shop.html">Browse the shop <span class="go" data-motif="i-arrow" data-mono="1"></span></a>
+    </div>
+  </div>
+
+  <section class="wrap related" id="suggest-sec" aria-labelledby="suggest-h">
+    <div class="sec-head"><div><span class="eyebrow up"><span data-motif="starlet"></span>You may like</span><h2 id="suggest-h" class="rise">More pieces from DAR</h2></div><a class="thread" href="shop.html">All pieces</a></div>
+    <div class="products" id="suggest"></div>
+  </section>
+</main>
+
+<div data-site="footer"></div>
+
+<script src="../assets/js/i18n.js?v=1"></script>
+<script src="../assets/js/stitch.js?v=9"></script>
+<script src="../assets/js/products.js?v=4"></script>
+<script src="../assets/js/site.js?v=16"></script>
+<script src="../assets/js/cart-page.js?v=4"></script>
+</body>
+</html>
