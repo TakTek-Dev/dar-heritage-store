@@ -156,10 +156,10 @@
 .picked li button:hover { color: var(--danger); }
 .picked li button [data-motif] { width: 12px; }
 .picked-empty { color: var(--muted); font-size: var(--fs-small); }
-.quote aside { position: sticky; top: 108px; display: grid; gap: var(--s3); background: var(--paper-2); padding: var(--s4); }
-.quote aside h3 { font: 700 1.25rem/1.5 var(--font-display); }
-.quote aside p { color: var(--muted); font-size: var(--fs-small); }
-.quote aside .row { gap: var(--s1); }
+.quote .quote__aside { position: sticky; top: 108px; display: grid; gap: var(--s3); background: var(--paper-2); padding: var(--s4); }
+.quote .quote__aside h3 { font: 700 1.25rem/1.5 var(--font-display); }
+.quote .quote__aside p { color: var(--muted); font-size: var(--fs-small); }
+.quote .quote__aside .row { gap: var(--s1); }
 .quote-done { display: grid; gap: var(--s2); padding: var(--s4); background: var(--ok-soft); }
 .quote-done b { font: 700 1.25rem/1.5 var(--font-display); color: var(--ok); }
 
@@ -170,7 +170,7 @@
   .services > div:nth-child(3) { border-inline-start: 0; }
   .services > div:nth-child(n + 3) { border-block-start: 1px solid var(--paper-3); }
   .quote { grid-template-columns: minmax(0, 1fr); }
-  .quote aside { position: static; }
+  .quote .quote__aside { position: static; }
 }
 @media (max-width: 900px) {
   .page-hero { padding-block: var(--s3) var(--s8); }
